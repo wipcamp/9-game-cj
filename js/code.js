@@ -26,8 +26,8 @@ var arrow=[];
 //var up,down,left,right;
 var spaceTimer=0;
 var perfect;
-var good1,good2;
-var fair1,fair2;
+var goodR,goodL;
+var fairL,fairR;
 //var upIn,downIn,leftIn,rightIn;
 var wippo;
 var floor;
@@ -51,38 +51,35 @@ function create() {
     //////////////////////////////////////////////////////////////
     perfect = this.add.sprite(game.world.width/2,game.world.height*(4/5)+90,'lasers');
     perfect.scale.setTo(0.4,0.6);
-    good1 = this.add.sprite(perfect.x+perfect.width,game.world.height*(4/5)+90,'lasers');
-    good1.scale.setTo(0.4,0.6);
-    good2 = this.add.sprite(perfect.x-good1.width,game.world.height*(4/5)+90,'lasers');
-    good2.scale.setTo(0.4,0.6);
-    fair1 = this.add.sprite(good1.x+good1.width,game.world.height*(4/5)+90,'lasers');
-    fair1.scale.setTo(0.4,0.6);
-    fair2 = this.add.sprite(good2.x-fair1.width,game.world.height*(4/5)+90,'lasers');
-    fair2.scale.setTo(0.4,0.6);
+    goodR = this.add.sprite(perfect.x+perfect.width,game.world.height*(4/5)+90,'lasers');
+    goodR.scale.setTo(0.4,0.6);
+    goodL = this.add.sprite(perfect.x-good1.width,game.world.height*(4/5)+90,'lasers');
+    goodL.scale.setTo(0.4,0.6);
+    fairR = this.add.sprite(good1.x+good1.width,game.world.height*(4/5)+90,'lasers');
+    fairR.scale.setTo(0.4,0.6);
+    fairL = this.add.sprite(good2.x-fair1.width,game.world.height*(4/5)+90,'lasers');
+    fairL.scale.setTo(0.4,0.6);
     ////////////////////////////////////////////////////////////
 
     ////////////////////////////////////////////////////////////
     checker = this.add.sprite(0,game.world.height*(4/5)+120, 'laser');
     checker.anchor.set(0.5);
     checker.scale.setTo(0.05,0.6);
-    //point.fixedToCamera = true;
-    // point.cameraOffset.setTo(200, 500);
     game.physics.arcade.enable(checker);
     checker.body.maxVelocity.set(1500);
     checker.body.collideWorldBounds = false;
     wippo = this.add.sprite(game.world.width/2,game.world.height*(4/5)+15 ,'ship');
     game.physics.arcade.enable(wippo);
+    wippo.body.bounce.y = 0;
     floor = this.add.sprite(0,game.world.height*(4/5)+50,'laser');
     floor.scale.setTo(10,0.6);
     game.physics.arcade.enable(floor);
     floor.body.collideWorldBounds = false;
     floor.body.immovable = true;
+    ///////////////////////////////////////////////////////////////
     game.time.events.add(Phaser.Timer.SECOND * 2, gameBegin, this);
-    //floor.body.immovable = true;
-    wippo.body.bounce.y = 0;
-    //wippo.body.gravity.y = 150;
+
     //wippo.events.onOutOfBounds.add(gameEnd(), this);
-    //game.camera.follow(perfect);
 
     /*this.score = 0;
     this.scoreText;
@@ -104,26 +101,15 @@ function update() {
     {
         //this.scoreText.setText('Score : ' + this.score);
         bg.tilePosition.y += bgSpeed;
-        //for
         if (spaceButton.isDown&&game.time.now > spaceTimer)
         {
-             //wippo.body.velocity.y+=-300;
-            check();
-            //point.reset(0,game.world.height*(4/5)+120);
+            checkAccuracy();
             spaceTimer = game.time.now + 1000;
             //pointSpeed+=10;
         }
         game.world.wrap(checker, 16);
         checker.body.velocity.y=0;
     	  checker.body.velocity.x=checkerSpeed;
-
-        /*if(wippo.body.velocity.y<0){
-            wippo.body.velocity.y += 3;
-            bg.tilePosition.y += 30;
-            //console.log("kaw");
-        }else{
-          wippo.body.velocity.y = 0;
-        }*/
         if(wippo.body.y-game.height/3<20){
             wippo.body.velocity.y = 0;
             bg.tilePosition.y += 18;
@@ -136,7 +122,7 @@ function update() {
     game.physics.arcade.collide(wippo,floor);
 
 }
-function check(){
+function checkAccuracy(){
     if (checkOverlap(checker, perfect))
     {
       console.log("Perfect!");
@@ -207,12 +193,7 @@ function summonWave(numberWave){
 arrowRandom = function (x,y) {
     var rand = game.rnd.integerInRange(0, 3);
     this.game = game;
-    //this.health = 3;
     this.alive = true;
-    //this.enemy_ship = game.add.sprite(x, y, 'enemy_ship');
-
-    //this.enemy_ship.count=0;
-    //this.enemy_ship.countBullet=0;
     if(rand==0){
         this.up = game.add.sprite(x, y, 'up');
         this.up.anchor.set(0.5);
@@ -234,10 +215,6 @@ arrowRandom = function (x,y) {
         this.down.scale.setTo(0.3, 0.3);
         //this.down.name = index.toString();
     }
-    //this.enemy_ship.anchor.set(0.5);
-    //this.enemy_ship.scale.setTo(0.3, 0.3);
-    //this.enemy_ship.name = index.toString();
-
     /*up = this.add.sprite(x,y,'up');
     up.scale.setTo(0.3,0.3);
     left = this.add.sprite(x,y,'left');
