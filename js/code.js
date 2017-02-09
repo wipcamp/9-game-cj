@@ -22,10 +22,11 @@ var cursors;
 var spaceButton;
 var wave=[];
 var waveCheck=[];
-var arrow=[];
+var arrow=["up","down","left","right"];
 var difficulty=1;
+var arrowKeyDownTimer=0;
 //var up,down,left,right;
-var spaceTimer=0;
+var spaceKeyDownTimer=0;
 var perfect;
 var goodR,goodL;
 var fairL,fairR;
@@ -45,17 +46,6 @@ function create() {
     spaceButton = this.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
     cursors = this.input.keyboard.createCursorKeys();
     //////////////////////////////////////////////////////////////
-    perfect = this.add.sprite(game.world.width/2,game.world.height*(4/5)+90,'lasers');
-    perfect.scale.setTo(0.4,0.6);
-    goodR = this.add.sprite(perfect.x+perfect.width,game.world.height*(4/5)+90,'lasers');
-    goodR.scale.setTo(0.4,0.6);
-    goodL = this.add.sprite(perfect.x-goodR.width,game.world.height*(4/5)+90,'lasers');
-    goodL.scale.setTo(0.4,0.6);
-    fairR = this.add.sprite(goodR.x+goodR.width,game.world.height*(4/5)+90,'lasers');
-    fairR.scale.setTo(0.4,0.6);
-    fairL = this.add.sprite(goodL.x-fairR.width,game.world.height*(4/5)+90,'lasers');
-    fairL.scale.setTo(0.4,0.6);
-    ////////////////////////////////////////////////////////////
 
     ////////////////////////////////////////////////////////////
     checker = this.add.sprite(0,game.world.height*(4/5)+120, 'laser');
@@ -66,14 +56,14 @@ function create() {
     checker.body.collideWorldBounds = false;
     wippo = this.add.sprite(game.world.width/2,game.world.height*(4/5)+15 ,'ship');
     game.physics.arcade.enable(wippo);
-    wippo.body.bounce.y = 0;
+    wippo.anchor.set(0.5);
     floor = this.add.sprite(0,game.world.height*(4/5)+50,'laser');
     game.physics.arcade.enable(floor);
     floor.scale.setTo(10,0.6);
     floor.body.collideWorldBounds = false;
     floor.body.immovable = true;
     ///////////////////////////////////////////////////////////////
-    game.time.events.add(Phaser.Timer.SECOND * 2, gameBegin, this);
+    game.time.events.add(Phaser.Timer.SECOND * 2, wippoLaunch, this);
 
 
     //wippo.events.onOutOfBounds.add(gameEnd(), this);
@@ -99,18 +89,17 @@ function update() {
         //this.scoreText.setText('Score : ' + this.score);
         bg.tilePosition.y += bgSpeed;
         collectArrow();
-        if (spaceButton.isDown&&game.time.now > spaceTimer)
+        if (spaceButton.isDown&&game.time.now > spaceKeyDownTimer)
         {
 
             checkAccuracy();
-            spaceTimer = game.time.now + 1000;
+            spaceKeyDownTimer = game.time.now + 1000;
             //pointSpeed+=10;
         }
         game.world.wrap(checker, 16);
         checker.body.velocity.y=0;
     	  checker.body.velocity.x=checkerSpeed;
     }
-    //console.log(wippo.body.velocity.y);
     game.physics.arcade.collide(wippo,floor);
 
 }
@@ -120,22 +109,22 @@ function checkAccuracy(){
       console.log("Perfect!");
       bgSpeed=40;
     }
-    else if (checkOverlap(checker, good1))
+    else if (checkOverlap(checker, goodR))
     {
       console.log("Good!");
       bgSpeed=20;
     }
-    else if (checkOverlap(checker, good2))
+    else if (checkOverlap(checker, goodL))
     {
       console.log("Good!");
       bgSpeed=20;
     }
-    else if (checkOverlap(checker, fair1))
+    else if (checkOverlap(checker, fairR))
     {
       console.log("fair!");
       bgSpeed=0;
     }
-    else if (checkOverlap(checker, fair2))
+    else if (checkOverlap(checker, fairL))
     {
       console.log("fair!");
       bgSpeed=0;
@@ -147,6 +136,32 @@ function checkAccuracy(){
     }
 }
 function collectArrow(){
+    for (var i = 0; i < wave.length; i++){
+      if(waveCheck[i]==true){
+        continue;
+      }else if(cursors.up.isDown&&game.time.now > arrowKeyDownTimer){
+        console.log("cursor up is down\nwave[i].name = "+wave[i].name);
+        if(wave[i].name=="up"){
+          waveCheck[i]=true;
+          console.log("wave["+i+"] is true");
+          //animations
+        }else{
+          resetWave();
+        }
+        arrowKeyDownTimer = game.time.now + 500;
+      }else if(cursors.down.isDown&&game.time.now > arrowKeyDownTimer){
+        if(wave[i].name=="down"){
+          waveCheck[i]=true;
+          console.log("wave["+i+"] is true");
+          //animations
+        }else{
+          resetWave();
+        }
+        arrowKeyDownTimer = game.time.now + 500;
+      }
+    }
+}
+function resetWave(){
 
 }
 function checkOverlap(spriteA, spriteB) {
@@ -154,63 +169,77 @@ function checkOverlap(spriteA, spriteB) {
     var boundsB = spriteB.getBounds();
     return Phaser.Rectangle.intersects(boundsA, boundsB);
 }
-gameBegin = function (){
+wippoLaunch = function (){
     floor.body.velocity.y = 400;
-    console.log("gameBegin");
-    //wippo.body.velocity.y = -360;
-    wippo.body.velocity.y = -100;
-    checker.reset(0,game.world.height*(4/5)+120);
-    inGame = true;
+    console.log("launch");
+    wippo.body.velocity.y = -150;
     bgSpeed=30;
-    summonWave(3);
-    game.time.events.add(Phaser.Timer.SECOND * 3, stopWipSpeed, this);
+    game.time.events.add(Phaser.Timer.SECOND * 2, gameBegin, this);
 }
-stopWipSpeed = function (){
+gameBegin = function (){
     wippo.body.velocity.y = 0;
     bgSpeed=20;
+    perfect = this.add.sprite(game.world.width/2,game.world.height*(4/5)+90,'laser');
+    perfect.scale.setTo(0.4,0.6);
+    goodR = this.add.sprite(perfect.x+perfect.width,game.world.height*(4/5)+90,'laser');
+    goodR.scale.setTo(0.4,0.6);
+    goodL = this.add.sprite(perfect.x-goodR.width,game.world.height*(4/5)+90,'laser');
+    goodL.scale.setTo(0.4,0.6);
+    fairR = this.add.sprite(goodR.x+goodR.width,game.world.height*(4/5)+90,'laser');
+    fairR.scale.setTo(0.4,0.6);
+    fairL = this.add.sprite(goodL.x-fairR.width,game.world.height*(4/5)+90,'laser');
+    fairL.scale.setTo(0.4,0.6);
+    summonWave(3);
+    checker.reset(0,game.world.height*(4/5)+120);
+    inGame = true;
 }
-function summonWave(numberWave){
+function summonWave(length){
     var l = wave.length;
-    var startPositon;
-    if(numberWave==3){
+    //var startPositon;
+    if(length==3){
         x=game.world.width/2-50;
         y=game.world.height*3/5;
     }
-    for(var i=0;i<l;i++)
+    for(var i=0;i<l;i++){
     	 wave.pop();
        waveCheck.pop();
-    destroyedCount=numberWave;
-    for (var i = 0; i < numberWave; i++){
-        wave.push(new arrowRandom(x,y));
+    }
+    for (var i = 0; i < length; i++){
+        var rand = game.rnd.integerInRange(0, difficulty);
+        console.log("rand = "+rand);
+        wave.push(new arrowCreate(x,y,rand));
         waveCheck.push(false);
         x+=50;
+        wave[i].name=arrow[rand];
         console.log("create arrow.");
     }
 }
-arrowRandom = function (x,y) {
-    var rand = game.rnd.integerInRange(0, difficulty);
+arrowCreate = function (x,y,rand) {
     this.game = game;
     this.alive = true;
-    console.log("rand = "+rand+"\ndifficulty = "+difficulty)
     if(rand==0){
         this.up = game.add.sprite(x, y, 'up');
         this.up.anchor.set(0.5);
         this.up.scale.setTo(0.3, 0.3);
+        this.up.name = "up";
         //this.up.name = index.toString();
     }else if(rand==1){
         this.down = game.add.sprite(x, y, 'down');
         this.down.anchor.set(0.5);
         this.down.scale.setTo(0.3, 0.3);
+        this.down.name = "down";
         //this.down.name = index.toString();
     }else if(rand==2){
         this.right = game.add.sprite(x, y, 'right');
         this.right.anchor.set(0.5);
         this.right.scale.setTo(0.3, 0.3);
+        this.right.name = "right";
         //this.right.name = index.toString();
     }else{
         this.left = game.add.sprite(x, y, 'left');
         this.left.anchor.set(0.5);
         this.left.scale.setTo(0.3, 0.3);
+        this.left.name = "left";
         //this.left.name = index.toString();
     }
     /*up = this.add.sprite(x,y,'up');
@@ -221,4 +250,4 @@ arrowRandom = function (x,y) {
     right.scale.setTo(0.3,0.3);
     down = this.add.sprite(x,y,'down');
     down.scale.setTo(0.3,0.3);*/
-};
+}
