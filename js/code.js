@@ -88,7 +88,6 @@ function update() {
     }*/
         bg.tilePosition.y += bgSpeed;
     if(inGame){
-      console.log(checker.x);
         //this.scoreText.setText('Score : ' + this.score);
         collectArrow();
         game.world.wrap(checker, 16);
@@ -102,13 +101,13 @@ function update() {
             //pointSpeed+=10;
         }
         if(checker.x>game.world.width-5&&game.time.now > summonCooldown){
-            summonWave(3);
+            summonWave(4);
             summonCooldown = game.time.now + 1500;
         }
     }else if(bgSpeed>0){
         bgSpeed-=0.35;
     }
-    game.physics.arcade.collide(wippo,floor);
+    //game.physics.arcade.collide(wippo,floor);
 
 }
 
@@ -234,9 +233,18 @@ function clearWave(){
 function summonWave(length){
     var l = wave.length;
     //var startPositon;
-    if(length==3){
+    /*if(length==3){
         x=game.world.width/2-50;
         y=game.world.height*3/5;
+    }*/
+    if(length%2==0){
+      x=length/2;
+      x=game.world.width/2-(50*x-25);
+      y=game.world.height*3/5;
+    }else{
+      x=(length-1)/2;
+      x=game.world.width/2-(50*x);
+      y=game.world.height*3/5;
     }
     clearWave();
     for (var i = 0; i < length; i++){
@@ -341,3 +349,10 @@ gameEnd = function (){
     clearWave();
     //game.time.events.add(Phaser.Timer.SECOND * 3, toResultPage = function(){game.state.start(createResult)}, this);
 }
+/* ====ความท้าทายของเกม ====
+  - ลูกศร inverse
+  - ลูกศร ที่จะเปิดให้ดูแค่ x วิแล้วขึ้นเป็น ? หรือ ลูกศรที่ขึ้นเป็น ? จนกว่าจะกดตัวก่อนหน้าได้ถูกต้อง
+  - ลูกศร array (stack ทับกัน) (optional)
+  - special round เช่น inverse หมดเลย , ลูกศรปกติหมดเลยแต่ยาวมาก (optional)
+  - timeStop skill (optional แต่อยากให้มีมากๆ)
+*/
