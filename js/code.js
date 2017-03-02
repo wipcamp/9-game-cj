@@ -11,8 +11,8 @@ function preload() {
     game.load.image('laser','images/biglaser.png');
     game.load.spritesheet('up','images/up.png',320/2,155,2);
     game.load.spritesheet('down','images/down.png',320/2,155,2);
-    game.load.spritesheet('left','images/left.png',320/2,155,2);
     game.load.spritesheet('right','images/right.png',320/2,154,2);
+    game.load.spritesheet('left','images/left.png',315/2,154,2);
 }
 
 
@@ -22,7 +22,7 @@ var cursors;
 var spaceButton;
 var wave=[];
 var waveCheckOrder=0;
-var arrow=["up","down","left","right"];
+var arrow=["up","down","right","left"];
 var difficulty=1;
 var arrowKeyDownTimer=0;
 //var up,down,left,right;
@@ -79,7 +79,7 @@ function createGameplay() {
 
 
 }
-
+var summonCooldown=0;
 function update() {
     /*if(!this.game.world.bounds.intersects(wippo)){
         console.log(true);
@@ -88,6 +88,7 @@ function update() {
     }*/
         bg.tilePosition.y += bgSpeed;
     if(inGame){
+      console.log(checker.x);
         //this.scoreText.setText('Score : ' + this.score);
         collectArrow();
         game.world.wrap(checker, 16);
@@ -95,10 +96,14 @@ function update() {
         checker.body.velocity.x=checkerSpeed;
         if (spaceButton.isDown&&game.time.now > spaceKeyDownTimer)
         {
-
             checkAccuracy();
+            clearWave();
             spaceKeyDownTimer = game.time.now + 1000;
             //pointSpeed+=10;
+        }
+        if(checker.x>game.world.width-5&&game.time.now > summonCooldown){
+            summonWave(3);
+            summonCooldown = game.time.now + 1500;
         }
     }else if(bgSpeed>0){
         bgSpeed-=0.35;
@@ -112,6 +117,7 @@ function checkAccuracy(){
     {
       console.log("Perfect!");
       bgSpeed=40;
+      difficulty++;
     }
     else if (checkOverlap(checker, goodR))
     {
@@ -139,6 +145,7 @@ function checkAccuracy(){
       gameEnd();
       //bgSpeed=-0;
     }
+
 }
 
 var isHoldDown=false;
@@ -154,12 +161,31 @@ function collectArrow(){
         }else{
           refreshWave();
         }
-        arrowKeyDownTimer = game.time.now + 500;
       }else if(cursors.down.isDown){
         isHoldDown=true;
         if(wave[waveCheckOrder].name=="down"){
           console.log("wave["+waveCheckOrder+"] is true");
           wave[waveCheckOrder].down.animations.play('correct');
+          waveCheckOrder++;
+          //animations
+        }else{
+          refreshWave();
+        }
+      }else if(cursors.right.isDown){
+        isHoldDown=true;
+        if(wave[waveCheckOrder].name=="right"){
+          console.log("wave["+waveCheckOrder+"] is true");
+          wave[waveCheckOrder].right.animations.play('correct');
+          waveCheckOrder++;
+          //animations
+        }else{
+          refreshWave();
+        }
+      }else if(cursors.left.isDown){
+        isHoldDown=true;
+        if(wave[waveCheckOrder].name=="left"){
+          console.log("wave["+waveCheckOrder+"] is true");
+          wave[waveCheckOrder].left.animations.play('correct');
           waveCheckOrder++;
           //animations
         }else{
@@ -177,6 +203,10 @@ function refreshWave(){
         wave[waveCheckOrder].up.animations.play('default');
       }else if(wave[waveCheckOrder].name=="down"){
         wave[waveCheckOrder].down.animations.play('default');
+      }else if(wave[waveCheckOrder].name=="right"){
+        wave[waveCheckOrder].right.animations.play('default');
+      }else if(wave[waveCheckOrder].name=="left"){
+        wave[waveCheckOrder].left.animations.play('default');
       }
     }
     waveCheckOrder=0;
@@ -190,11 +220,16 @@ function clearWave(){
         wave[wave.length-1].up.kill();
       }else if(wave[wave.length-1].name=="down"){
         wave[wave.length-1].down.kill();
+      }else if(wave[wave.length-1].name=="right"){
+        wave[wave.length-1].right.kill();
+      }else if(wave[wave.length-1].name=="left"){
+        wave[wave.length-1].left.kill();
       }
       wave.pop();
       waveCheckOrder=0;
       //waveCheck.pop();
     }
+    //wave = [];
 }
 function summonWave(length){
     var l = wave.length;
@@ -205,7 +240,7 @@ function summonWave(length){
     }
     clearWave();
     for (var i = 0; i < length; i++){
-        var rand = game.rnd.integerInRange(0, difficulty);
+        var rand = game.rnd.integerInRange(0, 3/*difficulty*/);
         console.log("rand = "+rand);
         wave.push(new arrowCreate(x,y,rand));
         //waveCheck.push(false);
@@ -241,12 +276,18 @@ arrowCreate = function (x,y,rand) {
         this.right.anchor.set(0.5);
         this.right.scale.setTo(0.3, 0.3);
         this.right.name = "right";
+        this.right.animations.add('default',[0],1,true);
+        this.right.animations.add('correct',[1],1,true);
+        this.right.animations.play('default');
         //this.right.name = index.toString();
     }else{
         this.left = game.add.sprite(x, y, 'left');
         this.left.anchor.set(0.5);
         this.left.scale.setTo(0.3, 0.3);
         this.left.name = "left";
+        this.left.animations.add('default',[0],1,true);
+        this.left.animations.add('correct',[1],1,true);
+        this.left.animations.play('default');
         //this.left.name = index.toString();
     }
     /*up = this.add.sprite(x,y,'up');
