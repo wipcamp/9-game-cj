@@ -9,10 +9,10 @@ function preload() {
     game.load.image('enemy_ship','images/enemyship.png');
     game.load.image('background','images/sea.png');
     game.load.image('laser','images/biglaser.png');
-    game.load.spritesheet('up','images/up.png',320/2,155,2);
-    game.load.spritesheet('down','images/down.png',320/2,155,2);
-    game.load.spritesheet('right','images/right.png',320/2,154,2);
-    game.load.spritesheet('left','images/left.png',315/2,154,2);
+    game.load.spritesheet('up','images/up.png',320/2,155,3);
+    game.load.spritesheet('down','images/down.png',320/2,155,3);
+    game.load.spritesheet('right','images/right.png',320/2,154,3);
+    game.load.spritesheet('left','images/left.png',315/2,154,3);
 }
 
 
@@ -198,19 +198,18 @@ function collectArrow(){
 
 function refreshWave(){
     for(;waveCheckOrder>=0;waveCheckOrder--){
-      /*if(wave[waveCheckOrder].name=="up"){
-        wave[waveCheckOrder].up.animations.play('default');
-      }else if(wave[waveCheckOrder].name=="down"){
-        wave[waveCheckOrder].down.animations.play('default');
-      }else if(wave[waveCheckOrder].name=="right"){
-        wave[waveCheckOrder].right.animations.play('default');
-      }else if(wave[waveCheckOrder].name=="left"){
-        wave[waveCheckOrder].left.animations.play('default');
-      }*/
-      wave[waveCheckOrder].arrow.animations.play('default');
+        /*if(wave[waveCheckOrder].name=="up"){
+            wave[waveCheckOrder].up.animations.play('default');
+        }else if(wave[waveCheckOrder].name=="down"){
+            wave[waveCheckOrder].down.animations.play('default');
+        }else if(wave[waveCheckOrder].name=="right"){
+            wave[waveCheckOrder].right.animations.play('default');
+        }else if(wave[waveCheckOrder].name=="left"){
+            wave[waveCheckOrder].left.animations.play('default');
+        }*/
+        wave[waveCheckOrder].arrow.animations.play('default');
     }
     waveCheckOrder=0;
-    //animations incorrect&default
 }
 
 function clearWave(){
@@ -225,7 +224,7 @@ function clearWave(){
       }else if(wave[wave.length-1].name=="left"){
         wave[wave.length-1].left.kill();
       }*/
-      wave[wave.length-1].arrow.kill();
+      wave[wave.length-1].arrow.destroy();
       wave.pop();
       waveCheckOrder=0;
       //waveCheck.pop();
@@ -261,47 +260,72 @@ function summonWave(length){
     }
 }
 arrowCreate = function (x,y,rand) {
-    this.type = game.rnd.integerInRange(0,2);
+    this.type = game.rnd.integerInRange(0,0);
     this.game = game;
     this.alive = true;
     if(this.type==0){
-      if(rand==0){
-          this.arrow = game.add.sprite(x, y, 'up');
-          this.arrow.anchor.set(0.5);
-          this.arrow.scale.setTo(0.3, 0.3);
-          this.name = "up";
-          this.arrow.animations.add('default',[0],1,true);
-          this.arrow.animations.add('correct',[1],1,true);
-          this.arrow.animations.play('default');
-          //this.up.name = index.toString();
-      }else if(rand==1){
-          this.arrow = game.add.sprite(x, y, 'down');
-          this.arrow.anchor.set(0.5);
-          this.arrow.scale.setTo(0.3, 0.3);
-          this.name = "down";
-          this.arrow.animations.add('default',[0],1,true);
-          this.arrow.animations.add('correct',[1],1,true);
-          this.arrow.animations.play('default');
-          //this.down.name = index.toString();
-      }else if(rand==2){
-          this.arrow = game.add.sprite(x, y, 'right');
-          this.arrow.anchor.set(0.5);
-          this.arrow.scale.setTo(0.3, 0.3);
-          this.name = "right";
-          this.arrow.animations.add('default',[0],1,true);
-          this.arrow.animations.add('correct',[1],1,true);
-          this.arrow.animations.play('default');
-          //this.right.name = index.toString();
-      }else{
-          this.arrow = game.add.sprite(x, y, 'left');
-          this.arrow.anchor.set(0.5);
-          this.arrow.scale.setTo(0.3, 0.3);
-          this.name = "left";
-          this.arrow.animations.add('default',[0],1,true);
-          this.arrow.animations.add('correct',[1],1,true);
-          this.arrow.animations.play('default');
-          //this.left.name = index.toString();
-      }
+        var randomType = game.rnd.integerInRange(1,10);
+        if(rand==0){
+            this.arrow = game.add.sprite(x, y, 'up');
+            this.arrow.anchor.set(0.5);
+            this.arrow.scale.setTo(0.3, 0.3);
+            this.name = "up";
+            if(randomType<=7){
+                this.arrow.animations.add('default',[0],1,true);
+                this.arrow.animations.add('correct',[1],1,true);
+                this.arrow.animations.play('default');
+            }else if(randomType>7){
+                this.arrow.animations.add('default',[2],1,true);
+                this.arrow.animations.add('correct',[1],1,true);
+                this.arrow.animations.play('default');
+            }
+            //this.up.name = index.toString();
+        }else if(rand==1){
+            this.arrow = game.add.sprite(x, y, 'down');
+            this.arrow.anchor.set(0.5);
+            this.arrow.scale.setTo(0.3, 0.3);
+            this.name = "down";
+            if(randomType<=7){
+                this.arrow.animations.add('default',[0],1,true);
+                this.arrow.animations.add('correct',[1],1,true);
+                this.arrow.animations.play('default');
+            }else if(randomType>7){
+                this.arrow.animations.add('default',[2],1,true);
+                this.arrow.animations.add('correct',[1],1,true);
+                this.arrow.animations.play('default');
+            }
+            //this.down.name = index.toString();
+        }else if(rand==2){
+            this.arrow = game.add.sprite(x, y, 'right');
+            this.arrow.anchor.set(0.5);
+            this.arrow.scale.setTo(0.3, 0.3);
+            this.name = "right";
+            if(randomType<=7){
+                this.arrow.animations.add('default',[0],1,true);
+                this.arrow.animations.add('correct',[1],1,true);
+                this.arrow.animations.play('default');
+            }else if(randomType>7){
+                this.arrow.animations.add('default',[2],1,true);
+                this.arrow.animations.add('correct',[1],1,true);
+                this.arrow.animations.play('default');
+            }
+            //this.right.name = index.toString();
+        }else{
+            this.arrow = game.add.sprite(x, y, 'left');
+            this.arrow.anchor.set(0.5);
+            this.arrow.scale.setTo(0.3, 0.3);
+            this.name = "left";
+            if(randomType<=7){
+                this.arrow.animations.add('default',[0],1,true);
+                this.arrow.animations.add('correct',[1],1,true);
+                this.arrow.animations.play('default');
+            }else if(randomType>7){
+                this.arrow.animations.add('default',[2],1,true);
+                this.arrow.animations.add('correct',[1],1,true);
+                this.arrow.animations.play('default');
+            }
+            //this.left.name = index.toString();
+        }
     }
     else if(this.type==1){
       this.arrow = game.add.sprite(x, y, 'left');
@@ -312,6 +336,7 @@ arrowCreate = function (x,y,rand) {
 
     }
 }
+
 function checkOverlap(spriteA, spriteB) {
     var boundsA = spriteA.getBounds();
     var boundsB = spriteB.getBounds();
@@ -354,7 +379,7 @@ gameEnd = function (){
     clearWave();
     //game.time.events.add(Phaser.Timer.SECOND * 3, toResultPage = function(){game.state.start(createResult)}, this);
 }
-/* ====ความท้าทายของเกม ====
+/* ==== ความท้าทายของเกม ==== (สิ่งที่กะจะทำนั่นแหละ)
   - ลูกศร inverse
   - ลูกศร ที่จะเปิดให้ดูแค่ x วิแล้วขึ้นเป็น ? หรือ ลูกศรที่ขึ้นเป็น ? จนกว่าจะกดตัวก่อนหน้าได้ถูกต้อง
   - ลูกศร array (stack ทับกัน) (optional)
