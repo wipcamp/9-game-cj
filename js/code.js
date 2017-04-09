@@ -7,21 +7,27 @@ function preload() {
     game.load.image('ship', 'images/ship.png');
 	game.load.image('bot','images/brids.png');
     game.load.image('enemy_ship','images/enemyship.png');
-    game.load.image('background','images/sea.png');
-    game.load.image('laser','images/biglaser.png');
+    game.load.image('background','images/sea.png'); 
+    game.load.image('miss','images/miss.png');
     game.load.image('bad','images/bad.png');
-    game.load.image('fair','images/fair.png');
-    game.load.image('good','images/good.png');
+    game.load.image('cool','images/cool.png');
+    game.load.image('great','images/great.png');
     game.load.image('perfect','images/perfect.png');
+    game.load.image('guage','images/guage.png');
+    game.load.image('guageSeal','images/guageBlocker.png');
+
     game.load.spritesheet('up','images/up.png',320/2,155,3);
     game.load.spritesheet('down','images/down.png',320/2,155,3);
     game.load.spritesheet('right','images/right.png',320/2,154,3);
     game.load.spritesheet('left','images/left.png',315/2,154,3);
+    game.load.spritesheet('laser','images/biglaser.png');
+    game.load.spritesheet('sharkSeal','images/sharkSeal.png');
+    game.load.spritesheet('spacebarBlock','images/spacebarBlock.png');
 }
 
 
 var checker;
-var checkerSpeed=80;
+var checkerSpeed=60;
 var cursors;
 var spaceButton;
 var wave=[];
@@ -29,12 +35,11 @@ var waveCheckOrder=0;
 var arrow=["up","down","right","left"];
 var difficulty=1;
 var arrowKeyDownTimer=0;
-//var up,down,left,right;
 var spaceKeyDownTimer=0;
 var perfect;
-var goodR,goodL;
-var fairL,fairR;
-//var upIn,downIn,leftIn,rightIn;
+var greatR,greatL;
+var coolL,coolR;
+var badL,badR;
 var wippo;
 var floor;
 var bg;
@@ -43,6 +48,10 @@ var score;
 var gamemode;
 var specialGuageIsSpawned;
 var specialGuage;
+var specialGuageSeal;
+var isSpacebarPressed;
+var spacebarBlock;
+var spacebarBlockIsSpawned;
 
 function createGameplay() {
     game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -65,13 +74,18 @@ function createGameplay() {
     wippo = this.add.sprite(game.world.width/2,game.world.height*(4/5)+15 ,'ship');
     game.physics.arcade.enable(wippo);
     wippo.anchor.set(0.5);
-    floor = this.add.sprite(0,game.world.height*(4/5)+50,'laser');
+    floor = this.add.sprite(0,game.world.height*(4/5)+40,'laser');
     game.physics.arcade.enable(floor);
-    floor.scale.setTo(10,0.6);
+    floor.scale.setTo(20,0.6);
     floor.body.collideWorldBounds = false;
     floor.body.immovable = true;
-    gamemode="prepare";
+    gamemode="begin";
     specialGuageIsSpawned=false;
+    isSpacebarPressed=false;
+    spacebarBlock = this.add.sprite(game.world.width*(3/5),game.world.height*(3/5)-20,'spacebarBlock');
+    spacebarBlock.scale.setTo(0.2,0.2);
+    spacebarBlock.kill();
+    spacebarBlockIsSpawned=false;
     ///////////////////////////////////////////////////////////////
     game.time.events.add(Phaser.Timer.SECOND * 2, wippoLaunch, this);
 
@@ -96,25 +110,51 @@ function update() {
         checker.body.velocity.x = 0;
     }*/
     bg.tilePosition.y += bgSpeed;
-    if(gamemode=="ingame"){
+    if(gamemode=="prepare"){
+        
+    }else if(gamemode=="ingame"){
         //this.scoreText.setText('Score : ' + this.score);
         collectArrow();
-        game.world.wrap(checker, 16);
-        checker.body.velocity.y=0;
         checker.body.velocity.x=checkerSpeed;
-        if (spaceButton.isDown&&game.time.now > spaceKeyDownTimer)
+        if(spacebarBlock.alive){
+            isSpacebarPressed=true;
+            if(spaceButton.isDown){
+                gameEnd();
+            }
+        }else if (spaceButton.isDown&&game.time.now > spaceKeyDownTimer)
         {
+            isSpacebarPressed=true;
             checkAccuracy();
             clearWave();
-            spaceKeyDownTimer = game.time.now + 1000;
-            //pointSpeed+=10;
+            spaceKeyDownTimer = game.time.now + 1500;
+            if(score>=500&&score<1000){
+                gamemode="feverTime";
+            }
         }
-        if(checker.x>game.world.width-5&&game.time.now > summonCooldown){
-            summonWave(4);
+        if(checker.x>game.world.width*(5/7)){
+            if(spacebarBlock.alive){
+                    spacebarBlock.kill();
+            }
+            if(game.time.now > summonCooldown){
+                summonWave(4);
+                if(!isSpacebarPressed){
+                    gameEnd();
+                }
+                
+                isSpacebarPressed=false;
+            }
+            checker.reset(game.world.width*(2.5/7),game.world.height*(3/5));
             summonCooldown = game.time.now + 1500;
         }
     }else if(gamemode=="feverTime"){
+        if(!specialGuageIsSpawned){
+            specialGuage = this.add.sprite(game.world.width*(1/5),game.world.height*(1.5/5) ,'guage');
+            specialGuageSeal = this.add.sprite(game.world.width*(1/5)+6,game.world.height*(1.5/5)+6 ,'guageSeal');
+        }
+        //************spacebar รัวๆ logic here************* + score ทุกครั้งที่กด spacebar ถ้ากดจบแล้วให้เปลี่ยน gamemode="ingame"
 
+    }else if(gamemode=="changingState"){
+        
     }else if(gamemode=="gameover"){
         if(bgSpeed>0){
             bgSpeed-=0.35;
@@ -124,9 +164,27 @@ function update() {
     //game.physics.arcade.collide(wippo,floor);
 
 }
+/*function changeFocus(){
+    switch (gamemode) {
+        case "prepare":
+            checker.alpha=0.5;
+            perfect.alpha=0.5;
+            greatL.alpha=0.5;
+            greatR.alpha=0.5;
+            coolL.alpha=0.5;
+            coolR.alpha=0.5;
+            badR.alpha=0.5;
+            badL.alpha=0.5;
+            break;
+    
+        case "ingame":
 
+            break;
+    }
+}*/
 function checkAccuracy(){
-    if (checkOverlap(checker, perfect))
+    var completeArrow = (waveCheckOrder==wave.length);
+    if (completeArrow&&checkOverlap(checker, perfect))
     {
         statusText = game.add.image(game.world.width*(1/4),game.world.height*(3/4),'perfect');
         console.log("Perfect!");
@@ -135,21 +193,30 @@ function checkAccuracy(){
         }, this);
         bgSpeed=40;
         difficulty++;
-        score+=200;
+        score+=120;
     }
-    else if (checkOverlap(checker, goodR)||checkOverlap(checker, goodL))
+    else if (completeArrow&&(checkOverlap(checker, greatR)||checkOverlap(checker, greatL)))
     {
-        statusText = game.add.image(game.world.width*(1/4),game.world.height*(3/4),'good');
-        console.log("Good!");
+        statusText = game.add.image(game.world.width*(1/4),game.world.height*(3/4),'great');
+        console.log("Great!");
         game.time.events.add(Phaser.Timer.SECOND * 2, function(){
             statusText.destroy();
         }, this);
         bgSpeed=20;
     }
-    else if (checkOverlap(checker, fairR)||checkOverlap(checker, fairL))
+    else if (completeArrow&&(checkOverlap(checker, coolR)||checkOverlap(checker, coolL)))
     {
-        statusText = game.add.image(game.world.width*(1/4),game.world.height*(3/4),'fair');
-        console.log("fair!");
+        statusText = game.add.image(game.world.width*(1/4),game.world.height*(3/4),'cool');
+        console.log("Cool!");
+        game.time.events.add(Phaser.Timer.SECOND * 2, function(){
+            statusText.destroy();
+        }, this);
+        bgSpeed=5;
+    }
+    else if(completeArrow&&(checkOverlap(checker, badR)||checkOverlap(checker, badL)))
+    {
+        statusText = game.add.image(game.world.width*(1/4),game.world.height*(3/4),'bad');
+        console.log("Bad!");
         game.time.events.add(Phaser.Timer.SECOND * 2, function(){
             statusText.destroy();
         }, this);
@@ -157,13 +224,12 @@ function checkAccuracy(){
     }
     else
     {
-        statusText = game.add.image(game.world.width*(1/4),game.world.height*(3/4),'bad');
-        console.log("Bad");
+        statusText = game.add.image(game.world.width*(1/4),game.world.height*(3/4),'miss');
+        console.log("Miss!");
         game.time.events.add(Phaser.Timer.SECOND * 2, function(){
             statusText.destroy();
         }, this);
         gameEnd();
-      //bgSpeed=-0;
     }
 
 }
@@ -265,6 +331,25 @@ function clearWave(){
 }
 function summonWave(length){
     var l = wave.length;
+    var randObstacle = game.rnd.integerInRange(1,6);
+    if(randObstacle==1){
+        sharkSeal = game.add.sprite(0,game.world.height*(3/5),'sharkSeal');
+        sharkSeal.scale.setTo(0.5,0.5);
+        game.physics.arcade.enable(sharkSeal);
+        sharkSeal.events.onOutOfBounds.add(destroyObj, this);
+        sharkSeal.body.velocity.x=400;
+        game.time.events.add(Phaser.Timer.SECOND * 1, function(){
+            sharkSeal.body.velocity.x=0;
+            game.time.events.add(Phaser.Timer.SECOND * 2.5, function(){
+                sharkSeal.body.velocity.x=600;           
+            }, this);
+        
+      }, this);
+    }else if(randObstacle==2){
+        spacebarBlock.revive();
+        spacebarBlock.bringToTop();
+    }
+    
     //var startPositon;
     /*if(length==3){
         x=game.world.width/2-50;
@@ -273,11 +358,11 @@ function summonWave(length){
     if(length%2==0){
       x=length/2;
       x=game.world.width/2-(50*x-25);
-      y=game.world.height*3/5;
+      y=game.world.height*3.5/5;
     }else{
       x=(length-1)/2;
       x=game.world.width/2-(50*x);
-      y=game.world.height*3/5;
+      y=game.world.height*3.5/5;
     }
     clearWave();
     for (var i = 0; i < length; i++){
@@ -417,6 +502,9 @@ arrowCreate = function (x,y,rand) {
     }
 }
 
+function destroyObj(obj) {
+    obj.destroy();
+}
 function checkOverlap(spriteA, spriteB) {
     var boundsA = spriteA.getBounds();
     var boundsB = spriteB.getBounds();
@@ -432,29 +520,35 @@ wippoLaunch = function (){
 gameBegin = function (){
     wippo.body.velocity.y = 0;
     bgSpeed=20;
-    perfect = this.add.sprite(game.world.width/2,game.world.height*(4/5)+90,'laser');
-    perfect.scale.setTo(0.4,0.6);
-    goodR = this.add.sprite(perfect.x+perfect.width,game.world.height*(4/5)+90,'laser');
-    goodR.scale.setTo(0.4,0.6);
-    goodL = this.add.sprite(perfect.x-goodR.width,game.world.height*(4/5)+90,'laser');
-    goodL.scale.setTo(0.4,0.6);
-    fairR = this.add.sprite(goodR.x+goodR.width,game.world.height*(4/5)+90,'laser');
-    fairR.scale.setTo(0.4,0.6);
-    fairL = this.add.sprite(goodL.x-fairR.width,game.world.height*(4/5)+90,'laser');
-    fairL.scale.setTo(0.4,0.6);
+    perfect = this.add.sprite(game.world.width*(3/5),game.world.height*(3/5),'laser');
+    perfect.scale.setTo(0.35,0.5);
+    greatR = this.add.sprite(perfect.x+perfect.width,perfect.y,'laser');
+    greatR.scale.setTo(0.35,0.5);
+    greatL = this.add.sprite(perfect.x-perfect.width,perfect.y,'laser');
+    greatL.scale.setTo(0.35,0.5);
+    coolR = this.add.sprite(greatR.x+greatR.width,perfect.y,'laser');
+    coolR.scale.setTo(0.35,0.5);
+    coolL = this.add.sprite(greatL.x-greatL.width,perfect.y,'laser');
+    coolL.scale.setTo(0.35,0.5);
+    badR = this.add.sprite(coolR.x+coolR.width,perfect.y,'laser');
+    badR.scale.setTo(0.35,0.5);
+    badL = this.add.sprite(coolL.x-coolL.width,perfect.y,'laser');
+    badL.scale.setTo(0.35,0.5);
     summonWave(3);
-    checker.reset(0,game.world.height*(4/5)+120);
+    checker.reset(game.world.width*(2.5/7),game.world.height*(3/5));
     gamemode = "ingame";
 }
 gameEnd = function (){
     //playDeathAnimation
-    gamemode="dying";
+    gamemode="gameover";
     wippo.body.velocity.y=200;
     perfect.destroy();
-    goodR.destroy();
-    goodL.destroy();
-    fairR.destroy();
-    fairL.destroy();
+    greatR.destroy();
+    greatL.destroy();
+    coolR.destroy();
+    coolL.destroy();
+    badR.destroy();
+    badL.destroy();
     checker.destroy();
     clearWave();
     //game.time.events.add(Phaser.Timer.SECOND * 3, toResultPage = function(){game.state.start(createResult)}, this);
