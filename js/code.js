@@ -5,10 +5,14 @@ game.state.start('main');
 function preload() {
     game.load.image('bullet', 'images/bullet.png');
     game.load.image('ship', 'images/ship.png');
-	  game.load.image('bot','images/brids.png');
+	game.load.image('bot','images/brids.png');
     game.load.image('enemy_ship','images/enemyship.png');
     game.load.image('background','images/sea.png');
     game.load.image('laser','images/biglaser.png');
+    game.load.image('bad','images/bad.png');
+    game.load.image('fair','images/fair.png');
+    game.load.image('good','images/good.png');
+    game.load.image('perfect','images/perfect.png');
     game.load.spritesheet('up','images/up.png',320/2,155,3);
     game.load.spritesheet('down','images/down.png',320/2,155,3);
     game.load.spritesheet('right','images/right.png',320/2,154,3);
@@ -114,34 +118,40 @@ function update() {
 function checkAccuracy(){
     if (checkOverlap(checker, perfect))
     {
-      console.log("Perfect!");
-      bgSpeed=40;
-      difficulty++;
+        statusText = game.add.image(game.world.width*(1/4),game.world.height*(3/4),'perfect');
+        console.log("Perfect!");
+        game.time.events.add(Phaser.Timer.SECOND * 2, function(){
+            statusText.destroy();
+        }, this);
+        bgSpeed=40;
+        difficulty++;
     }
-    else if (checkOverlap(checker, goodR))
+    else if (checkOverlap(checker, goodR)||checkOverlap(checker, goodL))
     {
-      console.log("Good!");
-      bgSpeed=20;
+        statusText = game.add.image(game.world.width*(1/4),game.world.height*(3/4),'good');
+        console.log("Good!");
+        game.time.events.add(Phaser.Timer.SECOND * 2, function(){
+            statusText.destroy();
+        }, this);
+        bgSpeed=20;
     }
-    else if (checkOverlap(checker, goodL))
+    else if (checkOverlap(checker, fairR)||checkOverlap(checker, fairL))
     {
-      console.log("Good!");
-      bgSpeed=20;
-    }
-    else if (checkOverlap(checker, fairR))
-    {
-      console.log("fair!");
-      bgSpeed=5;
-    }
-    else if (checkOverlap(checker, fairL))
-    {
-      console.log("fair!");
-      bgSpeed=5;
+        statusText = game.add.image(game.world.width*(1/4),game.world.height*(3/4),'fair');
+        console.log("fair!");
+        game.time.events.add(Phaser.Timer.SECOND * 2, function(){
+            statusText.destroy();
+        }, this);
+        bgSpeed=5;
     }
     else
     {
-      console.log("Bad");
-      gameEnd();
+        statusText = game.add.image(game.world.width*(1/4),game.world.height*(3/4),'bad');
+        console.log("Bad");
+        game.time.events.add(Phaser.Timer.SECOND * 2, function(){
+            statusText.destroy();
+        }, this);
+        gameEnd();
       //bgSpeed=-0;
     }
 
