@@ -154,7 +154,7 @@ function collectArrow(){
         isHoldDown=true;
         if(wave[waveCheckOrder].name=="up"){
           console.log("wave["+waveCheckOrder+"] is true");
-          wave[waveCheckOrder].up.animations.play('correct');
+          wave[waveCheckOrder].arrow.animations.play('correct');
           waveCheckOrder++;
           //animations
         }else{
@@ -164,7 +164,7 @@ function collectArrow(){
         isHoldDown=true;
         if(wave[waveCheckOrder].name=="down"){
           console.log("wave["+waveCheckOrder+"] is true");
-          wave[waveCheckOrder].down.animations.play('correct');
+          wave[waveCheckOrder].arrow.animations.play('correct');
           waveCheckOrder++;
           //animations
         }else{
@@ -174,7 +174,7 @@ function collectArrow(){
         isHoldDown=true;
         if(wave[waveCheckOrder].name=="right"){
           console.log("wave["+waveCheckOrder+"] is true");
-          wave[waveCheckOrder].right.animations.play('correct');
+          wave[waveCheckOrder].arrow.animations.play('correct');
           waveCheckOrder++;
           //animations
         }else{
@@ -184,7 +184,7 @@ function collectArrow(){
         isHoldDown=true;
         if(wave[waveCheckOrder].name=="left"){
           console.log("wave["+waveCheckOrder+"] is true");
-          wave[waveCheckOrder].left.animations.play('correct');
+          wave[waveCheckOrder].arrow.animations.play('correct');
           waveCheckOrder++;
           //animations
         }else{
@@ -198,7 +198,7 @@ function collectArrow(){
 
 function refreshWave(){
     for(;waveCheckOrder>=0;waveCheckOrder--){
-      if(wave[waveCheckOrder].name=="up"){
+      /*if(wave[waveCheckOrder].name=="up"){
         wave[waveCheckOrder].up.animations.play('default');
       }else if(wave[waveCheckOrder].name=="down"){
         wave[waveCheckOrder].down.animations.play('default');
@@ -206,7 +206,8 @@ function refreshWave(){
         wave[waveCheckOrder].right.animations.play('default');
       }else if(wave[waveCheckOrder].name=="left"){
         wave[waveCheckOrder].left.animations.play('default');
-      }
+      }*/
+      wave[waveCheckOrder].arrow.animations.play('default');
     }
     waveCheckOrder=0;
     //animations incorrect&default
@@ -215,7 +216,7 @@ function refreshWave(){
 function clearWave(){
     var waveLength=wave.length;
     for(var i=0;i<waveLength;i++){
-      if(wave[wave.length-1].name=="up"){
+      /*if(wave[wave.length-1].name=="up"){
         wave[wave.length-1].up.kill();
       }else if(wave[wave.length-1].name=="down"){
         wave[wave.length-1].down.kill();
@@ -223,7 +224,8 @@ function clearWave(){
         wave[wave.length-1].right.kill();
       }else if(wave[wave.length-1].name=="left"){
         wave[wave.length-1].left.kill();
-      }
+      }*/
+      wave[wave.length-1].arrow.kill();
       wave.pop();
       waveCheckOrder=0;
       //waveCheck.pop();
@@ -251,61 +253,64 @@ function summonWave(length){
         var rand = game.rnd.integerInRange(0, 3/*difficulty*/);
         console.log("rand = "+rand);
         wave.push(new arrowCreate(x,y,rand));
+        console.log(wave[i].name);
         //waveCheck.push(false);
         //wave[i]=new arrowCreate(x,y,rand);
         x+=50;
-        wave[i].name=arrow[rand];
         console.log("create arrow.");
     }
 }
 arrowCreate = function (x,y,rand) {
+    this.type = game.rnd.integerInRange(0,2);
     this.game = game;
     this.alive = true;
-    if(rand==0){
-        this.up = game.add.sprite(x, y, 'up');
-        this.up.anchor.set(0.5);
-        this.up.scale.setTo(0.3, 0.3);
-        this.up.name = "up";
-        this.up.animations.add('default',[0],1,true);
-        this.up.animations.add('correct',[1],1,true);
-        this.up.animations.play('default');
-        //this.up.name = index.toString();
-    }else if(rand==1){
-        this.down = game.add.sprite(x, y, 'down');
-        this.down.anchor.set(0.5);
-        this.down.scale.setTo(0.3, 0.3);
-        this.down.name = "down";
-        this.down.animations.add('default',[0],1,true);
-        this.down.animations.add('correct',[1],1,true);
-        this.down.animations.play('default');
-        //this.down.name = index.toString();
-    }else if(rand==2){
-        this.right = game.add.sprite(x, y, 'right');
-        this.right.anchor.set(0.5);
-        this.right.scale.setTo(0.3, 0.3);
-        this.right.name = "right";
-        this.right.animations.add('default',[0],1,true);
-        this.right.animations.add('correct',[1],1,true);
-        this.right.animations.play('default');
-        //this.right.name = index.toString();
-    }else{
-        this.left = game.add.sprite(x, y, 'left');
-        this.left.anchor.set(0.5);
-        this.left.scale.setTo(0.3, 0.3);
-        this.left.name = "left";
-        this.left.animations.add('default',[0],1,true);
-        this.left.animations.add('correct',[1],1,true);
-        this.left.animations.play('default');
-        //this.left.name = index.toString();
+    if(this.type==0){
+      if(rand==0){
+          this.arrow = game.add.sprite(x, y, 'up');
+          this.arrow.anchor.set(0.5);
+          this.arrow.scale.setTo(0.3, 0.3);
+          this.name = "up";
+          this.arrow.animations.add('default',[0],1,true);
+          this.arrow.animations.add('correct',[1],1,true);
+          this.arrow.animations.play('default');
+          //this.up.name = index.toString();
+      }else if(rand==1){
+          this.arrow = game.add.sprite(x, y, 'down');
+          this.arrow.anchor.set(0.5);
+          this.arrow.scale.setTo(0.3, 0.3);
+          this.name = "down";
+          this.arrow.animations.add('default',[0],1,true);
+          this.arrow.animations.add('correct',[1],1,true);
+          this.arrow.animations.play('default');
+          //this.down.name = index.toString();
+      }else if(rand==2){
+          this.arrow = game.add.sprite(x, y, 'right');
+          this.arrow.anchor.set(0.5);
+          this.arrow.scale.setTo(0.3, 0.3);
+          this.name = "right";
+          this.arrow.animations.add('default',[0],1,true);
+          this.arrow.animations.add('correct',[1],1,true);
+          this.arrow.animations.play('default');
+          //this.right.name = index.toString();
+      }else{
+          this.arrow = game.add.sprite(x, y, 'left');
+          this.arrow.anchor.set(0.5);
+          this.arrow.scale.setTo(0.3, 0.3);
+          this.name = "left";
+          this.arrow.animations.add('default',[0],1,true);
+          this.arrow.animations.add('correct',[1],1,true);
+          this.arrow.animations.play('default');
+          //this.left.name = index.toString();
+      }
     }
-    /*up = this.add.sprite(x,y,'up');
-    up.scale.setTo(0.3,0.3);
-    left = this.add.sprite(x,y,'left');
-    left.scale.setTo(0.3,0.3);
-    right = this.add.sprite(x,y,'right');
-    right.scale.setTo(0.3,0.3);
-    down = this.add.sprite(x,y,'down');
-    down.scale.setTo(0.3,0.3);*/
+    else if(this.type==1){
+      this.arrow = game.add.sprite(x, y, 'left');
+
+    }
+    else if(this.type==2){
+      this.arrow = game.add.sprite(x, y, 'left');
+
+    }
 }
 function checkOverlap(spriteA, spriteB) {
     var boundsA = spriteA.getBounds();
