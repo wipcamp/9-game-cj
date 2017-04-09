@@ -1,4 +1,4 @@
-var game = new Phaser.Game(337.5, 600, Phaser.AUTO, "game");
+var game = new Phaser.Game(800, 600, Phaser.AUTO, "game");
 var main = { preload : preload , create: createGameplay , update : update};
 game.state.add('main', main);
 game.state.start('main');
@@ -39,8 +39,10 @@ var wippo;
 var floor;
 var bg;
 var bgSpeed=0;
-var inGame=false;
-
+var score;
+var gamemode;
+var specialGuageIsSpawned;
+var specialGuage;
 
 function createGameplay() {
     game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -68,12 +70,15 @@ function createGameplay() {
     floor.scale.setTo(10,0.6);
     floor.body.collideWorldBounds = false;
     floor.body.immovable = true;
+    gamemode="prepare";
+    specialGuageIsSpawned=false;
     ///////////////////////////////////////////////////////////////
     game.time.events.add(Phaser.Timer.SECOND * 2, wippoLaunch, this);
 
 
     //wippo.events.onOutOfBounds.add(gameEnd(), this);
 
+    score=0;
     /*this.score = 0;
     this.scoreText;
     this.scoreText = game.add.text(perfect.x, perfect.y-400, 'Score : ' + this.score, {
@@ -90,8 +95,8 @@ function update() {
         wippo.kill();
         checker.body.velocity.x = 0;
     }*/
-        bg.tilePosition.y += bgSpeed;
-    if(inGame){
+    bg.tilePosition.y += bgSpeed;
+    if(gamemode=="ingame"){
         //this.scoreText.setText('Score : ' + this.score);
         collectArrow();
         game.world.wrap(checker, 16);
@@ -108,9 +113,14 @@ function update() {
             summonWave(4);
             summonCooldown = game.time.now + 1500;
         }
-    }else if(bgSpeed>0){
-        bgSpeed-=0.35;
+    }else if(gamemode=="feverTime"){
+
+    }else if(gamemode=="gameover"){
+        if(bgSpeed>0){
+            bgSpeed-=0.35;
+        }
     }
+        
     //game.physics.arcade.collide(wippo,floor);
 
 }
@@ -125,6 +135,7 @@ function checkAccuracy(){
         }, this);
         bgSpeed=40;
         difficulty++;
+        score+=200;
     }
     else if (checkOverlap(checker, goodR)||checkOverlap(checker, goodL))
     {
@@ -433,25 +444,18 @@ gameBegin = function (){
     fairL.scale.setTo(0.4,0.6);
     summonWave(3);
     checker.reset(0,game.world.height*(4/5)+120);
-    inGame = true;
+    gamemode = "ingame";
 }
 gameEnd = function (){
     //playDeathAnimation
-    inGame=false;
+    gamemode="dying";
     wippo.body.velocity.y=200;
-    perfect.kill();
-    goodR.kill();
-    goodL.kill();
-    fairR.kill();
-    fairL.kill();
-    checker.kill();
+    perfect.destroy();
+    goodR.destroy();
+    goodL.destroy();
+    fairR.destroy();
+    fairL.destroy();
+    checker.destroy();
     clearWave();
     //game.time.events.add(Phaser.Timer.SECOND * 3, toResultPage = function(){game.state.start(createResult)}, this);
 }
-/* ==== ความท้าทายของเกม ==== (สิ่งที่กะจะทำนั่นแหละ)
-  - ลูกศร inverse
-  - ลูกศร ที่จะเปิดให้ดูแค่ x วิแล้วขึ้นเป็น ? หรือ ลูกศรที่ขึ้นเป็น ? จนกว่าจะกดตัวก่อนหน้าได้ถูกต้อง
-  - ลูกศร array (stack ทับกัน) (optional)
-  - special round เช่น inverse หมดเลย , ลูกศรปกติหมดเลยแต่ยาวมาก (optional)
-  - timeStop skill (optional แต่อยากให้มีมากๆ)
-*/
