@@ -52,6 +52,8 @@ var specialGuageSeal;
 var isSpacebarPressed;
 var spacebarBlock;
 var spacebarBlockIsSpawned;
+var isSpacebarDown;
+var maxGuage;
 
 function createGameplay() {
     game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -88,7 +90,9 @@ function createGameplay() {
     spacebarBlockIsSpawned=false;
     ///////////////////////////////////////////////////////////////
     game.time.events.add(Phaser.Timer.SECOND * 2, wippoLaunch, this);
-
+    isSpacebarDown = false;
+    maxGuage = 100;
+    //gamemode = "feverTime";
 
     //wippo.events.onOutOfBounds.add(gameEnd(), this);
 
@@ -150,8 +154,29 @@ function update() {
         if(!specialGuageIsSpawned){
             specialGuage = this.add.sprite(game.world.width*(1/5),game.world.height*(1.5/5) ,'guage');
             specialGuageSeal = this.add.sprite(game.world.width*(1/5)+6,game.world.height*(1.5/5)+6 ,'guageSeal');
+            specialGuageIsSpawned = true;
         }
         //************spacebar รัวๆ logic here************* + score ทุกครั้งที่กด spacebar ถ้ากดจบแล้วให้เปลี่ยน gamemode="ingame"
+        //ทำไงดีวะสาสเอ๋ยยยยยย
+        if(!isSpacebarDown){
+            if(spaceButton.isDown){
+                maxGuage--;
+                isSpacebarDown = true;
+                specialGuageSeal.scale.setTo(1,maxGuage/100);
+            }
+        }
+        if(!spaceButton.isDown)
+            isSpacebarDown = false;
+        if(maxGuage<=0){
+            specialGuage.destroy();
+            specialGuageSeal.destroy();
+            game.time.events.add(Phaser.Timer.SECOND * 1, function(){
+                console.log("max");
+                game.gamemode="ingame";
+                isSpacebarDown = false;
+                specialGuageIsSpawned = false;
+            }, this);
+        }
 
     }else if(gamemode=="changingState"){
         
