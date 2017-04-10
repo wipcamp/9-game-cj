@@ -160,19 +160,24 @@ function update() {
         //ทำไงดีวะสาสเอ๋ยยยยยย
         if(!isSpacebarDown){
             if(spaceButton.isDown){
-                maxGuage--;
+                maxGuage-=5;
                 isSpacebarDown = true;
                 specialGuageSeal.scale.setTo(1,maxGuage/100);
             }
         }
+        if(maxGuage<100){
+            maxGuage+=0.5;
+            specialGuageSeal.scale.setTo(1,maxGuage/100);
+        }
         if(!spaceButton.isDown)
             isSpacebarDown = false;
         if(maxGuage<=0){
+            score+=1000;
             specialGuage.destroy();
             specialGuageSeal.destroy();
             game.time.events.add(Phaser.Timer.SECOND * 1, function(){
                 console.log("max");
-                game.gamemode="ingame";
+                gamemode="ingame";
                 isSpacebarDown = false;
                 specialGuageIsSpawned = false;
             }, this);
