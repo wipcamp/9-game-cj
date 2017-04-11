@@ -23,6 +23,7 @@ function preload() {
     game.load.spritesheet('laser','images/biglaser.png');
     game.load.spritesheet('sharkSeal','images/sharkSeal.png');
     game.load.spritesheet('spacebarBlock','images/spacebarBlock.png');
+    game.load.spritesheet('numberText','images/numberText.png',744/11,78,11);
 }
 
 
@@ -54,6 +55,8 @@ var spacebarBlock;
 var spacebarBlockIsSpawned;
 var isSpacebarDown;
 var maxGuage;
+var guageAliveTimer;
+var guageTimeCounter;
 
 function createGameplay() {
     game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -131,8 +134,10 @@ function update() {
             checkAccuracy();
             clearWave();
             spaceKeyDownTimer = game.time.now + 1500;
-            if(score>=500&&score<1000){
+            if(score>=500&&score<1000||true){
                 gamemode="feverTime";
+                guageTimeCounter=15.0;
+                guageAliveTimer = game.time.events.repeat(Phaser.Timer.SECOND * 0.1, 151, updateTimer, this);
             }
         }
         if(checker.x>game.world.width*(5/7)){
@@ -156,8 +161,6 @@ function update() {
             specialGuageSeal = this.add.sprite(game.world.width*(1/5)+6,game.world.height*(1.5/5)+6 ,'guageSeal');
             specialGuageIsSpawned = true;
         }
-        //************spacebar รัวๆ logic here************* + score ทุกครั้งที่กด spacebar ถ้ากดจบแล้วให้เปลี่ยน gamemode="ingame"
-        //ทำไงดีวะสาสเอ๋ยยยยยย
         if(!isSpacebarDown){
             if(spaceButton.isDown){
                 maxGuage-=5;
@@ -175,6 +178,7 @@ function update() {
             score+=1000;
             specialGuage.destroy();
             specialGuageSeal.destroy();
+            game.time.events.remove(guageAliveTimer);
             game.time.events.add(Phaser.Timer.SECOND * 1, function(){
                 console.log("max");
                 gamemode="ingame";
@@ -212,6 +216,29 @@ function update() {
             break;
     }
 }*/
+var guageTimerDigit2=null;
+var guageTimerDigit1=null;
+var guageTimerDecimal=null;
+function updateTimer(){
+    if(guageTimerDigit2!=null){
+        guageTimerDigit2.destroy(); 
+        guageTimerDigit1.destroy(); 
+        guageTimerDecimal.destroy(); 
+    }
+    guageTimerDigit2 = game.add.sprite(game.world.width*(1/5)-80,game.world.height*(1.5/5)-60 ,'numberText');
+    guageTimerDigit2.frame = Math.floor(guageTimeCounter/10);
+    guageTimerDigit1 = game.add.sprite(game.world.width*(1/5),game.world.height*(1.5/5)-60 ,'numberText');
+    guageTimerDigit1.frame = Math.floor(guageTimeCounter%10);
+
+    guageTimerDecimal = game.add.sprite(game.world.width*(1/5)+80,game.world.height*(1.5/5)-60 ,'numberText');
+    guageTimerDecimal.frame = Math.floor(guageTimeCounter*10%10);
+    guageTimeCounter-=0.1;
+    
+    if(guageTimeCounter<=0){
+        gameEnd();
+    }
+
+}
 function checkAccuracy(){
     var completeArrow = (waveCheckOrder==wave.length);
     if (completeArrow&&checkOverlap(checker, perfect))
@@ -223,7 +250,7 @@ function checkAccuracy(){
         }, this);
         bgSpeed=40;
         difficulty++;
-        score+=120;
+        score+=180;
     }
     else if (completeArrow&&(checkOverlap(checker, greatR)||checkOverlap(checker, greatL)))
     {
@@ -233,6 +260,7 @@ function checkAccuracy(){
             statusText.destroy();
         }, this);
         bgSpeed=20;
+        score+=90;
     }
     else if (completeArrow&&(checkOverlap(checker, coolR)||checkOverlap(checker, coolL)))
     {
@@ -242,6 +270,7 @@ function checkAccuracy(){
             statusText.destroy();
         }, this);
         bgSpeed=5;
+        score+=60;
     }
     else if(completeArrow&&(checkOverlap(checker, badR)||checkOverlap(checker, badL)))
     {
@@ -251,6 +280,7 @@ function checkAccuracy(){
             statusText.destroy();
         }, this);
         bgSpeed=5;
+        score+=30;
     }
     else
     {
@@ -532,6 +562,8 @@ arrowCreate = function (x,y,rand) {
     }
 }
 
+
+
 function destroyObj(obj) {
     obj.destroy();
 }
@@ -580,6 +612,7 @@ gameEnd = function (){
     badR.destroy();
     badL.destroy();
     checker.destroy();
+    spacebarBlock.destroy();
     clearWave();
     //game.time.events.add(Phaser.Timer.SECOND * 3, toResultPage = function(){game.state.start(createResult)}, this);
 }
