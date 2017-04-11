@@ -57,6 +57,9 @@ var isSpacebarDown;
 var maxGuage;
 var guageAliveTimer;
 var guageTimeCounter;
+var guageTimerDigit2=null;
+var guageTimerDigit1=null;
+var guageTimerDecimal=null;
 
 function createGameplay() {
     game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -134,7 +137,7 @@ function update() {
             checkAccuracy();
             clearWave();
             spaceKeyDownTimer = game.time.now + 1500;
-            if(score>=500&&score<1000||true){
+            if(score>=500&&score<1000){
                 gamemode="feverTime";
                 guageTimeCounter=15.0;
                 guageAliveTimer = game.time.events.repeat(Phaser.Timer.SECOND * 0.1, 151, updateTimer, this);
@@ -180,6 +183,14 @@ function update() {
             specialGuageSeal.destroy();
             game.time.events.remove(guageAliveTimer);
             game.time.events.add(Phaser.Timer.SECOND * 1, function(){
+                if(guageTimerDigit2!=null){
+                    guageTimerDigit2.destroy(); 
+                    guageTimerDigit1.destroy(); 
+                    guageTimerDecimal.destroy(); 
+                }
+                // guageTimerDigit2=null;
+                // guageTimerDigit1=null;
+                // guageTimerDecimal=null;
                 console.log("max");
                 gamemode="ingame";
                 isSpacebarDown = false;
@@ -216,9 +227,7 @@ function update() {
             break;
     }
 }*/
-var guageTimerDigit2=null;
-var guageTimerDigit1=null;
-var guageTimerDecimal=null;
+
 function updateTimer(){
     if(guageTimerDigit2!=null){
         guageTimerDigit2.destroy(); 
