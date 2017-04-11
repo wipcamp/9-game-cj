@@ -16,10 +16,10 @@ function preload() {
     game.load.image('guage','images/guage.png');
     game.load.image('guageSeal','images/guageBlocker.png');
 
-    game.load.spritesheet('up','images/up.png',320/2,155,3);
-    game.load.spritesheet('down','images/down.png',320/2,155,3);
-    game.load.spritesheet('right','images/right.png',320/2,154,3);
-    game.load.spritesheet('left','images/left.png',315/2,154,3);
+    game.load.spritesheet('up','images/up.png',320/2,155,4);
+    game.load.spritesheet('down','images/down.png',320/2,155,4);
+    game.load.spritesheet('right','images/right.png',320/2,154,4);
+    game.load.spritesheet('left','images/left.png',315/2,154,4);
     game.load.spritesheet('laser','images/biglaser.png');
     game.load.spritesheet('sharkSeal','images/sharkSeal.png');
     game.load.spritesheet('spacebarBlock','images/spacebarBlock.png');
@@ -28,7 +28,7 @@ function preload() {
 
 
 var checker;
-var checkerSpeed=60;
+var checkerSpeed=40;
 var cursors;
 var spaceButton;
 var wave=[];
@@ -148,7 +148,7 @@ function update() {
                     spacebarBlock.kill();
             }
             if(game.time.now > summonCooldown){
-                summonWave(4);
+                summonWave(6);
                 if(!isSpacebarPressed){
                     gameEnd();
                 }
@@ -172,7 +172,7 @@ function update() {
             }
         }
         if(maxGuage<100){
-            maxGuage+=0.5;
+            maxGuage+=0.35;
             specialGuageSeal.scale.setTo(1,maxGuage/100);
         }
         if(!spaceButton.isDown)
@@ -234,12 +234,12 @@ function updateTimer(){
         guageTimerDigit1.destroy(); 
         guageTimerDecimal.destroy(); 
     }
-    guageTimerDigit2 = game.add.sprite(game.world.width*(1/5)-80,game.world.height*(1.5/5)-60 ,'numberText');
+    guageTimerDigit2 = game.add.sprite(game.world.width*(1/5)-80,game.world.height*(1.5/5)-150 ,'numberText');
     guageTimerDigit2.frame = Math.floor(guageTimeCounter/10);
-    guageTimerDigit1 = game.add.sprite(game.world.width*(1/5),game.world.height*(1.5/5)-60 ,'numberText');
+    guageTimerDigit1 = game.add.sprite(game.world.width*(1/5),game.world.height*(1.5/5)-150 ,'numberText');
     guageTimerDigit1.frame = Math.floor(guageTimeCounter%10);
 
-    guageTimerDecimal = game.add.sprite(game.world.width*(1/5)+80,game.world.height*(1.5/5)-60 ,'numberText');
+    guageTimerDecimal = game.add.sprite(game.world.width*(1/5)+80,game.world.height*(1.5/5)-150 ,'numberText');
     guageTimerDecimal.frame = Math.floor(guageTimeCounter*10%10);
     guageTimeCounter-=0.1;
     
@@ -306,15 +306,25 @@ function checkAccuracy(){
 var isHoldDown=false;
 function collectArrow(){
     if(waveCheckOrder<wave.length&&!isHoldDown){
-      if(cursors.up.isDown){
-        isHoldDown=true;
-        if(wave[waveCheckOrder].name=="up"){
-            console.log("wave["+waveCheckOrder+"] is true");
-            wave[waveCheckOrder].arrow.animations.play('correct');
-            if(wave[waveCheckOrder].type == 2)
-                wave[waveCheckOrder].arrow.alpha = 0.8;
-            waveCheckOrder++;
-            //animations
+        if(cursors.up.isDown){
+            isHoldDown=true;
+            if(wave[waveCheckOrder].name=="up"){
+                console.log("wave["+waveCheckOrder+"] is true");
+                wave[waveCheckOrder].arrow.animations.play('correct');
+                if(wave[waveCheckOrder].type == 2)
+                    wave[waveCheckOrder].arrow.alpha = 0.8;
+                else if(wave[waveCheckOrder].type == 1){
+                    if(waveCheckOrder+3<wave.length-1){
+                        var pos = game.rnd.integerInRange(waveCheckOrder+3,wave.length-1);
+                        posx = wave[pos].x;
+                        posy = wave[pos].y; 
+                        console.log(posx+" "+posy);
+                        wave[pos].arrow.kill();
+                        wave[pos] = new arrowCreate(posx,posy,game.rnd.integerInRange(0, 3/*difficulty*/),3);
+                    }
+                }
+                waveCheckOrder++;
+                //animations
             }else{
                 refreshWave();
             }
@@ -325,6 +335,16 @@ function collectArrow(){
             wave[waveCheckOrder].arrow.animations.play('correct');
             if(wave[waveCheckOrder].type == 2)
                 wave[waveCheckOrder].arrow.alpha = 0.8;
+            else if(wave[waveCheckOrder].type == 1){
+                    if(waveCheckOrder+3<wave.length-1){
+                        var pos = game.rnd.integerInRange(waveCheckOrder+3,wave.length-1);
+                        posx = wave[pos].x;
+                        posy = wave[pos].y; 
+                        console.log(posx+" "+posy);
+                        wave[pos].arrow.kill();
+                        wave[pos] = new arrowCreate(posx,posy,game.rnd.integerInRange(0, 3/*difficulty*/),3);
+                    }
+                }
             waveCheckOrder++;
           //animations
             }else{
@@ -338,6 +358,16 @@ function collectArrow(){
                 wave[waveCheckOrder].arrow.animations.play('correct');
                 if(wave[waveCheckOrder].type == 2)
                     wave[waveCheckOrder].arrow.alpha = 0.8;
+                else if(wave[waveCheckOrder].type == 1){
+                    if(waveCheckOrder+3<wave.length-1){
+                        var pos = game.rnd.integerInRange(waveCheckOrder+3,wave.length-1);
+                        posx = wave[pos].x;
+                        posy = wave[pos].y; 
+                        console.log(posx+" "+posy);
+                        wave[pos].arrow.kill();
+                        wave[pos] = new arrowCreate(posx,posy,game.rnd.integerInRange(0, 3/*difficulty*/),3);
+                    }
+                }
                 waveCheckOrder++;
               //animations
             }else{
@@ -350,6 +380,16 @@ function collectArrow(){
                 wave[waveCheckOrder].arrow.animations.play('correct');
                 if(wave[waveCheckOrder].type == 2)
                     wave[waveCheckOrder].arrow.alpha = 0.8;
+                else if(wave[waveCheckOrder].type == 1){
+                    if(waveCheckOrder+3<wave.length-1){
+                        var pos = game.rnd.integerInRange(waveCheckOrder+3,wave.length-1);
+                        posx = wave[pos].x;
+                        posy = wave[pos].y; 
+                        console.log(posx+" "+posy);
+                        wave[pos].arrow.kill();
+                        wave[pos] = new arrowCreate(posx,posy,game.rnd.integerInRange(0, 3/*difficulty*/),3);
+                    }
+                }
                 waveCheckOrder++;
               //animations
             }else{
@@ -437,7 +477,7 @@ function summonWave(length){
     for (var i = 0; i < length; i++){
         var rand = game.rnd.integerInRange(0, 3/*difficulty*/);
         console.log("rand = "+rand);
-        wave.push(new arrowCreate(x,y,rand));
+        wave.push(new arrowCreate(x,y,rand,/*game.rnd.integerInRange(0,2)*/1));
         console.log(wave[i].name);
         //waveCheck.push(false);
         //wave[i]=new arrowCreate(x,y,rand);
@@ -445,10 +485,10 @@ function summonWave(length){
         console.log("create arrow.");
     }
 }
-arrowCreate = function (x,y,rand) {
-    this.type = game.rnd.integerInRange(0,2);
-    if(this.type==1)
-        this.type = 0;
+arrowCreate = function (x,y,rand,type) {
+    this.x = x;
+    this.y = y;
+    this.type = type;
     this.game = game;
     this.alive = true;
     if(this.type==0){
@@ -516,58 +556,90 @@ arrowCreate = function (x,y,rand) {
         }
     }
     else if(this.type==1){
-      this.arrow = game.add.sprite(x, y, 'left');
+        if(rand==0){
+          this.arrow = game.add.sprite(x, y, 'up');
+          this.name = "up";
+          //this.up.name = index.toString();
+        }else if(rand==1){
+          this.arrow = game.add.sprite(x, y, 'down');
+          this.name = "down";
+          //this.down.name = index.toString();
+        }else if(rand==2){
+          this.arrow = game.add.sprite(x, y, 'right');
+          this.name = "right";
+          //this.right.name = index.toString();
+        }else{
+          this.arrow = game.add.sprite(x, y, 'left');
+          this.name = "left";
+          //this.left.name = index.toString();
+        }
+        this.arrow.alpha = 0.3;
+        this.arrow.anchor.set(0.5);
+        this.arrow.scale.setTo(0.3, 0.3);
+        this.arrow.animations.add('default',[0],1,true);
+        this.arrow.animations.add('out',[3],1,true);
+        this.arrow.animations.add('correct',[1],1,true);
+        this.arrow.animations.play('default');
 
     }
     else if(this.type==2){
-      if(rand==0){
+        if(rand==0){
           this.arrow = game.add.sprite(x, y, 'up');
-          this.arrow.alpha = 0.8;
-          this.arrow.anchor.set(0.5);
-          this.arrow.scale.setTo(0.3, 0.3);
           this.name = "up";
-          this.arrow.animations.add('default',[0],1,true);
-          this.arrow.animations.add('correct',[1],1,true);
-          this.arrow.animations.play('default');
           //this.up.name = index.toString();
-      }else if(rand==1){
+        }else if(rand==1){
           this.arrow = game.add.sprite(x, y, 'down');
-          this.arrow.alpha = 0.8;
-          this.arrow.anchor.set(0.5);
-          this.arrow.scale.setTo(0.3, 0.3);
           this.name = "down";
-          this.arrow.animations.add('default',[0],1,true);
-          this.arrow.animations.add('correct',[1],1,true);
-          this.arrow.animations.play('default');
           //this.down.name = index.toString();
-      }else if(rand==2){
+        }else if(rand==2){
           this.arrow = game.add.sprite(x, y, 'right');
-          this.arrow.alpha = 0.8;
-          this.arrow.anchor.set(0.5);
-          this.arrow.scale.setTo(0.3, 0.3);
           this.name = "right";
-          this.arrow.animations.add('default',[0],1,true);
-          this.arrow.animations.add('correct',[1],1,true);
-          this.arrow.animations.play('default');
           //this.right.name = index.toString();
-      }else{
+        }else{
           this.arrow = game.add.sprite(x, y, 'left');
-          this.arrow.alpha = 0.8;
-          this.arrow.anchor.set(0.5);
-          this.arrow.scale.setTo(0.3, 0.3);
           this.name = "left";
-          this.arrow.animations.add('default',[0],1,true);
-          this.arrow.animations.add('correct',[1],1,true);
-          this.arrow.animations.play('default');
           //this.left.name = index.toString();
-      }
-      game.time.events.add(Phaser.Timer.SECOND * 2, function(){
-        console.log("in time");
-        if(this.arrow.frame==0){
-            console.log("shark kill");
-            this.arrow.alpha = 0.005;
         }
-      }, this);
+        this.arrow.alpha = 0.8;
+        this.arrow.anchor.set(0.5);
+        this.arrow.scale.setTo(0.3, 0.3);
+        this.arrow.animations.add('default',[0],1,true);
+        this.arrow.animations.add('out',[3],1,true);
+        this.arrow.animations.add('correct',[1],1,true);
+        this.arrow.animations.play('default');
+        game.time.events.add(Phaser.Timer.SECOND * 2, function(){
+            console.log("in time");
+            if(this.arrow.frame==0){
+                console.log("shark kill");
+                this.arrow.animations.play('out');
+            }
+        }, this);
+    }
+    else if(type==3){
+        if(rand==0){
+          this.arrow = game.add.sprite(x, y, 'up');
+          this.name = "up";
+          //this.up.name = index.toString();
+        }else if(rand==1){
+          this.arrow = game.add.sprite(x, y, 'down');
+          this.name = "down";
+          //this.down.name = index.toString();
+        }else if(rand==2){
+          this.arrow = game.add.sprite(x, y, 'right');
+          this.name = "right";
+          //this.right.name = index.toString();
+        }else{
+          this.arrow = game.add.sprite(x, y, 'left');
+          this.name = "left";
+          //this.left.name = index.toString();
+        }
+        this.arrow.alpha = 0.3;
+        this.arrow.anchor.set(0.5);
+        this.arrow.scale.setTo(0.3, 0.3);
+        this.arrow.animations.add('default',[0],1,true);
+        this.arrow.animations.add('out',[3],1,true);
+        this.arrow.animations.add('correct',[1],1,true);
+        this.arrow.animations.play('default');
     }
 }
 
