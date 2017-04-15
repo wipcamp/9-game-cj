@@ -31,6 +31,7 @@ var checker;
 var checkerSpeed=40;
 var cursors;
 var spaceButton;
+var stopTimeButton;
 var wave=[];
 var waveCheckOrder=0;
 var arrow=["up","down","right","left"];
@@ -60,6 +61,11 @@ var guageTimeCounter;
 var guageTimerDigit2=null;
 var guageTimerDigit1=null;
 var guageTimerDecimal=null;
+var stopTimerDigit1;
+var stopTimerDecimal;
+var stopTimeTimer;
+var stopTimeCounter;
+var isTimeStopped;
 
 function createGameplay() {
     game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -69,6 +75,7 @@ function createGameplay() {
     bg.autoScroll(this.levelSpeed, 0);
     bg.fixedToCamera = true;
     spaceButton = this.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
+    stopTimeButton = this.input.keyboard.addKey(Phaser.KeyCode.ENTER);
     cursors = this.input.keyboard.createCursorKeys();
     //////////////////////////////////////////////////////////////
 
@@ -125,39 +132,53 @@ function update() {
     }else if(gamemode=="ingame"){
         //this.scoreText.setText('Score : ' + this.score);
         collectArrow();
-        checker.body.velocity.x=checkerSpeed;
-        if(spacebarBlock.alive){
-            isSpacebarPressed=true;
-            if(spaceButton.isDown){
-                gameEnd();
-            }
-        }else if (spaceButton.isDown&&game.time.now > spaceKeyDownTimer)
-        {
-            isSpacebarPressed=true;
-            checkAccuracy();
-            clearWave();
-            spaceKeyDownTimer = game.time.now + 1500;
-            if(score>=500&&score<1000){
-                gamemode="feverTime";
-                guageTimeCounter=15.0;
-                guageAliveTimer = game.time.events.repeat(Phaser.Timer.SECOND * 0.1, 151, updateTimer, this);
-            }
-        }
-        if(checker.x>game.world.width*(5/7)){
+        
+        if(!isTimeStopped){
+            checker.body.velocity.x=checkerSpeed;
             if(spacebarBlock.alive){
-                    spacebarBlock.kill();
-            }
-            if(game.time.now > summonCooldown){
-                summonWave(6);
-                if(!isSpacebarPressed){
+                isSpacebarPressed=true;
+                if(spaceButton.isDown){
                     gameEnd();
                 }
-                
-                isSpacebarPressed=false;
+            }else if (spaceButton.isDown&&game.time.now > spaceKeyDownTimer)
+            {
+                isSpacebarPressed=true;
+                checkAccuracy();
+                clearWave();
+                spaceKeyDownTimer = game.time.now + 1500;
+                if(score>=500&&score<1000){
+                    gamemode="feverTime";
+                    guageTimeCounter=15.0;
+                    guageAliveTimer = game.time.events.repeat(Phaser.Timer.SECOND * 0.1, 151, countdownTimer, this, "feverTime");
+                }
             }
-            checker.reset(game.world.width*(2.5/7),game.world.height*(3/5));
-            summonCooldown = game.time.now + 1500;
+            if(checker.x>game.world.width*(5/7)){
+                if(spacebarBlock.alive){
+                        spacebarBlock.kill();
+                }
+                if(game.time.now > summonCooldown){
+                    summonWave(6);
+                    if(!isSpacebarPressed){
+                        gameEnd();
+                    }
+                    
+                    isSpacebarPressed=false;
+                }
+                checker.reset(game.world.width*(2.5/7),game.world.height*(3/5));
+                summonCooldown = game.time.now + 1500;
+            }
+            if(stopTimeButton.isDown){
+                isTimeStopped=true;
+                console.log("activate stop time");
+                stopTimeCounter = 3.0;
+                stopTimeTimer = game.time.events.repeat(Phaser.Timer.SECOND * 0.1, 31, countdownTimer, this, "timeStopped");
+                checker.body.velocity.x=0;
+                bgSpeed=0;
+            }
+        }else{
+
         }
+        
     }else if(gamemode=="feverTime"){
         if(!specialGuageIsSpawned){
             specialGuage = this.add.sprite(game.world.width*(1/5),game.world.height*(1.5/5) ,'guage');
@@ -183,22 +204,33 @@ function update() {
             specialGuageSeal.destroy();
             game.time.events.remove(guageAliveTimer);
             game.time.events.add(Phaser.Timer.SECOND * 1, function(){
-                if(guageTimerDigit2!=null){
-                    guageTimerDigit2.destroy(); 
-                    guageTimerDigit1.destroy(); 
-                    guageTimerDecimal.destroy(); 
-                }
-                // guageTimerDigit2=null;
-                // guageTimerDigit1=null;
-                // guageTimerDecimal=null;
+                cancelCountdownTimer("feverTime");
                 console.log("max");
                 gamemode="ingame";
                 isSpacebarDown = false;
                 specialGuageIsSpawned = false;
             }, this);
         }
+        if(stopTimeButton.isDown){
+            
+        }
 
     }else if(gamemode=="changingState"){
+        
+    }else if(gamemode=="timeStopped"){
+        
+        if (spaceButton.isDown&&game.time.now > spaceKeyDownTimer)
+        {
+            isSpacebarPressed=true;
+            checkAccuracy();
+            clearWave();
+            spaceKeyDownTimer = game.time.now + 1500;
+            if(score>=500&&score<1000){
+                gamemode="feverTime";
+                guageTimeCounter=15.0;
+                guageAliveTimer = game.time.events.repeat(Phaser.Timer.SECOND * 0.1, 151, countdownTimer, this, "feverTime");
+            }
+        }
         
     }else if(gamemode=="gameover"){
         if(bgSpeed>0){
@@ -228,25 +260,56 @@ function update() {
     }
 }*/
 
-function updateTimer(){
-    if(guageTimerDigit2!=null){
-        guageTimerDigit2.destroy(); 
-        guageTimerDigit1.destroy(); 
-        guageTimerDecimal.destroy(); 
-    }
-    guageTimerDigit2 = game.add.sprite(game.world.width*(1/5)-80,game.world.height*(1.5/5)-150 ,'numberText');
-    guageTimerDigit2.frame = Math.floor(guageTimeCounter/10);
-    guageTimerDigit1 = game.add.sprite(game.world.width*(1/5),game.world.height*(1.5/5)-150 ,'numberText');
-    guageTimerDigit1.frame = Math.floor(guageTimeCounter%10);
+function countdownTimer(timerName){
+    if(timerName=="feverTime"){
+        if(guageTimerDigit2!=null){
+            guageTimerDigit2.destroy(); 
+            guageTimerDigit1.destroy(); 
+            guageTimerDecimal.destroy(); 
+        }
+        guageTimerDigit2 = game.add.sprite(game.world.width*(1/5)-80,game.world.height*(1.5/5)-150 ,'numberText');
+        guageTimerDigit2.frame = Math.floor(guageTimeCounter/10);
+        guageTimerDigit1 = game.add.sprite(game.world.width*(1/5),game.world.height*(1.5/5)-150 ,'numberText');
+        guageTimerDigit1.frame = Math.floor(guageTimeCounter%10);
 
-    guageTimerDecimal = game.add.sprite(game.world.width*(1/5)+80,game.world.height*(1.5/5)-150 ,'numberText');
-    guageTimerDecimal.frame = Math.floor(guageTimeCounter*10%10);
-    guageTimeCounter-=0.1;
-    
-    if(guageTimeCounter<=0){
-        gameEnd();
-    }
+        guageTimerDecimal = game.add.sprite(game.world.width*(1/5)+80,game.world.height*(1.5/5)-150 ,'numberText');
+        guageTimerDecimal.frame = Math.floor(guageTimeCounter*10%10);
+        guageTimeCounter-=0.1;
+        
+        if(guageTimeCounter<=0){
+            gameEnd();
+        }
+    }else if(timerName=="timeStopped"){
+        if(stopTimerDigit1!=null){
+            stopTimerDigit1.destroy();
+            stopTimerDecimal.destroy();
+        }
+        stopTimerDigit1 = game.add.sprite(game.world.width*(1/2)-40,game.world.height*(1/5)-100 ,'numberText');
+        stopTimerDigit1.frame = Math.floor(stopTimeCounter%10);
+        stopTimerDecimal = game.add.sprite(game.world.width*(1/2)+40,game.world.height*(1/5)-100 ,'numberText');
+        stopTimerDecimal.frame = Math.floor(stopTimeCounter*10%10);
 
+        stopTimeCounter-=0.1;
+        if(stopTimeCounter<=0){
+            isTimeStopped=false;
+            cancelCountdownTimer("timeStopped");
+            bgSpeed=40;
+        }
+    }
+}
+function cancelCountdownTimer(timerName) {
+    if(timerName=="feverTime"){
+        if(guageTimerDigit2!=null){
+            guageTimerDigit2.destroy(); 
+            guageTimerDigit1.destroy(); 
+            guageTimerDecimal.destroy(); 
+        }
+    }else if(timerName=="timeStopped"){
+        if(stopTimerDigit1!=null){
+            stopTimerDigit1.destroy();
+            stopTimerDecimal.destroy();
+        }
+    }
 }
 function checkAccuracy(){
     var completeArrow = (waveCheckOrder==wave.length);
