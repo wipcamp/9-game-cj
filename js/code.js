@@ -28,7 +28,7 @@ function preload() {
 
 
 var checker;
-var checkerSpeed=40;
+var checkerSpeed=70;
 var cursors;
 var spaceButton;
 var stopTimeButton;
@@ -65,7 +65,10 @@ var stopTimerDigit1;
 var stopTimerDecimal;
 var stopTimeTimer;
 var stopTimeCounter;
+var stopTimePointText;
 var isTimeStopped;
+var perfectStack;
+var stopTimePoint;
 
 function createGameplay() {
     game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -105,6 +108,8 @@ function createGameplay() {
     game.time.events.add(Phaser.Timer.SECOND * 2, wippoLaunch, this);
     isSpacebarDown = false;
     maxGuage = 100;
+    perfectStack=0;
+    stopTimePoint=0;
     //gamemode = "feverTime";
 
     //wippo.events.onOutOfBounds.add(gameEnd(), this);
@@ -167,16 +172,24 @@ function update() {
                 checker.reset(game.world.width*(2.5/7),game.world.height*(3/5));
                 summonCooldown = game.time.now + 1500;
             }
-            if(stopTimeButton.isDown){
+            if(stopTimeButton.isDown&&stopTimePoint>0){
                 isTimeStopped=true;
+                stopTimePoint--;
                 console.log("activate stop time");
                 stopTimeCounter = 3.0;
                 stopTimeTimer = game.time.events.repeat(Phaser.Timer.SECOND * 0.1, 31, countdownTimer, this, "timeStopped");
                 checker.body.velocity.x=0;
+                tempBgSpeed=bgSpeed;
                 bgSpeed=0;
+                stopTimePointText.destroy();
+                stopTimePointText = game.add.sprite(game.world.width*(7/8),game.world.height*(1.5/5)-100 ,'numberText');   
+                stopTimePointText.frame = stopTimePoint;
             }
         }else{
-
+            for(var i=waveCheckOrder;i<=wave.length-1;i++){
+                wave[i].arrow.animations.stop();
+                wave[i].arrow.animations.play('default');
+            }
         }
         
     }else if(gamemode=="feverTime"){
@@ -184,6 +197,7 @@ function update() {
             specialGuage = this.add.sprite(game.world.width*(1/5),game.world.height*(1.5/5) ,'guage');
             specialGuageSeal = this.add.sprite(game.world.width*(1/5)+6,game.world.height*(1.5/5)+6 ,'guageSeal');
             specialGuageIsSpawned = true;
+            checker.alpha=0;
         }
         if(!isSpacebarDown){
             if(spaceButton.isDown){
@@ -192,45 +206,49 @@ function update() {
                 specialGuageSeal.scale.setTo(1,maxGuage/100);
             }
         }
-        if(maxGuage<100){
-            maxGuage+=0.35;
-            specialGuageSeal.scale.setTo(1,maxGuage/100);
-        }
         if(!spaceButton.isDown)
             isSpacebarDown = false;
-        if(maxGuage<=0){
-            score+=1000;
-            specialGuage.destroy();
-            specialGuageSeal.destroy();
-            game.time.events.remove(guageAliveTimer);
-            game.time.events.add(Phaser.Timer.SECOND * 1, function(){
-                cancelCountdownTimer("feverTime");
-                console.log("max");
-                gamemode="ingame";
-                isSpacebarDown = false;
-                specialGuageIsSpawned = false;
-            }, this);
-        }
-        if(stopTimeButton.isDown){
+        if(!isTimeStopped){
+            if(maxGuage<100){
+                maxGuage+=0.35;
+                specialGuageSeal.scale.setTo(1,maxGuage/100);
+            }
             
+            if(maxGuage<=0){
+                score+=1000;
+                specialGuage.destroy();
+                specialGuageSeal.destroy();
+                game.time.events.remove(guageAliveTimer);
+                game.time.events.add(Phaser.Timer.SECOND * 1, function(){
+                    checker.alpha=1;
+                    cancelCountdownTimer("feverTime");
+                    console.log("max");
+                    gamemode="ingame";
+                    isSpacebarDown = false;
+                    specialGuageIsSpawned = false;
+                }, this);
+            }
+            if(stopTimeButton.isDown&&stopTimePoint>0){
+                isTimeStopped=true;
+                stopTimePoint--;
+                console.log("activate stop time");
+                stopTimeCounter = 3.0;
+                stopTimeTimer = game.time.events.repeat(Phaser.Timer.SECOND * 0.1, 31, countdownTimer, this, "timeStopped");
+                checker.body.velocity.x=0;
+                tempBgSpeed=bgSpeed;
+                bgSpeed=0;
+                stopTimePointText.destroy();
+                stopTimePointText = game.add.sprite(game.world.width*(7/8),game.world.height*(1.5/5)-100 ,'numberText');   
+                stopTimePointText.frame = stopTimePoint;
+            }
+        }else{
+            if(maxGuage<0){
+                maxGuage=-1;
+                specialGuageSeal.scale.setTo(1,maxGuage/100);
+            }
         }
 
     }else if(gamemode=="changingState"){
-        
-    }else if(gamemode=="timeStopped"){
-        
-        if (spaceButton.isDown&&game.time.now > spaceKeyDownTimer)
-        {
-            isSpacebarPressed=true;
-            checkAccuracy();
-            clearWave();
-            spaceKeyDownTimer = game.time.now + 1500;
-            if(score>=500&&score<1000){
-                gamemode="feverTime";
-                guageTimeCounter=15.0;
-                guageAliveTimer = game.time.events.repeat(Phaser.Timer.SECOND * 0.1, 151, countdownTimer, this, "feverTime");
-            }
-        }
         
     }else if(gamemode=="gameover"){
         if(bgSpeed>0){
@@ -260,6 +278,8 @@ function update() {
     }
 }*/
 
+var tempBgSpeed;
+
 function countdownTimer(timerName){
     if(timerName=="feverTime"){
         if(guageTimerDigit2!=null){
@@ -274,7 +294,8 @@ function countdownTimer(timerName){
 
         guageTimerDecimal = game.add.sprite(game.world.width*(1/5)+80,game.world.height*(1.5/5)-150 ,'numberText');
         guageTimerDecimal.frame = Math.floor(guageTimeCounter*10%10);
-        guageTimeCounter-=0.1;
+        if(!isTimeStopped)
+            guageTimeCounter-=0.1;
         
         if(guageTimeCounter<=0){
             gameEnd();
@@ -293,7 +314,7 @@ function countdownTimer(timerName){
         if(stopTimeCounter<=0){
             isTimeStopped=false;
             cancelCountdownTimer("timeStopped");
-            bgSpeed=40;
+            
         }
     }
 }
@@ -309,6 +330,7 @@ function cancelCountdownTimer(timerName) {
             stopTimerDigit1.destroy();
             stopTimerDecimal.destroy();
         }
+        bgSpeed=tempBgSpeed;
     }
 }
 function checkAccuracy(){
@@ -317,6 +339,14 @@ function checkAccuracy(){
     {
         statusText = game.add.image(game.world.width*(1/4),game.world.height*(3/4),'perfect');
         console.log("Perfect!");
+        perfectStack++;
+        if(perfectStack>=3&&stopTimePoint<3){
+            stopTimePoint++;
+            perfectStack=0;
+            stopTimePointText.destroy();
+            stopTimePointText = game.add.sprite(game.world.width*(7/8),game.world.height*(1.5/5)-100 ,'numberText');   
+            stopTimePointText.frame = stopTimePoint;
+        }
         game.time.events.add(Phaser.Timer.SECOND * 2, function(){
             statusText.destroy();
         }, this);
@@ -333,6 +363,7 @@ function checkAccuracy(){
         }, this);
         bgSpeed=20;
         score+=90;
+        perfectStack=0;
     }
     else if (completeArrow&&(checkOverlap(checker, coolR)||checkOverlap(checker, coolL)))
     {
@@ -343,6 +374,7 @@ function checkAccuracy(){
         }, this);
         bgSpeed=5;
         score+=60;
+        perfectStack=0;
     }
     else if(completeArrow&&(checkOverlap(checker, badR)||checkOverlap(checker, badL)))
     {
@@ -353,6 +385,7 @@ function checkAccuracy(){
         }, this);
         bgSpeed=5;
         score+=30;
+        perfectStack=0;
     }
     else
     {
@@ -362,6 +395,7 @@ function checkAccuracy(){
             statusText.destroy();
         }, this);
         gameEnd();
+        perfectStack=0;
     }
 
 }
@@ -510,7 +544,8 @@ function summonWave(length){
         game.physics.arcade.enable(sharkSeal);
         sharkSeal.events.onOutOfBounds.add(destroyObj, this);
         sharkSeal.body.velocity.x=400;
-        game.time.events.add(Phaser.Timer.SECOND * 1, function(){
+        var travelTime = game.rnd.integerInRange(9,11);
+        game.time.events.add(Phaser.Timer.SECOND * travelTime/10, function(){
             sharkSeal.body.velocity.x=0;
             game.time.events.add(Phaser.Timer.SECOND * 2.5, function(){
                 sharkSeal.body.velocity.x=600;           
@@ -540,7 +575,7 @@ function summonWave(length){
     for (var i = 0; i < length; i++){
         var rand = game.rnd.integerInRange(0, 3/*difficulty*/);
         console.log("rand = "+rand);
-        wave.push(new arrowCreate(x,y,rand,/*game.rnd.integerInRange(0,2)*/1));
+        wave.push(new arrowCreate(x,y,rand,game.rnd.integerInRange(0,2)));
         console.log(wave[i].name);
         //waveCheck.push(false);
         //wave[i]=new arrowCreate(x,y,rand);
@@ -666,17 +701,18 @@ arrowCreate = function (x,y,rand,type) {
         this.arrow.alpha = 0.8;
         this.arrow.anchor.set(0.5);
         this.arrow.scale.setTo(0.3, 0.3);
-        this.arrow.animations.add('default',[0],1,true);
-        this.arrow.animations.add('out',[3],1,true);
+        // this.arrow.animations.add('default',[0],1,true);
+        // this.arrow.animations.add('out',[3],1,true);
+        this.arrow.animations.add('default',[0,0,3],1,false);
         this.arrow.animations.add('correct',[1],1,true);
         this.arrow.animations.play('default');
-        game.time.events.add(Phaser.Timer.SECOND * 2, function(){
-            console.log("in time");
-            if(this.arrow.frame==0){
-                console.log("shark kill");
-                this.arrow.animations.play('out');
-            }
-        }, this);
+        // game.time.events.add(Phaser.Timer.SECOND * 2, function(){
+        //     console.log("in time");
+        //     if(this.arrow.frame==0){
+        //         console.log("shark kill");
+        //         this.arrow.animations.play('out');
+        //     }
+        // }, this);
     }
     else if(type==3){
         if(rand==0){
@@ -727,22 +763,25 @@ gameBegin = function (){
     wippo.body.velocity.y = 0;
     bgSpeed=20;
     perfect = this.add.sprite(game.world.width*(3/5),game.world.height*(3/5),'laser');
-    perfect.scale.setTo(0.35,0.5);
+    perfect.scale.setTo(0.25,0.5);
     greatR = this.add.sprite(perfect.x+perfect.width,perfect.y,'laser');
-    greatR.scale.setTo(0.35,0.5);
+    greatR.scale.setTo(0.25,0.5);
     greatL = this.add.sprite(perfect.x-perfect.width,perfect.y,'laser');
-    greatL.scale.setTo(0.35,0.5);
+    greatL.scale.setTo(0.25,0.5);
     coolR = this.add.sprite(greatR.x+greatR.width,perfect.y,'laser');
-    coolR.scale.setTo(0.35,0.5);
+    coolR.scale.setTo(0.25,0.5);
     coolL = this.add.sprite(greatL.x-greatL.width,perfect.y,'laser');
-    coolL.scale.setTo(0.35,0.5);
+    coolL.scale.setTo(0.25,0.5);
     badR = this.add.sprite(coolR.x+coolR.width,perfect.y,'laser');
-    badR.scale.setTo(0.35,0.5);
+    badR.scale.setTo(0.25,0.5);
     badL = this.add.sprite(coolL.x-coolL.width,perfect.y,'laser');
-    badL.scale.setTo(0.35,0.5);
+    badL.scale.setTo(0.25,0.5); 
     summonWave(3);
     checker.reset(game.world.width*(2.5/7),game.world.height*(3/5));
     gamemode = "ingame";
+    ///////////////////////////////////////////////
+    stopTimePointText = game.add.sprite(game.world.width*(7/8),game.world.height*(1.5/5)-100 ,'numberText');   
+    stopTimePointText.frame = 0;
 }
 gameEnd = function (){
     //playDeathAnimation
