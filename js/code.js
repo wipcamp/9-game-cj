@@ -5,7 +5,6 @@ game.state.start('main');
 function preload() {
     game.load.image('bullet', 'images/bullet.png');
     game.load.image('ship', 'images/ship.png');
-	game.load.image('bot','images/brids.png');
     game.load.image('enemy_ship','images/enemyship.png');
     game.load.image('background','images/sea.png'); 
     game.load.image('miss','images/miss.png');
@@ -28,6 +27,8 @@ function preload() {
     game.load.spritesheet('sharkSeal','images/sharkSeal.png');
     game.load.spritesheet('spacebarBlock','images/spacebarBlock.png');
     game.load.spritesheet('numberText','images/numberText.png',744/11,78,11);
+    /////metarial/////
+    game.load.spritesheet('airship','images/airship2.png');
 }
 
 
@@ -77,6 +78,18 @@ var stopTimePoint;
 /////////sound variable//////////
 var timeStopSound;
 var BGM1;
+
+/////////material variable///////
+var airship;
+var balloon;
+var flatCloud;
+var airplane;
+var sharkM;
+var sharkAlien;
+var galaxy;
+var jupiter;
+var earth;
+
 
 function createGameplay() {
     game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -139,6 +152,7 @@ function createGameplay() {
 }
 var summonCooldown=0;
 function update() {
+    materialGenerator();
     /*if(!this.game.world.bounds.intersects(wippo)){
         console.log(true);
         wippo.kill();
@@ -234,7 +248,7 @@ function update() {
             }
             
             if(maxGuage<=0){
-                score+=1000;
+                score+=500;
                 specialGuage.destroy();
                 specialGuageSeal.destroy();
                 game.time.events.remove(guageAliveTimer);
@@ -272,7 +286,25 @@ function update() {
         }
 
     }else if(gamemode=="changingState"){
-        
+
+        ///////flatClound when start BG2-sky/////
+        // if(flatCloud==null){
+        //     console.log("spawning flatCloud");           
+        //     flatCloud = game.add.sprite(game.world.width,0 ,'flatCloud');
+        //     flatCloud.scale.setTo(0.5,0.5);
+        //     game.physics.arcade.enable(flatCloud);
+        //     flatCloud.checkWorldBounds = true;
+        //     flatCloud.events.onOutOfBounds.add(function(){
+        //         flatCloud.destroy();
+        //         flatCloud=null;         
+        //     }, this);
+        //     flatCloud.body.velocity.y = bgSpeed;
+        //     flatCloud.sendToBack();
+        // }else{
+        //     if(flatCloud.y>game.world.height-100){
+        //         flatCloud.body.velocity.y = 0.1;
+        //     }
+        // }
     }else if(gamemode=="gameover"){
         if(bgSpeed>0){
             bgSpeed-=0.35;
@@ -361,11 +393,63 @@ function cancelCountdownTimer(timerName) {
         // timeStopSound.stop();
     }
 }
+//////material function
+function materialGenerator(){
+    if(score<=500){
+
+    }else if(score>1000&&score<=1500){
+        if(airship==null){
+            console.log("spawning airship");           
+            airship = game.add.sprite(game.world.width,0 ,'airship');
+            airship.scale.setTo(0.5,0.5);
+            game.physics.arcade.enable(airship);
+            airship.checkWorldBounds = true;
+            airship.events.onOutOfBounds.add(function(){
+                airship.destroy();
+                airship=null;         
+            }, this);
+            airship.body.velocity.y = bgSpeed;
+            airship.body.velocity.x = -Math.random() * 100;
+            airship.sendToBack();
+            
+        }else{
+            airship.body.velocity.y = bgSpeed*2;
+        }
+        // if(balloon==null){
+        //     console.log("spawning balloon");           
+        //     balloon = game.add.sprite(0,0 ,'balloon');
+        //     balloon.scale.setTo(0.5,0.5);
+        //     game.physics.arcade.enable(balloon);
+        //     balloon.checkWorldBounds = true;
+        //     balloon.events.onOutOfBounds.add(function(){
+        //         balloon.destroy();
+        //         balloon=null;         
+        //     }, this);
+        //     balloon.body.velocity.y = bgSpeed;
+        //     balloon.body.velocity.x = Math.random() * 100;
+        //     balloon.sendToBack();
+        // }else{
+        //     balloon.body.velocity.y = bgSpeed*2;
+        // }
+        
+    // var airplane;
+    // var sharkM;
+    // var sharkAlien;
+    // var galaxy;
+    // var jupiter;
+    // var earth;
+        bg.sendToBack();
+    }else{
+
+    }
+}
+
 function checkAccuracy(){
     var completeArrow = (waveCheckOrder==wave.length);
     if (completeArrow&&checkOverlap(checker, perfect))
     {
         statusText = game.add.image(game.world.width*(1/4),game.world.height*(3/4),'perfect');
+        
         console.log("Perfect!");
         perfectStack++;
         if(perfectStack>=3&&stopTimePoint<3){
@@ -431,6 +515,7 @@ function checkAccuracy(){
         perfectStack=0;
         // wippo.animations.play("death");
     }
+    statusText.scale.setTo(0.2,0.2);
 
 }
 
