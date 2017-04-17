@@ -15,6 +15,10 @@ function preload() {
     game.load.image('perfect','images/perfect.png');
     game.load.image('guage','images/guage.png');
     game.load.image('guageSeal','images/guageBlocker.png');
+    game.load.image('buttonLineHead','images/buttonLineHead.png');
+    game.load.image('buttonLineTail','images/buttonLineTail.png');
+    game.load.image('buttonLineBody','images/buttonLineBody.png');
+
 
     game.load.spritesheet('up','images/up.png',320/2,155,4);
     game.load.spritesheet('down','images/down.png',320/2,155,4);
@@ -33,6 +37,7 @@ var cursors;
 var spaceButton;
 var stopTimeButton;
 var wave=[];
+var buttonLine=[];
 var waveCheckOrder=0;
 var arrow=["up","down","right","left"];
 var difficulty=1;
@@ -69,6 +74,9 @@ var stopTimePointText;
 var isTimeStopped;
 var perfectStack;
 var stopTimePoint;
+/////////sound variable//////////
+var timeStopSound;
+var BGM1;
 
 function createGameplay() {
     game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -92,6 +100,11 @@ function createGameplay() {
     wippo = this.add.sprite(game.world.width/2,game.world.height*(4/5)+15 ,'ship');
     game.physics.arcade.enable(wippo);
     wippo.anchor.set(0.5);
+    //////////animation wippo
+    // wippo.animations.add('perfectRush',[0],1,true);
+    // wippo.animations.add('rush',[0],1,true);
+    // wippo.animations.add('death',[0],1,true);
+
     floor = this.add.sprite(0,game.world.height*(4/5)+40,'laser');
     game.physics.arcade.enable(floor);
     floor.scale.setTo(20,0.6);
@@ -143,6 +156,7 @@ function update() {
             if(spacebarBlock.alive){
                 isSpacebarPressed=true;
                 if(spaceButton.isDown){
+                    // wippo.animations.play("death");
                     gameEnd();
                 }
             }else if (spaceButton.isDown&&game.time.now > spaceKeyDownTimer)
@@ -164,6 +178,7 @@ function update() {
                 if(game.time.now > summonCooldown){
                     summonWave(6);
                     if(!isSpacebarPressed){
+                        // wippo.animations.play("death");
                         gameEnd();
                     }
                     
@@ -184,6 +199,10 @@ function update() {
                 stopTimePointText.destroy();
                 stopTimePointText = game.add.sprite(game.world.width*(7/8),game.world.height*(1.5/5)-100 ,'numberText');   
                 stopTimePointText.frame = stopTimePoint;
+                // wippo.animations.paused = true;
+                ////sound
+                // BGM1.pause();
+                // timeStopSound.play();
             }
         }else{
             for(var i=waveCheckOrder;i<=wave.length-1;i++){
@@ -240,6 +259,10 @@ function update() {
                 stopTimePointText.destroy();
                 stopTimePointText = game.add.sprite(game.world.width*(7/8),game.world.height*(1.5/5)-100 ,'numberText');   
                 stopTimePointText.frame = stopTimePoint;
+                // wippo.animations.paused = true;
+                ////sound
+                // BGM1.pause();
+                // timeStopSound.play();
             }
         }else{
             if(maxGuage<0){
@@ -298,6 +321,7 @@ function countdownTimer(timerName){
             guageTimeCounter-=0.1;
         
         if(guageTimeCounter<=0){
+            // wippo.animations.play("death");
             gameEnd();
         }
     }else if(timerName=="timeStopped"){
@@ -331,6 +355,10 @@ function cancelCountdownTimer(timerName) {
             stopTimerDecimal.destroy();
         }
         bgSpeed=tempBgSpeed;
+        // wippo.animations.paused = false;
+        ////sound
+        // BGM1.resume();
+        // timeStopSound.stop();
     }
 }
 function checkAccuracy(){
@@ -353,6 +381,8 @@ function checkAccuracy(){
         bgSpeed=40;
         difficulty++;
         score+=180;
+        //////////animation wippo
+        // wippo.animations.play("perfectRush");
     }
     else if (completeArrow&&(checkOverlap(checker, greatR)||checkOverlap(checker, greatL)))
     {
@@ -364,6 +394,7 @@ function checkAccuracy(){
         bgSpeed=20;
         score+=90;
         perfectStack=0;
+        // wippo.animations.play("rush");
     }
     else if (completeArrow&&(checkOverlap(checker, coolR)||checkOverlap(checker, coolL)))
     {
@@ -375,6 +406,7 @@ function checkAccuracy(){
         bgSpeed=5;
         score+=60;
         perfectStack=0;
+        // wippo.animations.play("rush");
     }
     else if(completeArrow&&(checkOverlap(checker, badR)||checkOverlap(checker, badL)))
     {
@@ -386,6 +418,7 @@ function checkAccuracy(){
         bgSpeed=5;
         score+=30;
         perfectStack=0;
+        // wippo.animations.play("rush");
     }
     else
     {
@@ -396,6 +429,7 @@ function checkAccuracy(){
         }, this);
         gameEnd();
         perfectStack=0;
+        // wippo.animations.play("death");
     }
 
 }
@@ -528,6 +562,7 @@ function clearWave(){
       }else if(wave[wave.length-1].name=="left"){
         wave[wave.length-1].left.kill();
       }*/
+      buttonLine[i].destroy();
       wave[wave.length-1].arrow.destroy();
       wave.pop();
       waveCheckOrder=0;
@@ -536,7 +571,7 @@ function clearWave(){
     //wave = [];
 }
 function summonWave(length){
-    var l = wave.length;
+    // var l = wave.length;
     var randObstacle = game.rnd.integerInRange(1,6);
     if(randObstacle==1){
         sharkSeal = game.add.sprite(0,game.world.height*(3/5),'sharkSeal');
@@ -573,6 +608,20 @@ function summonWave(length){
     }
     clearWave();
     for (var i = 0; i < length; i++){
+        ////create button line
+        if(i>0){
+            if(i<length-1){
+                buttonLine[i] = game.add.sprite(x,y,'buttonLineBody');
+            }else{
+                buttonLine[i] = game.add.sprite(x,y,'buttonLineTail');
+            }
+        }else{
+            buttonLine[i] = game.add.sprite(x,y,'buttonLineHead');
+        }
+        buttonLine[i].anchor.set(0.5);
+        buttonLine[i].scale.setTo(0.4, 0.6);
+        //////
+
         var rand = game.rnd.integerInRange(0, 3/*difficulty*/);
         console.log("rand = "+rand);
         wave.push(new arrowCreate(x,y,rand,game.rnd.integerInRange(0,2)));
