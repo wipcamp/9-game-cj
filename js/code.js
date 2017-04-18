@@ -18,7 +18,7 @@ function preload() {
     game.load.image('buttonLineTail','images/buttonLineTail.png');
     game.load.image('buttonLineBody','images/buttonLineBody.png');
 
-
+	game.load.spritesheet('mute','images/mute.png',450,447);
     game.load.spritesheet('up','images/up.png',320/2,155,4);
     game.load.spritesheet('down','images/down.png',320/2,155,4);
     game.load.spritesheet('right','images/right.png',320/2,154,4);
@@ -31,7 +31,7 @@ function preload() {
     game.load.spritesheet('airship','images/airship2.png');
 }
 
-
+var isSound = true;
 var checker;
 var checkerSpeed=70;
 var cursors;
@@ -148,7 +148,13 @@ function createGameplay() {
         fill: '#ed3465'
     })*/
 
-
+	/////mute
+	mute = game.add.button(750,20,'mute',muteSounds,this);
+    mute.scale.setTo(0.08,0.08);
+    if(isSound)
+    	mute.frame = 0;
+    else
+    	mute.frame = 1;
 }
 var summonCooldown=0;
 function update() {
@@ -332,7 +338,18 @@ function update() {
             break;
     }
 }*/
-
+////mute
+function muteSounds() {
+    isSound = !isSound;
+    if (!isSound) {
+        game.sound.mute = true;
+        mute.frame = 1;
+    } else {
+        mute.frame = 0;
+        game.sound.mute = false;
+    }
+}
+////////
 var tempBgSpeed;
 
 function countdownTimer(timerName){
