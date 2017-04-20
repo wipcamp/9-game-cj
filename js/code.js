@@ -4,9 +4,9 @@ game.state.add('main', main);
 game.state.start('main');
 function preload() {
     game.load.image('bullet', 'images/bullet.png');
-    game.load.image('ship', 'images/ship.png');
+    game.load.image('ship', 'images/wip.png');
     game.load.image('enemy_ship','images/enemyship.png');
-    game.load.image('background','images/sea.png'); 
+    game.load.image('background','images/BG-galaxy.png');
     game.load.image('miss','images/miss.png');
     game.load.image('bad','images/bad.png');
     game.load.image('cool','images/cool.png');
@@ -19,13 +19,13 @@ function preload() {
     game.load.image('buttonLineBody','images/buttonLineBody.png');
 
 	game.load.spritesheet('mute','images/mute.png',450,447);
-    game.load.spritesheet('up','images/up.png',320/2,155,4);
-    game.load.spritesheet('down','images/down.png',320/2,155,4);
-    game.load.spritesheet('right','images/right.png',320/2,154,4);
-    game.load.spritesheet('left','images/left.png',315/2,154,4);
+    game.load.spritesheet('up','images/up2.png',45,45,8);
+    game.load.spritesheet('down','images/down2.png',45,45,8);
+    game.load.spritesheet('right','images/right2.png',45,45,8);
+    game.load.spritesheet('left','images/left2.png',45,45,8);
     game.load.spritesheet('laser','images/biglaser.png');
-    game.load.spritesheet('sharkSeal','images/sharkSeal.png');
-    game.load.spritesheet('spacebarBlock','images/spacebarBlock.png');
+    game.load.spritesheet('sharkSeal','images/sharkalien.png');
+    game.load.spritesheet('spacebarBlock','images/dontpush.png');
     game.load.spritesheet('numberText','images/numberText.png',744/11,78,11);
     /////metarial/////
     game.load.spritesheet('airship','images/airship2.png');
@@ -127,7 +127,7 @@ function createGameplay() {
     specialGuageIsSpawned=false;
     isSpacebarPressed=false;
     spacebarBlock = this.add.sprite(game.world.width*(3/5),game.world.height*(3/5)-20,'spacebarBlock');
-    spacebarBlock.scale.setTo(0.2,0.2);
+    spacebarBlock.scale.setTo(0.7,0.7);
     spacebarBlock.kill();
     spacebarBlockIsSpawned=false;
     ///////////////////////////////////////////////////////////////
@@ -166,11 +166,11 @@ function update() {
     }*/
     bg.tilePosition.y += bgSpeed;
     if(gamemode=="prepare"){
-        
+
     }else if(gamemode=="ingame"){
         //this.scoreText.setText('Score : ' + this.score);
         collectArrow();
-        
+
         if(!isTimeStopped){
             checker.body.velocity.x=checkerSpeed;
             if(spacebarBlock.alive){
@@ -201,7 +201,7 @@ function update() {
                         // wippo.animations.play("death");
                         gameEnd();
                     }
-                    
+
                     isSpacebarPressed=false;
                 }
                 checker.reset(game.world.width*(2.5/7),game.world.height*(3/5));
@@ -217,7 +217,7 @@ function update() {
                 tempBgSpeed=bgSpeed;
                 bgSpeed=0;
                 stopTimePointText.destroy();
-                stopTimePointText = game.add.sprite(game.world.width*(7/8),game.world.height*(1.5/5)-100 ,'numberText');   
+                stopTimePointText = game.add.sprite(game.world.width*(7/8),game.world.height*(1.5/5)-100 ,'numberText');
                 stopTimePointText.frame = stopTimePoint;
                 // wippo.animations.paused = true;
                 ////sound
@@ -230,7 +230,7 @@ function update() {
                 wave[i].arrow.animations.play('default');
             }
         }
-        
+
     }else if(gamemode=="feverTime"){
         if(!specialGuageIsSpawned){
             specialGuage = this.add.sprite(game.world.width*(1/5),game.world.height*(1.5/5) ,'guage');
@@ -252,7 +252,7 @@ function update() {
                 maxGuage+=0.35;
                 specialGuageSeal.scale.setTo(1,maxGuage/100);
             }
-            
+
             if(maxGuage<=0){
                 score+=500;
                 specialGuage.destroy();
@@ -277,7 +277,7 @@ function update() {
                 tempBgSpeed=bgSpeed;
                 bgSpeed=0;
                 stopTimePointText.destroy();
-                stopTimePointText = game.add.sprite(game.world.width*(7/8),game.world.height*(1.5/5)-100 ,'numberText');   
+                stopTimePointText = game.add.sprite(game.world.width*(7/8),game.world.height*(1.5/5)-100 ,'numberText');
                 stopTimePointText.frame = stopTimePoint;
                 // wippo.animations.paused = true;
                 ////sound
@@ -295,14 +295,14 @@ function update() {
 
         ///////flatClound when start BG2-sky/////
         // if(flatCloud==null){
-        //     console.log("spawning flatCloud");           
+        //     console.log("spawning flatCloud");
         //     flatCloud = game.add.sprite(game.world.width,0 ,'flatCloud');
         //     flatCloud.scale.setTo(0.5,0.5);
         //     game.physics.arcade.enable(flatCloud);
         //     flatCloud.checkWorldBounds = true;
         //     flatCloud.events.onOutOfBounds.add(function(){
         //         flatCloud.destroy();
-        //         flatCloud=null;         
+        //         flatCloud=null;
         //     }, this);
         //     flatCloud.body.velocity.y = bgSpeed;
         //     flatCloud.sendToBack();
@@ -316,7 +316,7 @@ function update() {
             bgSpeed-=0.35;
         }
     }
-        
+
     //game.physics.arcade.collide(wippo,floor);
 
 }
@@ -332,7 +332,7 @@ function update() {
             badR.alpha=0.5;
             badL.alpha=0.5;
             break;
-    
+
         case "ingame":
 
             break;
@@ -355,9 +355,9 @@ var tempBgSpeed;
 function countdownTimer(timerName){
     if(timerName=="feverTime"){
         if(guageTimerDigit2!=null){
-            guageTimerDigit2.destroy(); 
-            guageTimerDigit1.destroy(); 
-            guageTimerDecimal.destroy(); 
+            guageTimerDigit2.destroy();
+            guageTimerDigit1.destroy();
+            guageTimerDecimal.destroy();
         }
         guageTimerDigit2 = game.add.sprite(game.world.width*(1/5)-80,game.world.height*(1.5/5)-150 ,'numberText');
         guageTimerDigit2.frame = Math.floor(guageTimeCounter/10);
@@ -368,7 +368,7 @@ function countdownTimer(timerName){
         guageTimerDecimal.frame = Math.floor(guageTimeCounter*10%10);
         if(!isTimeStopped)
             guageTimeCounter-=0.1;
-        
+
         if(guageTimeCounter<=0){
             // wippo.animations.play("death");
             gameEnd();
@@ -387,16 +387,16 @@ function countdownTimer(timerName){
         if(stopTimeCounter<=0){
             isTimeStopped=false;
             cancelCountdownTimer("timeStopped");
-            
+
         }
     }
 }
 function cancelCountdownTimer(timerName) {
     if(timerName=="feverTime"){
         if(guageTimerDigit2!=null){
-            guageTimerDigit2.destroy(); 
-            guageTimerDigit1.destroy(); 
-            guageTimerDecimal.destroy(); 
+            guageTimerDigit2.destroy();
+            guageTimerDigit1.destroy();
+            guageTimerDecimal.destroy();
         }
     }else if(timerName=="timeStopped"){
         if(stopTimerDigit1!=null){
@@ -416,31 +416,31 @@ function materialGenerator(){
 
     }else if(score>1000&&score<=1500){
         if(airship==null){
-            console.log("spawning airship");           
+            console.log("spawning airship");
             airship = game.add.sprite(game.world.width,0 ,'airship');
             airship.scale.setTo(0.5,0.5);
             game.physics.arcade.enable(airship);
             airship.checkWorldBounds = true;
             airship.events.onOutOfBounds.add(function(){
                 airship.destroy();
-                airship=null;         
+                airship=null;
             }, this);
             airship.body.velocity.y = bgSpeed;
             airship.body.velocity.x = -Math.random() * 100;
             airship.sendToBack();
-            
+
         }else{
             airship.body.velocity.y = bgSpeed*2;
         }
         // if(balloon==null){
-        //     console.log("spawning balloon");           
+        //     console.log("spawning balloon");
         //     balloon = game.add.sprite(0,0 ,'balloon');
         //     balloon.scale.setTo(0.5,0.5);
         //     game.physics.arcade.enable(balloon);
         //     balloon.checkWorldBounds = true;
         //     balloon.events.onOutOfBounds.add(function(){
         //         balloon.destroy();
-        //         balloon=null;         
+        //         balloon=null;
         //     }, this);
         //     balloon.body.velocity.y = bgSpeed;
         //     balloon.body.velocity.x = Math.random() * 100;
@@ -448,7 +448,7 @@ function materialGenerator(){
         // }else{
         //     balloon.body.velocity.y = bgSpeed*2;
         // }
-        
+
     // var airplane;
     // var sharkM;
     // var sharkAlien;
@@ -466,14 +466,14 @@ function checkAccuracy(){
     if (completeArrow&&checkOverlap(checker, perfect))
     {
         statusText = game.add.image(game.world.width*(1/4),game.world.height*(3/4),'perfect');
-        
+
         console.log("Perfect!");
         perfectStack++;
         if(perfectStack>=3&&stopTimePoint<3){
             stopTimePoint++;
             perfectStack=0;
             stopTimePointText.destroy();
-            stopTimePointText = game.add.sprite(game.world.width*(7/8),game.world.height*(1.5/5)-100 ,'numberText');   
+            stopTimePointText = game.add.sprite(game.world.width*(7/8),game.world.height*(1.5/5)-100 ,'numberText');
             stopTimePointText.frame = stopTimePoint;
         }
         game.time.events.add(Phaser.Timer.SECOND * 2, function(){
@@ -550,7 +550,7 @@ function collectArrow(){
                     if(waveCheckOrder+3<wave.length-1){
                         var pos = game.rnd.integerInRange(waveCheckOrder+3,wave.length-1);
                         posx = wave[pos].x;
-                        posy = wave[pos].y; 
+                        posy = wave[pos].y;
                         console.log(posx+" "+posy);
                         wave[pos].arrow.kill();
                         wave[pos] = new arrowCreate(posx,posy,game.rnd.integerInRange(0, 3/*difficulty*/),3);
@@ -572,7 +572,7 @@ function collectArrow(){
                     if(waveCheckOrder+3<wave.length-1){
                         var pos = game.rnd.integerInRange(waveCheckOrder+3,wave.length-1);
                         posx = wave[pos].x;
-                        posy = wave[pos].y; 
+                        posy = wave[pos].y;
                         console.log(posx+" "+posy);
                         wave[pos].arrow.kill();
                         wave[pos] = new arrowCreate(posx,posy,game.rnd.integerInRange(0, 3/*difficulty*/),3);
@@ -595,7 +595,7 @@ function collectArrow(){
                     if(waveCheckOrder+3<wave.length-1){
                         var pos = game.rnd.integerInRange(waveCheckOrder+3,wave.length-1);
                         posx = wave[pos].x;
-                        posy = wave[pos].y; 
+                        posy = wave[pos].y;
                         console.log(posx+" "+posy);
                         wave[pos].arrow.kill();
                         wave[pos] = new arrowCreate(posx,posy,game.rnd.integerInRange(0, 3/*difficulty*/),3);
@@ -617,7 +617,7 @@ function collectArrow(){
                     if(waveCheckOrder+3<wave.length-1){
                         var pos = game.rnd.integerInRange(waveCheckOrder+3,wave.length-1);
                         posx = wave[pos].x;
-                        posy = wave[pos].y; 
+                        posy = wave[pos].y;
                         console.log(posx+" "+posy);
                         wave[pos].arrow.kill();
                         wave[pos] = new arrowCreate(posx,posy,game.rnd.integerInRange(0, 3/*difficulty*/),3);
@@ -677,7 +677,7 @@ function summonWave(length){
     var randObstacle = game.rnd.integerInRange(1,6);
     if(randObstacle==1){
         sharkSeal = game.add.sprite(0,game.world.height*(3/5),'sharkSeal');
-        sharkSeal.scale.setTo(0.5,0.5);
+        sharkSeal.scale.setTo(1,1);
         game.physics.arcade.enable(sharkSeal);
         sharkSeal.events.onOutOfBounds.add(destroyObj, this);
         sharkSeal.body.velocity.x=400;
@@ -685,15 +685,15 @@ function summonWave(length){
         game.time.events.add(Phaser.Timer.SECOND * travelTime/10, function(){
             sharkSeal.body.velocity.x=0;
             game.time.events.add(Phaser.Timer.SECOND * 2.5, function(){
-                sharkSeal.body.velocity.x=600;           
+                sharkSeal.body.velocity.x=600;
             }, this);
-        
+
       }, this);
     }else if(randObstacle==2){
         spacebarBlock.revive();
         spacebarBlock.bringToTop();
     }
-    
+
     //var startPositon;
     /*if(length==3){
         x=game.world.width/2-50;
@@ -745,7 +745,7 @@ arrowCreate = function (x,y,rand,type) {
         if(rand==0){
             this.arrow = game.add.sprite(x, y, 'up');
             this.arrow.anchor.set(0.5);
-            this.arrow.scale.setTo(0.3, 0.3);
+            this.arrow.scale.setTo(1, 1);
             this.name = "up";
             if(randomType<=7){
                 this.arrow.animations.add('default',[0],1,true);
@@ -760,7 +760,7 @@ arrowCreate = function (x,y,rand,type) {
         }else if(rand==1){
             this.arrow = game.add.sprite(x, y, 'down');
             this.arrow.anchor.set(0.5);
-            this.arrow.scale.setTo(0.3, 0.3);
+            this.arrow.scale.setTo(1, 1);
             this.name = "down";
             if(randomType<=7){
                 this.arrow.animations.add('default',[0],1,true);
@@ -775,7 +775,7 @@ arrowCreate = function (x,y,rand,type) {
         }else if(rand==2){
             this.arrow = game.add.sprite(x, y, 'right');
             this.arrow.anchor.set(0.5);
-            this.arrow.scale.setTo(0.3, 0.3);
+            this.arrow.scale.setTo(1, 1);
             this.name = "right";
             if(randomType<=7){
                 this.arrow.animations.add('default',[0],1,true);
@@ -790,7 +790,7 @@ arrowCreate = function (x,y,rand,type) {
         }else{
             this.arrow = game.add.sprite(x, y, 'left');
             this.arrow.anchor.set(0.5);
-            this.arrow.scale.setTo(0.3, 0.3);
+            this.arrow.scale.setTo(1, 1);
             this.name = "left";
             if(randomType<=7){
                 this.arrow.animations.add('default',[0],1,true);
@@ -824,7 +824,7 @@ arrowCreate = function (x,y,rand,type) {
         }
         this.arrow.alpha = 0.3;
         this.arrow.anchor.set(0.5);
-        this.arrow.scale.setTo(0.3, 0.3);
+        this.arrow.scale.setTo(1, 1);
         this.arrow.animations.add('default',[0],1,true);
         this.arrow.animations.add('out',[3],1,true);
         this.arrow.animations.add('correct',[1],1,true);
@@ -851,7 +851,7 @@ arrowCreate = function (x,y,rand,type) {
         }
         this.arrow.alpha = 0.8;
         this.arrow.anchor.set(0.5);
-        this.arrow.scale.setTo(0.3, 0.3);
+        this.arrow.scale.setTo(1, 1);
         // this.arrow.animations.add('default',[0],1,true);
         // this.arrow.animations.add('out',[3],1,true);
         this.arrow.animations.add('default',[0,0,3],1,false);
@@ -885,7 +885,7 @@ arrowCreate = function (x,y,rand,type) {
         }
         this.arrow.alpha = 0.3;
         this.arrow.anchor.set(0.5);
-        this.arrow.scale.setTo(0.3, 0.3);
+        this.arrow.scale.setTo(1, 1);
         this.arrow.animations.add('default',[0],1,true);
         this.arrow.animations.add('out',[3],1,true);
         this.arrow.animations.add('correct',[1],1,true);
@@ -926,12 +926,12 @@ gameBegin = function (){
     badR = this.add.sprite(coolR.x+coolR.width,perfect.y,'laser');
     badR.scale.setTo(0.25,0.5);
     badL = this.add.sprite(coolL.x-coolL.width,perfect.y,'laser');
-    badL.scale.setTo(0.25,0.5); 
+    badL.scale.setTo(0.25,0.5);
     summonWave(3);
     checker.reset(game.world.width*(2.5/7),game.world.height*(3/5));
     gamemode = "ingame";
     ///////////////////////////////////////////////
-    stopTimePointText = game.add.sprite(game.world.width*(7/8),game.world.height*(1.5/5)-100 ,'numberText');   
+    stopTimePointText = game.add.sprite(game.world.width*(7/8),game.world.height*(1.5/5)-100 ,'numberText');
     stopTimePointText.frame = 0;
 }
 gameEnd = function (){
