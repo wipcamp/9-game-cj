@@ -31,6 +31,14 @@ function preload() {
     game.load.spritesheet('numberText','images/numberText.png',744/11,78,11);
     /////metarial/////
     game.load.spritesheet('airship','images/airship2.png');
+    game.load.spritesheet('balloon','images/balloon.png');
+    game.load.spritesheet('airplane','images/airplane2.png');
+    game.load.spritesheet('earth','images/earth.png');
+    game.load.spritesheet('sattellite','images/sattellite.png');
+    game.load.spritesheet('saturn','images/saturn.png');
+    game.load.spritesheet('sharkAlien','images/sharkalien.png');
+    game.load.spritesheet('shark','images/shark.png');
+
 }
 
 var isSound = true;
@@ -92,8 +100,9 @@ var airplane;
 var sharkM;
 var sharkAlien;
 var galaxy;
-var jupiter;
+var saturn;
 var earth;
+var sattellite;
 
 
 function createGameplay() {
@@ -451,10 +460,13 @@ function cancelCountdownTimer(timerName) {
     }
 }
 //////material function
+var generatorCooldown=0;
 function materialGenerator(){
-    if(score<=500){
+    if(stateHandle==1){
+        //BG1
 
-    }else if(score>1000&&score<=1500){
+    }else if(stateHandle==2){
+        //BG2
         if(airship==null){
             console.log("spawning airship");
             airship = game.add.sprite(game.world.width,0 ,'airship');
@@ -465,40 +477,119 @@ function materialGenerator(){
                 airship.destroy();
                 airship=null;
             }, this);
-            airship.body.velocity.y = bgSpeed;
-            airship.body.velocity.x = -Math.random() * 100;
+            airship.body.velocity.y = bgSpeed*3;
+            airship.body.velocity.x = -game.rnd.integerInRange(60,100);
             airship.sendToBack();
-
+            generatorCooldown+=1*60;
         }else{
-            airship.body.velocity.y = bgSpeed*2;
+            airship.body.velocity.y = bgSpeed*3;
         }
-        // if(balloon==null){
-        //     console.log("spawning balloon");
-        //     balloon = game.add.sprite(0,0 ,'balloon');
-        //     balloon.scale.setTo(0.5,0.5);
-        //     game.physics.arcade.enable(balloon);
-        //     balloon.checkWorldBounds = true;
-        //     balloon.events.onOutOfBounds.add(function(){
-        //         balloon.destroy();
-        //         balloon=null;
-        //     }, this);
-        //     balloon.body.velocity.y = bgSpeed;
-        //     balloon.body.velocity.x = Math.random() * 100;
-        //     balloon.sendToBack();
-        // }else{
-        //     balloon.body.velocity.y = bgSpeed*2;
-        // }
 
-    // var airplane;
+        if(balloon==null){
+            console.log("spawning balloon");
+            balloon = game.add.sprite(0,0 ,'balloon');
+            balloon.scale.setTo(0.2,0.2);
+            game.physics.arcade.enable(balloon);
+            balloon.checkWorldBounds = true;
+            balloon.events.onOutOfBounds.add(function(){
+                balloon.destroy();
+                balloon=null;
+            }, this);
+            balloon.body.velocity.y = bgSpeed*4;
+            balloon.body.velocity.x = game.rnd.integerInRange(40,70);
+            balloon.sendToBack();
+            generatorCooldown+=1*60;
+        }else{
+            balloon.body.velocity.y = bgSpeed*4;
+        }
+
+        if(airplane==null){
+            console.log("spawning airplane");
+            airplane = game.add.sprite(game.world.width,0 ,'airplane');
+            airplane.scale.setTo(0.5,0.5);
+            game.physics.arcade.enable(airplane);
+            airplane.checkWorldBounds = true;
+            airplane.events.onOutOfBounds.add(function(){
+                airplane.destroy();
+                airplane=null;
+            }, this);
+            airplane.body.velocity.y = bgSpeed*5;
+            airplane.body.velocity.x = -game.rnd.integerInRange(200,250);
+            airplane.sendToBack();
+            generatorCooldown+=1*60;
+        }else{
+            airplane.body.velocity.y = bgSpeed*5;
+        }
+
+        
+
+
+
     // var sharkM;
     // var sharkAlien;
-    // var galaxy;
-    // var jupiter;
     // var earth;
-        bg.sendToBack();
+        
     }else{
+    
+        if(sharkAlien==null){
+            console.log("spawning sharkAlien");
+            sharkAlien = game.add.sprite(0,0 ,'sharkAlien');
+            sharkAlien.scale.setTo(0.7,0.7);
+            game.physics.arcade.enable(sharkAlien);
+            sharkAlien.checkWorldBounds = true;
+            sharkAlien.events.onOutOfBounds.add(function(){
+                sharkAlien.destroy();
+                sharkAlien=null;
+            }, this);
+            sharkAlien.body.velocity.y = bgSpeed*5;
+            sharkAlien.body.velocity.x = game.rnd.integerInRange(40,70);
+            sharkAlien.sendToBack();
+            generatorCooldown+=1*60;
+        }else{
+            sharkAlien.body.velocity.y = bgSpeed*5;
+        }
+
+        if(sattellite==null){
+            console.log("spawning sattellite");
+            sattellite = game.add.sprite(300,0 ,'sattellite');
+            sattellite.scale.setTo(0.1,0.1);
+            game.physics.arcade.enable(sattellite);
+            sattellite.checkWorldBounds = true;
+            sattellite.events.onOutOfBounds.add(function(){
+                sattellite.destroy();
+                sattellite=null;
+            }, this);
+            sattellite.body.velocity.y = bgSpeed*8;
+            sattellite.body.velocity.x = game.rnd.integerInRange(-300,300);
+            sattellite.sendToBack();
+            generatorCooldown+=1*60;
+        }else{
+            sattellite.body.velocity.y = bgSpeed*8;
+        }
+
+        if(saturn==null){
+            console.log("spawning saturn");
+            saturn = game.add.sprite(300,0 ,'saturn');
+            saturn.scale.setTo(0.5,0.5);
+            game.physics.arcade.enable(saturn);
+            saturn.checkWorldBounds = true;
+            saturn.events.onOutOfBounds.add(function(){
+                saturn.destroy();
+                saturn=null;
+            }, this);
+            saturn.body.velocity.y = bgSpeed/2;
+            saturn.body.velocity.x = game.rnd.integerInRange(3,7);
+            saturn.sendToBack();
+            generatorCooldown+=1*60;
+        }else{
+            saturn.body.velocity.y = bgSpeed/2;
+        }
 
     }
+    if(bg!=null)
+        bg.sendToBack();
+    if(generatorCooldown>0)
+        generatorCooldown--;
 }
 
 function checkAccuracy(){
@@ -716,7 +807,7 @@ function summonWave(length){
     // var l = wave.length;
     var randObstacle = game.rnd.integerInRange(1,6);
     if(randObstacle==1){
-        sharkSeal = game.add.sprite(0,game.world.height*(3/5),'sharkSeal');
+        sharkSeal = game.add.sprite(0,game.world.height*(3/5)-50,'sharkSeal');
         sharkSeal.scale.setTo(1,1);
         game.physics.arcade.enable(sharkSeal);
         sharkSeal.events.onOutOfBounds.add(destroyObj, this);
@@ -885,16 +976,16 @@ arrowCreate = function (x,y,rand,type) {
           this.name = "right";
           //this.right.name = index.toString();
         }else{
-          this.arrow = game.add.sprite(x, y, 'left');
+          this.arrow = game.add.sprite(x, y, 'left') ;
           this.name = "left";
           //this.left.name = index.toString();
         }
-        this.arrow.alpha = 0.8;
+        // this.arrow.alpha = 0.8;
         this.arrow.anchor.set(0.5);
         this.arrow.scale.setTo(1, 1);
         // this.arrow.animations.add('default',[0],1,true);
         // this.arrow.animations.add('out',[3],1,true);
-        this.arrow.animations.add('default',[0,0,3],1,false);
+        this.arrow.animations.add('default',[4,4,4,3],2,false);
         this.arrow.animations.add('correct',[1],1,true);
         this.arrow.animations.play('default');
         // game.time.events.add(Phaser.Timer.SECOND * 2, function(){
