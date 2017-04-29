@@ -6,8 +6,10 @@ function preload() {
     game.load.image('bullet', 'images/bullet.png');
     game.load.image('ship', 'images/wip.png');
     game.load.image('enemy_ship','images/enemyship.png');
-    game.load.image('background','images/BG-galaxy.png');
-    game.load.image('miss','images/miss.png');
+    game.load.image('background3','images/BG-galaxy.png');
+    game.load.image('background1','images/firstState.png');
+	game.load.image('background2','images/secondState.png');
+	game.load.image('miss','images/miss.png');
     game.load.image('bad','images/bad.png');
     game.load.image('cool','images/cool.png');
     game.load.image('great','images/great.png');
@@ -75,6 +77,9 @@ var stopTimePointText;
 var isTimeStopped;
 var perfectStack;
 var stopTimePoint;
+var stateHandle;
+var bgChange;
+var isfirstChange;
 /////////sound variable//////////
 var timeStopSound;
 var BGM1;
@@ -92,10 +97,12 @@ var earth;
 
 
 function createGameplay() {
-    game.physics.startSystem(Phaser.Physics.ARCADE);
+    stateHandle = 1;
+	isfirstChange = true;
+	game.physics.startSystem(Phaser.Physics.ARCADE);
     this.myWorld = game.add.group();
     this.myWorld.enableBody = true;
-    bg = this.add.tileSprite(0, 0, this.game.world.width, this.game.world.height, 'background');
+    bg = this.add.tileSprite(0, 0, this.game.world.width, this.game.world.height, 'background1');
     bg.autoScroll(this.levelSpeed, 0);
     bg.fixedToCamera = true;
     spaceButton = this.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
@@ -158,6 +165,7 @@ function createGameplay() {
 }
 var summonCooldown=0;
 function update() {
+	console.log(">>"+score);
     materialGenerator();
     /*if(!this.game.world.bounds.intersects(wippo)){
         console.log(true);
@@ -185,7 +193,7 @@ function update() {
                 checkAccuracy();
                 clearWave();
                 spaceKeyDownTimer = game.time.now + 1500;
-                if(score>=500&&score<1000){
+                if((score>=500&&score<1000)||(score>=2000&&score<2500)){
                     gamemode="feverTime";
                     guageTimeCounter=15.0;
                     guageAliveTimer = game.time.events.repeat(Phaser.Timer.SECOND * 0.1, 151, countdownTimer, this, "feverTime");
@@ -253,16 +261,18 @@ function update() {
                 specialGuageSeal.scale.setTo(1,maxGuage/100);
             }
 
-            if(maxGuage<=0){
+            if(maxGuage<=0&&specialGuage!=null){
                 score+=500;
                 specialGuage.destroy();
                 specialGuageSeal.destroy();
+				gamemode="changingState";
                 game.time.events.remove(guageAliveTimer);
                 game.time.events.add(Phaser.Timer.SECOND * 1, function(){
+					
                     checker.alpha=1;
                     cancelCountdownTimer("feverTime");
                     console.log("max");
-                    gamemode="ingame";
+                    maxGuage=100;
                     isSpacebarDown = false;
                     specialGuageIsSpawned = false;
                 }, this);
@@ -292,7 +302,36 @@ function update() {
         }
 
     }else if(gamemode=="changingState"){
-
+		if(isfirstChange){
+			isfirstChange = false;
+			if(stateHandle == 1){
+				bgChange = game.add.tileSprite(0, 0, this.game.world.width, this.game.world.height, 'background2');
+			}
+			else if(stateHandle == 2){
+				bgChange = game.add.tileSprite(0, 0, this.game.world.width, this.game.world.height, 'background3');
+			}
+			bgChange.alpha = 0;
+			bgChange.sendToBack();
+			var loop = game.time.events.loop(Phaser.Timer.SECOND * 0.2, function(){
+				bg.alpha-=0.05;
+				bgChange.alpha+=0.05;
+				if(bg.alpha<0.0000001){
+					console.log("in destroy loop");
+					isfirstChange = true;
+					gamemode = "ingame";
+					bg.destroy();
+					bg = bgChange;
+					bg.autoScroll(this.levelSpeed, 0);
+					bg.fixedToCamera = true;
+					game.time.events.remove(loop);
+					stateHandle++;
+				}
+			}, this);
+		}
+		//bg.autoScroll(this.levelSpeed, 0);
+		//bg.fixedToCamera = true;
+		//gamemode = "ingame";
+		//stateHandle++;
         ///////flatClound when start BG2-sky/////
         // if(flatCloud==null){
         //     console.log("spawning flatCloud");
@@ -311,6 +350,7 @@ function update() {
         //         flatCloud.body.velocity.y = 0.1;
         //     }
         // }
+		
     }else if(gamemode=="gameover"){
         if(bgSpeed>0){
             bgSpeed-=0.35;
@@ -547,8 +587,8 @@ function collectArrow(){
                 if(wave[waveCheckOrder].type == 2)
                     wave[waveCheckOrder].arrow.alpha = 0.8;
                 else if(wave[waveCheckOrder].type == 1){
-                    if(waveCheckOrder+3<wave.length-1){
-                        var pos = game.rnd.integerInRange(waveCheckOrder+3,wave.length-1);
+                    if(waveCheckOrder+1<wave.length-1){
+                        var pos = game.rnd.integerInRange(waveCheckOrder+1,wave.length-1);
                         posx = wave[pos].x;
                         posy = wave[pos].y;
                         console.log(posx+" "+posy);
