@@ -26,7 +26,7 @@ function preload() {
     game.load.spritesheet('right','images/right2.png',45,45,8);
     game.load.spritesheet('left','images/left2.png',45,45,8);
     game.load.spritesheet('laser','images/biglaser.png');
-    game.load.spritesheet('sharkSeal','images/sharkalien.png');
+    game.load.spritesheet('sharkSeal','images/shark.png');
     game.load.spritesheet('spacebarBlock','images/dontpush.png');
     game.load.spritesheet('numberText','images/numberText.png',744/11,78,11);
     /////metarial/////
@@ -37,7 +37,7 @@ function preload() {
     game.load.spritesheet('sattellite','images/sattellite.png');
     game.load.spritesheet('saturn','images/saturn.png');
     game.load.spritesheet('sharkAlien','images/sharkalien.png');
-    game.load.spritesheet('shark','images/shark.png');
+    game.load.spritesheet('shark','images/shark2.png', 50, 50);
 
 }
 
@@ -97,6 +97,7 @@ var airship;
 var balloon;
 var flatCloud;
 var airplane;
+var sharkGroup;
 var sharkM;
 var sharkAlien;
 var galaxy;
@@ -107,6 +108,7 @@ var sattellite;
 
 function createGameplay() {
     stateHandle = 1;
+    // stateHandle = 2;
 	isfirstChange = true;
 	game.physics.startSystem(Phaser.Physics.ARCADE);
     this.myWorld = game.add.group();
@@ -140,12 +142,29 @@ function createGameplay() {
     floor.body.collideWorldBounds = false;
     floor.body.immovable = true;
     gamemode="begin";
+    // gamemode="changingState";
     specialGuageIsSpawned=false;
     isSpacebarPressed=false;
     spacebarBlock = this.add.sprite(game.world.width*(3/5),game.world.height*(3/5)-20,'spacebarBlock');
     spacebarBlock.scale.setTo(0.7,0.7);
     spacebarBlock.kill();
     spacebarBlockIsSpawned=false;
+
+    sharkGroup = game.add.group();
+    sharkGroup.enableBody = true;
+    sharkGroup.physicsBodyType = Phaser.Physics.ARCADE;
+    for (var i = 0; i < 100; i++) {
+        var shark = sharkGroup.create(0, 0, 'shark');
+        shark.exists = false;
+        shark.visible = false;
+        shark.scale.setTo(1.25,1.25);
+        shark.anchor.set(0.5);
+        shark.checkWorldBounds = true;
+        shark.body.gravity.y = 380;
+        shark.events.onOutOfBounds.add(killObj,this);
+    }
+    sharkGroup.callAll('animations.add', 'animations', 'moveFromLeft', [26,27,28], 100, true);
+    sharkGroup.callAll('animations.add', 'animations', 'moveFromRight', [26,27,28], 100, true);
     ///////////////////////////////////////////////////////////////
     game.time.events.add(Phaser.Timer.SECOND * 2, wippoLaunch, this);
     isSpacebarDown = false;
@@ -200,7 +219,7 @@ function update() {
                 checkAccuracy();
                 clearWave();
                 spaceKeyDownTimer = game.time.now + 1500;
-                if((score>=500&&score<1000)||(score>=2000&&score<2500)){
+                if((score>=100&&score<600)||(score>=800&&score<1300)){
                     gamemode="feverTime";
                     guageTimeCounter=15.0;
                     guageAliveTimer = game.time.events.repeat(Phaser.Timer.SECOND * 0.1, 151, countdownTimer, this, "feverTime");
@@ -313,12 +332,26 @@ function update() {
 			}
 			else if(stateHandle == 2){
 				bgChange = game.add.tileSprite(0, 0, this.game.world.width, this.game.world.height, 'background3');
+                earth = game.add.sprite(game.world.width/2,game.world.height/1.5 ,'earth');
+                earth.scale.setTo(0.5,0.5);
+                earth.anchor.setTo(0.5);
+                game.physics.arcade.enable(earth);
+                earth.checkWorldBounds = true;
+                earth.events.onOutOfBounds.add(function(){
+                    earth.destroy();
+                    earth=null;
+                }, this);
+                earth.body.velocity.y = 3;
+                earth.sendToBack();
+                earth.alpha = 0;
 			}
 			bgChange.alpha = 0;
 			bgChange.sendToBack();
 			var loop = game.time.events.loop(Phaser.Timer.SECOND * 0.2, function(){
 				bg.alpha-=0.05;
 				bgChange.alpha+=0.05;
+                if(earth!=null)
+                    earth.alpha+=0.05;
 				if(bg.alpha<0.0000001){
 					isfirstChange = true;
 					gamemode = "ingame";
@@ -454,10 +487,34 @@ function cancelCountdownTimer(timerName) {
 }
 //////material function
 var generatorCooldown=0;
+var sharkMCooldown=60;
 function materialGenerator(){
     if(stateHandle==1){
         //BG1
-
+        if(sharkMCooldown<=0){
+            console.log("shark spawned");
+            sharkMCooldown=60;
+            var shark = sharkGroup.getFirstExists(false);
+            // shark.reset(300,300);
+            var sharkLaunchAt = game.rnd.integerInRange(game.world.height/2, game.world.height);
+            var spawnSide = game.rnd.integerInRange(0,1);
+            var sharkSpeed = game.rnd.integerInRange(400,900);
+            if(spawnSide==0){
+                console.log("from left");
+                shark.reset(0, game.world.height);
+                shark.animations.frame = 26;
+                shark.animations.play('moveFromLeft');
+                shark.body.velocity.x = 300;
+                shark.body.velocity.y = -sharkSpeed;
+            }else{
+                shark.reset(game.world.width, game.world.height);
+                shark.animations.frame = 25;
+                shark.animations.play('moveFromRight');
+                shark.body.velocity.x = -300;
+                shark.body.velocity.y = -sharkSpeed;
+            }
+        }
+        sharkMCooldown--;
     }else if(stateHandle==2){
         //BG2
         if(airship==null){
@@ -515,9 +572,6 @@ function materialGenerator(){
 
 
 
-    // var sharkM;
-    // var sharkAlien;
-    // var earth;
         
     }else{
     
@@ -771,8 +825,8 @@ function summonWave(length){
     // var l = wave.length;
     var randObstacle = game.rnd.integerInRange(1,6);
     if(randObstacle==1){
-        sharkSeal = game.add.sprite(0,game.world.height*(3/5)-50,'sharkSeal');
-        sharkSeal.scale.setTo(1,1);
+        sharkSeal = game.add.sprite(0,game.world.height*(3/5)-60,'sharkSeal');
+        sharkSeal.scale.setTo(0.06,0.06);
         game.physics.arcade.enable(sharkSeal);
         sharkSeal.events.onOutOfBounds.add(destroyObj, this);
         sharkSeal.body.velocity.x=400;
@@ -988,6 +1042,9 @@ arrowCreate = function (x,y,rand,type) {
 
 function destroyObj(obj) {
     obj.destroy();
+}
+function killObj(obj) {
+    obj.kill();
 }
 function checkOverlap(spriteA, spriteB) {
     var boundsA = spriteA.getBounds();
