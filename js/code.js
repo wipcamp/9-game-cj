@@ -170,7 +170,7 @@ function createGameplay() {
     isSpacebarDown = false;
     maxGuage = 100;
     perfectStack=0;
-    stopTimePoint=0;
+    stopTimePoint=1;
     //gamemode = "feverTime";
 
     //wippo.events.onOutOfBounds.add(gameEnd(), this);
@@ -1079,7 +1079,7 @@ gameBegin = function (){
     gamemode = "ingame";
     ///////////////////////////////////////////////
     stopTimePointText = game.add.sprite(game.world.width*(7/8),game.world.height*(1.5/5)-100 ,'numberText');
-    stopTimePointText.frame = 0;
+    stopTimePointText.frame = 1;
 }
 gameEnd = function (){
     //playDeathAnimation
