@@ -969,10 +969,10 @@ arrowCreate = function (x,y,rand,type) {
           this.name = "left";
           //this.left.name = index.toString();
         }
-        this.arrow.alpha=0.6;
+        // this.arrow.alpha=0.6;
         this.arrow.anchor.set(0.5);
         this.arrow.scale.setTo(1, 1);
-        this.arrow.animations.add('default',[0],1,true);
+        this.arrow.animations.add('default',[5],1,true);
         this.arrow.animations.add('out',[3],1,true);
         this.arrow.animations.add('correct',[1],1,true);
         this.arrow.animations.play('default');
