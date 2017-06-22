@@ -38,7 +38,12 @@ function preload() {
     game.load.spritesheet('saturn','images/saturn.png');
     game.load.spritesheet('sharkAlien','images/sharkalien.png');
     game.load.spritesheet('shark','images/shark2.png', 50, 50);
-
+    game.load.spritesheet('shipAndCannon','images/cannon.png');
+    game.load.spritesheet('clound1','images/clound.png');
+    game.load.spritesheet('clound2','images/clound2.png');
+    game.load.spritesheet('clound3','images/clound3.png');
+    game.load.spritesheet('mountain','images/mountain.png');
+    game.load.spritesheet('sun', 'images/sun.png');
 }
 
 var isSound = true;
@@ -104,7 +109,11 @@ var galaxy;
 var saturn;
 var earth;
 var sattellite;
-
+var clound1Group;
+var clound2Group;
+var clound3Group;
+var sun;
+var mountain;
 
 function createGameplay() {
     stateHandle = 1;
@@ -136,11 +145,22 @@ function createGameplay() {
     // wippo.animations.add('rush',[0],1,true);
     // wippo.animations.add('death',[0],1,true);
 
-    floor = this.add.sprite(0,game.world.height*(4/5)+40,'laser');
+    floor = this.add.sprite(0,game.world.height*(1/5),'shipAndCannon');
     game.physics.arcade.enable(floor);
-    floor.scale.setTo(20,0.6);
+    floor.scale.setTo(0.2,0.2);
     floor.body.collideWorldBounds = false;
     floor.body.immovable = true;
+    
+    sun = this.add.sprite(game.world.width*(2/5),game.world.height*(1/5),'sun');
+    game.physics.arcade.enable(sun);
+    sun.body.collideWorldBounds = false;
+    sun.body.immovable = true;
+    
+    mountain = this.add.sprite(game.world.width*(2/5),game.world.height*(1/5),'mountain');
+    game.physics.arcade.enable(mountain);
+    mountain.body.collideWorldBounds = false;
+    mountain.body.immovable = true;
+
     gamemode="begin";
     // gamemode="changingState";
     specialGuageIsSpawned=false;
@@ -166,6 +186,47 @@ function createGameplay() {
     sharkGroup.callAll('animations.add', 'animations', 'moveFromLeft', [26,27,28], 100, true);
     sharkGroup.callAll('animations.add', 'animations', 'moveFromRight', [26,27,28], 100, true);
     ///////////////////////////////////////////////////////////////
+    clound1Group = game.add.group();
+    clound1Group.enableBody = true;
+    clound1Group.physicsBodyType = Phaser.Physics.ARCADE;
+    for (var i = 0; i < 100; i++) {
+        var clound = clound1Group.create(0, 0, 'clound1');
+        clound.exists = false;
+        clound.visible = false;
+        clound.scale.setTo(1.25,1.25);
+        clound.anchor.set(0.5);
+        clound.checkWorldBounds = true;
+        clound.body.gravity.y = 380;
+        clound.events.onOutOfBounds.add(killObj,this);
+    }
+    clound2Group = game.add.group();
+    clound2Group.enableBody = true;
+    clound2Group.physicsBodyType = Phaser.Physics.ARCADE;
+    for (var i = 0; i < 100; i++) {
+        var clound = clound2Group.create(0, 0, 'clound2');
+        clound.exists = false;
+        clound.visible = false;
+        clound.scale.setTo(1.25,1.25);
+        clound.anchor.set(0.5);
+        clound.checkWorldBounds = true;
+        clound.body.gravity.y = 380;
+        clound.events.onOutOfBounds.add(killObj,this);
+    }
+    clound3Group = game.add.group();
+    clound3Group.enableBody = true;
+    clound3Group.physicsBodyType = Phaser.Physics.ARCADE;
+    for (var i = 0; i < 100; i++) {
+        var clound = clound3Group.create(0, 0, 'clound3');
+        clound.exists = false;
+        clound.visible = false;
+        clound.scale.setTo(1.25,1.25);
+        clound.anchor.set(0.5);
+        clound.checkWorldBounds = true;
+        clound.body.gravity.y = 380;
+        clound.events.onOutOfBounds.add(killObj,this);
+    }
+    
+    
     game.time.events.add(Phaser.Timer.SECOND * 2, wippoLaunch, this);
     isSpacebarDown = false;
     maxGuage = 100;
@@ -193,6 +254,8 @@ function createGameplay() {
 }
 var summonCooldown=0;
 function update() {
+    ////
+    
     materialGenerator();
     /*if(!this.game.world.bounds.intersects(wippo)){
         wippo.kill();
@@ -204,9 +267,9 @@ function update() {
     }else if(gamemode=="ingame"){
         //this.scoreText.setText('Score : ' + this.score);
         collectArrow();
-
         if(!isTimeStopped){
             checker.body.velocity.x=checkerSpeed;
+            
             if(spacebarBlock.alive){
                 isSpacebarPressed=true;
                 if(spaceButton.isDown){
@@ -488,6 +551,9 @@ function cancelCountdownTimer(timerName) {
 //////material function
 var generatorCooldown=0;
 var sharkMCooldown=60;
+var clound1Cooldown=60;
+var clound2Cooldown=60;
+var clound3Cooldown=60;
 function materialGenerator(){
     if(stateHandle==1){
         //BG1
@@ -513,6 +579,9 @@ function materialGenerator(){
                 shark.body.velocity.x = -300;
                 shark.body.velocity.y = -sharkSpeed;
             }
+        }
+        if(clound1Cooldown<=0){
+            
         }
         sharkMCooldown--;
     }else if(stateHandle==2){
