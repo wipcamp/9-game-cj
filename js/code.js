@@ -193,10 +193,9 @@ function createGameplay() {
         var clound = clound1Group.create(0, 0, 'clound1');
         clound.exists = false;
         clound.visible = false;
-        clound.scale.setTo(1.25, 1.25);
+        clound.scale.setTo(0.5, 0.5);
         clound.anchor.set(0.5);
         clound.checkWorldBounds = true;
-        clound.body.gravity.y = 380;
         clound.events.onOutOfBounds.add(killObj, this);
     }
     clound2Group = game.add.group();
@@ -206,10 +205,9 @@ function createGameplay() {
         var clound = clound2Group.create(0, 0, 'clound2');
         clound.exists = false;
         clound.visible = false;
-        clound.scale.setTo(1.25, 1.25);
+        clound.scale.setTo(0.5, 0.5);
         clound.anchor.set(0.5);
         clound.checkWorldBounds = true;
-        clound.body.gravity.y = 380;
         clound.events.onOutOfBounds.add(killObj, this);
     }
     clound3Group = game.add.group();
@@ -219,10 +217,9 @@ function createGameplay() {
         var clound = clound3Group.create(0, 0, 'clound3');
         clound.exists = false;
         clound.visible = false;
-        clound.scale.setTo(1.25, 1.25);
+        clound.scale.setTo(0.5, 0.5);
         clound.anchor.set(0.5);
         clound.checkWorldBounds = true;
-        clound.body.gravity.y = 380;
         clound.events.onOutOfBounds.add(killObj, this);
     }
 
@@ -670,9 +667,9 @@ function cancelCountdownTimer(timerName) {
 //////material function
 var generatorCooldown = 0;
 var sharkMCooldown = 60;
-var clound1Cooldown = 60;
-var clound2Cooldown = 60;
-var clound3Cooldown = 60;
+var clound1Cooldown = game.rnd.integerInRange(80,120);
+var clound2Cooldown = game.rnd.integerInRange(80,120);
+var clound3Cooldown = game.rnd.integerInRange(80,120);
 function materialGenerator() {
     if (stateHandle == 1) {
         //BG1
@@ -700,8 +697,60 @@ function materialGenerator() {
             }
         }
         if (clound1Cooldown <= 0) {
-
+            clound1Cooldown = game.rnd.integerInRange(80,120);
+            var clound = clound1Group.getFirstExists(false);
+            var cloundLaunchAt = game.rnd.integerInRange(20, game.world.height / 2);
+            var spawnSide = game.rnd.integerInRange(0, 1);
+            var cloundSpeed = game.rnd.integerInRange(200, 500);
+            if(spawnSide==0){
+                clound.reset(0,cloundLaunchAt);
+                clound.body.velocity.x = cloundSpeed;
+                clound.body.velocity.y = 0;
+            }
+            else{
+                clound.reset(game.world.width,cloundLaunchAt);
+                clound.body.velocity.x = -cloundSpeed;
+                clound.body.velocity.y = 0;
+            }
         }
+        if (clound2Cooldown <= 0) {
+            clound2Cooldown = game.rnd.integerInRange(80,120);
+            var clound = clound2Group.getFirstExists(false);
+            var cloundLaunchAt = game.rnd.integerInRange(20, game.world.height / 2);
+            var spawnSide = game.rnd.integerInRange(0, 1);
+            var cloundSpeed = game.rnd.integerInRange(200, 500);
+            if(spawnSide==0){
+                clound.reset(0,cloundLaunchAt);
+                clound.body.velocity.x = cloundSpeed;
+                clound.body.velocity.y = 0;
+            }
+            else{
+                clound.reset(game.world.width,cloundLaunchAt);
+                clound.body.velocity.x = -cloundSpeed;
+                clound.body.velocity.y = 0;
+            }
+        }
+        if (clound3Cooldown <= 0) {
+            clound3Cooldown = game.rnd.integerInRange(80,120);
+            var clound = clound3Group.getFirstExists(false);
+            var cloundLaunchAt = game.rnd.integerInRange(20, game.world.height / 2);
+            var spawnSide = game.rnd.integerInRange(0, 1);
+            var cloundSpeed = game.rnd.integerInRange(200, 500);
+            if(spawnSide==0){
+                clound.reset(0,cloundLaunchAt);
+                clound.body.velocity.x = cloundSpeed;
+                clound.body.velocity.y = 0;
+            }
+            else{
+                clound.reset(game.world.width,cloundLaunchAt);
+                clound.body.velocity.x = -cloundSpeed;
+                clound.body.velocity.y = 0;
+            }
+        }
+
+        clound1Cooldown--;
+        clound2Cooldown--;
+        clound3Cooldown--;
         sharkMCooldown--;
     } else if (stateHandle == 2) {
         //BG2
