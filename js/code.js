@@ -699,9 +699,9 @@ function materialGenerator() {
         if (clound1Cooldown <= 0) {
             clound1Cooldown = game.rnd.integerInRange(80,120);
             var clound = clound1Group.getFirstExists(false);
-            var cloundLaunchAt = game.rnd.integerInRange(20, game.world.height / 2);
+            var cloundLaunchAt = game.rnd.integerInRange(20, game.world.height * (2/3));
             var spawnSide = game.rnd.integerInRange(0, 1);
-            var cloundSpeed = game.rnd.integerInRange(200, 500);
+            var cloundSpeed = game.rnd.integerInRange(200, 400);
             if(spawnSide==0){
                 clound.reset(0,cloundLaunchAt);
                 clound.body.velocity.x = cloundSpeed;
@@ -716,9 +716,9 @@ function materialGenerator() {
         if (clound2Cooldown <= 0) {
             clound2Cooldown = game.rnd.integerInRange(80,120);
             var clound = clound2Group.getFirstExists(false);
-            var cloundLaunchAt = game.rnd.integerInRange(20, game.world.height / 2);
+            var cloundLaunchAt = game.rnd.integerInRange(20, game.world.height * (2/3));
             var spawnSide = game.rnd.integerInRange(0, 1);
-            var cloundSpeed = game.rnd.integerInRange(200, 500);
+            var cloundSpeed = game.rnd.integerInRange(200, 400);
             if(spawnSide==0){
                 clound.reset(0,cloundLaunchAt);
                 clound.body.velocity.x = cloundSpeed;
@@ -733,9 +733,9 @@ function materialGenerator() {
         if (clound3Cooldown <= 0) {
             clound3Cooldown = game.rnd.integerInRange(80,120);
             var clound = clound3Group.getFirstExists(false);
-            var cloundLaunchAt = game.rnd.integerInRange(20, game.world.height / 2);
+            var cloundLaunchAt = game.rnd.integerInRange(20, game.world.height * (2/3));
             var spawnSide = game.rnd.integerInRange(0, 1);
-            var cloundSpeed = game.rnd.integerInRange(200, 500);
+            var cloundSpeed = game.rnd.integerInRange(200, 400);
             if(spawnSide==0){
                 clound.reset(0,cloundLaunchAt);
                 clound.body.velocity.x = cloundSpeed;
