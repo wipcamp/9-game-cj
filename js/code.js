@@ -116,6 +116,7 @@ var sun;
 var mountain;
 
 function createGameplay() {
+    game.stage.disableVisibilityChange = true;
     stateHandle = 1;
     // stateHandle = 2;
     isfirstChange = true;
