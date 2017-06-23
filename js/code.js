@@ -44,6 +44,15 @@ function preload() {
     game.load.spritesheet('clound3', 'images/clound3.png');
     game.load.spritesheet('mountain', 'images/mountain.png');
     game.load.spritesheet('sun', 'images/sun.png');
+    ////sound////
+    game.load.audio('BGMStage1','sound/BGMStage1.mp3');
+    game.load.audio('BGMStage2','sound/BGMStage2.mp3');
+    game.load.audio('BGMStage3','sound/BGMStage3.mp3');
+    game.load.audio('timestop','sound/timeStop.mp3');
+    game.load.audio('fall','sound/PlayerFall.mp3');
+    game.load.audio('menu','sound/Menu.mp3');
+    game.load.audio('death','sound/Death.mp3');
+    game.load.audio('wrongButton','sound/WrongButton.mp3');
 }
 
 var isSound = true;
@@ -95,7 +104,13 @@ var bgChange;
 var isfirstChange;
 /////////sound variable//////////
 var timeStopSound;
-var BGM1;
+var BGMStage1;
+var BGMStage2;
+var BGMStage3;
+var fallSound;
+var BGMMenu;
+var BGMResult;
+var wrongButtonSound;
 
 /////////material variable///////
 var airship;
@@ -229,9 +244,19 @@ function createGameplay() {
     isSpacebarDown = false;
     maxGuage = 100;
     perfectStack = 0;
-    stopTimePoint = 1;
+    stopTimePoint = 10;
     //gamemode = "feverTime";
-
+    ////sound////
+    timeStopSound = game.add.audio('timestop');
+    BGMStage1 = game.add.audio('BGMStage1');
+    BGMStage2 = game.add.audio('BGMStage2');
+    BGMStage3 = game.add.audio('BGMStage3');
+    fallSound = game.add.audio('fall');
+    BGMMenu = game.add.audio('menu');
+    BGMResult = game.add.audio('death');
+    wrongButtonSound = game.add.audio('wrongButton');
+    wrongButtonSound.volume = 0.6;
+    BGMStage1.play();
     //wippo.events.onOutOfBounds.add(gameEnd(), this);
 
     score = 0;
@@ -250,6 +275,7 @@ function createGameplay() {
     else
         mute.frame = 1;
 }
+
 var summonCooldown = 0;
 function update() {
     if (!isTimeStopped) {
@@ -306,6 +332,7 @@ function update() {
                 stopTimePoint--;
                 stopTimeCounter = 3.0;
                 stopTimeTimer = game.time.events.repeat(Phaser.Timer.SECOND * 0.1, 31, countdownTimer, this, "timeStopped");
+                
                 checker.body.velocity.x = 0;
                 tempBgSpeed = bgSpeed;
                 bgSpeed = 0;
@@ -357,8 +384,8 @@ function update() {
                 sharkGroup.setAll('animations.paused', true, false);
 
                 ////sound
-                // BGM1.pause();
-                // timeStopSound.play();
+                BGMStage1.pause();
+                timeStopSound.play();
             }
         } else {
             for (var i = waveCheckOrder; i <= wave.length - 1; i++) {
@@ -460,6 +487,9 @@ function update() {
                 sharkGroup.setAll('body.velocity.y', 0, false, false);
                 sharkGroup.setAll('body.gravity.y', 0, false, false);
                 sharkGroup.setAll('animations.paused', true, false);
+
+                BGMStage1.pause();
+                timeStopSound.play();
 
             }
         } else {
@@ -579,6 +609,7 @@ function countdownTimer(timerName) {
             guageTimerDigit1.destroy();
             guageTimerDecimal.destroy();
         }
+
         guageTimerDigit2 = game.add.sprite(game.world.width * (1 / 5) - 80, game.world.height * (1.5 / 5) - 150, 'numberText');
         guageTimerDigit2.frame = Math.floor(guageTimeCounter / 10);
         guageTimerDigit1 = game.add.sprite(game.world.width * (1 / 5), game.world.height * (1.5 / 5) - 150, 'numberText');
@@ -602,7 +633,7 @@ function countdownTimer(timerName) {
         stopTimerDigit1.frame = Math.floor(stopTimeCounter % 10);
         stopTimerDecimal = game.add.sprite(game.world.width * (1 / 2) + 40, game.world.height * (1 / 5) - 100, 'numberText');
         stopTimerDecimal.frame = Math.floor(stopTimeCounter * 10 % 10);
-
+        
         stopTimeCounter -= 0.1;
         if (stopTimeCounter <= 0) {
             isTimeStopped = false;
@@ -664,8 +695,20 @@ function cancelCountdownTimer(timerName) {
         sharkGroup.setAll('body.velocity.y', 500, false, false);
 
         ////sound
-        // BGM1.resume();
-        // timeStopSound.stop();
+        if(stateHandle==1){
+            BGMStage1.resume();
+            BGMStage1.volume = 0.2;
+            BGMStage1.fadeTo(800,1);
+        }else if(stateHandle==2){
+            BGMStage2.resume();
+            BGMStage2.volume = 0.2;
+            BGMStage2.fadeTo(800,1);
+        }else{
+            BGMStage3.resume();
+            BGMStage3.volume = 0.2;
+            BGMStage3.fadeTo(800,1);
+        }
+        
     }
 }
 //////material function
@@ -678,7 +721,6 @@ function materialGenerator() {
     if (stateHandle == 1) {
         //BG1
         if (sharkMCooldown <= 0) {
-            console.log("shark spawned");
             sharkMCooldown = 60;
             var shark = sharkGroup.getFirstExists(false);
             // shark.reset(300,300);
@@ -686,7 +728,6 @@ function materialGenerator() {
             var spawnSide = game.rnd.integerInRange(0, 1);
             var sharkSpeed = game.rnd.integerInRange(400, 900);
             if (spawnSide == 0) {
-                console.log("from left");
                 shark.reset(0, game.world.height);
                 shark.animations.frame = 26;
                 shark.animations.play('moveFromLeft');
@@ -959,6 +1000,7 @@ function collectArrow() {
                 //animations
             } else {
                 refreshWave();
+                wrongButtonSound.play();
             }
         } else if (cursors.down.isDown) {
             isHoldDown = true;
@@ -977,6 +1019,7 @@ function collectArrow() {
                 //animations
             } else {
                 refreshWave();
+                wrongButtonSound.play();
             }
         }
         else if (cursors.right.isDown) {
@@ -996,6 +1039,7 @@ function collectArrow() {
                 //animations
             } else {
                 refreshWave();
+                wrongButtonSound.play();
             }
         } else if (cursors.left.isDown) {
             isHoldDown = true;
@@ -1014,6 +1058,7 @@ function collectArrow() {
                 //animations
             } else {
                 refreshWave();
+                wrongButtonSound.play();
             }
         }
     } else if (cursors.down.isUp && cursors.up.isUp && cursors.left.isUp && cursors.right.isUp) {
@@ -1323,6 +1368,16 @@ gameBegin = function () {
 }
 gameEnd = function () {
     //playDeathAnimation
+    fallSound.play();
+    if(stateHandle==1){
+        BGMStage1.fadeOut(1500);
+    }else if(stateHandle==2){
+        BGMStage2.fadeOut(1500);
+    }else{
+        BGMStage3.fadeOut(1500);
+    }
+    BGMResult.loopFull();
+    
     gamemode = "gameover";
     wippo.body.velocity.y = 200;
     perfect.destroy();
