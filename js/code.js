@@ -409,6 +409,9 @@ function update() {
                 stopTimePoint--;
                 stopTimeCounter = 3.0;
                 stopTimeTimer = game.time.events.repeat(Phaser.Timer.SECOND * 0.1, 31, countdownTimer, this, "timeStopped");
+                if(guageAliveTimer!=null){
+                    guageAliveTimer.repeatCount+=30;
+                }
                 checker.body.velocity.x = 0;
                 tempBgSpeed = bgSpeed;
                 bgSpeed = 0;
