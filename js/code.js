@@ -137,29 +137,27 @@ function createGameplay() {
     checker.scale.setTo(0.05, 0.6);
     checker.body.maxVelocity.set(1500);
     checker.body.collideWorldBounds = false;
-    wippo = this.add.sprite(game.world.width / 2, game.world.height * (4 / 5) + 15, 'ship');
-    game.physics.arcade.enable(wippo);
-    wippo.anchor.set(0.5);
     //////////animation wippo
     // wippo.animations.add('perfectRush',[0],1,true);
     // wippo.animations.add('rush',[0],1,true);
     // wippo.animations.add('death',[0],1,true);
 
-    floor = this.add.sprite(0, game.world.height * (1 / 5), 'shipAndCannon');
-    game.physics.arcade.enable(floor);
-    floor.scale.setTo(0.2, 0.2);
-    floor.body.collideWorldBounds = false;
-    floor.body.immovable = true;
-
-    sun = this.add.sprite(game.world.width * (2 / 5), game.world.height * (1 / 5), 'sun');
-    game.physics.arcade.enable(sun);
-    sun.body.collideWorldBounds = false;
-    sun.body.immovable = true;
-
-    mountain = this.add.sprite(game.world.width * (2 / 5), game.world.height * (1 / 5), 'mountain');
+    mountain = this.add.sprite(0, game.world.height * (3 / 5), 'mountain');
     game.physics.arcade.enable(mountain);
     mountain.body.collideWorldBounds = false;
     mountain.body.immovable = true;
+
+    floor = this.add.sprite(0, game.world.height * (3 / 5), 'shipAndCannon');
+    game.physics.arcade.enable(floor);
+    floor.scale.setTo(0.1, 0.1);
+    floor.body.collideWorldBounds = false;
+    floor.body.immovable = true;
+
+    sun = this.add.sprite(game.world.width * (4 / 5), game.world.height * (0.5 / 5), 'sun');
+    game.physics.arcade.enable(sun);
+    sun.scale.setTo(0.5, 0.5);
+    sun.body.collideWorldBounds = false;
+    sun.body.immovable = true;
 
     gamemode = "begin";
     // gamemode="changingState";
@@ -222,7 +220,9 @@ function createGameplay() {
         clound.checkWorldBounds = true;
         clound.events.onOutOfBounds.add(killObj, this);
     }
-
+    wippo = this.add.sprite(game.world.width / 2, game.world.height * (4 / 5) + 15, 'ship');
+    game.physics.arcade.enable(wippo);
+    wippo.anchor.set(0.5);
 
     game.time.events.add(Phaser.Timer.SECOND * 2, wippoLaunch, this);
     isSpacebarDown = false;
