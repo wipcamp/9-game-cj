@@ -254,9 +254,9 @@ function createGameplay() {
 }
 var summonCooldown=0;
 function update() {
-    ////
-    
-    materialGenerator();
+    if(!isTimeStopped){
+        materialGenerator();
+    }
     /*if(!this.game.world.bounds.intersects(wippo)){
         wippo.kill();
         checker.body.velocity.x = 0;
@@ -316,6 +316,49 @@ function update() {
                 stopTimePointText = game.add.sprite(game.world.width*(7/8),game.world.height*(1.5/5)-100 ,'numberText');
                 stopTimePointText.frame = stopTimePoint;
                 // wippo.animations.paused = true;
+
+                ///material
+                if(airship!=null){
+                    // airship.body.velocity.y = bgSpeed*3;
+                    // airship.body.velocity.x = -game.rnd.integerInRange(60,100);
+                    airship.body.velocity.y = 0;
+                    airship.body.velocity.x = 0;
+                }
+                if(balloon!=null){
+                    // balloon.body.velocity.y = bgSpeed*4;
+                    // balloon.body.velocity.x = game.rnd.integerInRange(40,70);
+                    balloon.body.velocity.y = 0;
+                    balloon.body.velocity.x = 0;
+                }
+                if(airplane!=null){
+                    // airplane.body.velocity.y = bgSpeed*5;
+                    // airplane.body.velocity.x = -game.rnd.integerInRange(200,250);
+                    airplane.body.velocity.y = 0;
+                    airplane.body.velocity.x = 0;
+                }
+                if(sharkAlien!=null){
+                    // sharkAlien.body.velocity.y = bgSpeed*5;
+                    // sharkAlien.body.velocity.x = game.rnd.integerInRange(40,70);
+                    sharkAlien.body.velocity.y = 0;
+                    sharkAlien.body.velocity.x = 0;
+                }
+                if(sattellite!=null){
+                    // sattellite.body.velocity.y = bgSpeed*8;
+                    // sattellite.body.velocity.x = game.rnd.integerInRange(-300,300);
+                    sattellite.body.velocity.y = 0;
+                    sattellite.body.velocity.x = 0;
+                }
+                if(saturn!=null){
+                    // saturn.body.velocity.y = bgSpeed/2;
+                    // saturn.body.velocity.x = game.rnd.integerInRange(3,7);
+                    saturn.body.velocity.y = 0;
+                    saturn.body.velocity.x = 0;
+                }
+                sharkGroup.setAll('body.velocity.x',0,false,false);
+                sharkGroup.setAll('body.velocity.y',0,false,false);
+                sharkGroup.setAll('body.gravity.y',0,false,false);
+                sharkGroup.setAll('animations.paused', true,false);
+
                 ////sound
                 // BGM1.pause();
                 // timeStopSound.play();
@@ -376,9 +419,48 @@ function update() {
                 stopTimePointText = game.add.sprite(game.world.width*(7/8),game.world.height*(1.5/5)-100 ,'numberText');
                 stopTimePointText.frame = stopTimePoint;
                 // wippo.animations.paused = true;
-                ////sound
-                // BGM1.pause();
-                // timeStopSound.play();
+                
+                if(airship!=null){
+                    // airship.body.velocity.y = bgSpeed*3;
+                    // airship.body.velocity.x = -game.rnd.integerInRange(60,100);
+                    airship.body.velocity.y = 0;
+                    airship.body.velocity.x = 0;
+                }
+                if(balloon!=null){
+                    // balloon.body.velocity.y = bgSpeed*4;
+                    // balloon.body.velocity.x = game.rnd.integerInRange(40,70);
+                    balloon.body.velocity.y = 0;
+                    balloon.body.velocity.x = 0;
+                }
+                if(airplane!=null){
+                    // airplane.body.velocity.y = bgSpeed*5;
+                    // airplane.body.velocity.x = -game.rnd.integerInRange(200,250);
+                    airplane.body.velocity.y = 0;
+                    airplane.body.velocity.x = 0;
+                }
+                if(sharkAlien!=null){
+                    // sharkAlien.body.velocity.y = bgSpeed*5;
+                    // sharkAlien.body.velocity.x = game.rnd.integerInRange(40,70);
+                    sharkAlien.body.velocity.y = 0;
+                    sharkAlien.body.velocity.x = 0;
+                }
+                if(sattellite!=null){
+                    // sattellite.body.velocity.y = bgSpeed*8;
+                    // sattellite.body.velocity.x = game.rnd.integerInRange(-300,300);
+                    sattellite.body.velocity.y = 0;
+                    sattellite.body.velocity.x = 0;
+                }
+                if(saturn!=null){
+                    // saturn.body.velocity.y = bgSpeed/2;
+                    // saturn.body.velocity.x = game.rnd.integerInRange(3,7);
+                    saturn.body.velocity.y = 0;
+                    saturn.body.velocity.x = 0;
+                }
+                sharkGroup.setAll('body.velocity.x',0,false,false);
+                sharkGroup.setAll('body.velocity.y',0,false,false);
+                sharkGroup.setAll('body.gravity.y',0,false,false);
+                sharkGroup.setAll('animations.paused', true,false);
+
             }
         }else{
             if(maxGuage<0){
@@ -488,7 +570,7 @@ function muteSounds() {
     }
 }
 ////////
-var tempBgSpeed;
+
 
 function countdownTimer(timerName){
     if(timerName=="feverTime"){
@@ -525,10 +607,12 @@ function countdownTimer(timerName){
         if(stopTimeCounter<=0){
             isTimeStopped=false;
             cancelCountdownTimer("timeStopped");
+            //===============
 
         }
     }
 }
+var tempBgSpeed;
 function cancelCountdownTimer(timerName) {
     if(timerName=="feverTime"){
         if(guageTimerDigit2!=null){
@@ -543,6 +627,42 @@ function cancelCountdownTimer(timerName) {
         }
         bgSpeed=tempBgSpeed;
         // wippo.animations.paused = false;
+
+        ///material
+
+        if(airship!=null){
+                    airship.body.velocity.y = bgSpeed*3;
+                    airship.body.velocity.x = -game.rnd.integerInRange(60,100);
+        }
+        if(balloon!=null){
+            balloon.body.velocity.y = bgSpeed*4;
+            balloon.body.velocity.x = game.rnd.integerInRange(40,70);
+            
+        }
+        if(airplane!=null){
+            airplane.body.velocity.y = bgSpeed*5;
+            airplane.body.velocity.x = -game.rnd.integerInRange(200,250);
+            
+        }
+        if(sharkAlien!=null){
+            sharkAlien.body.velocity.y = bgSpeed*5;
+            sharkAlien.body.velocity.x = game.rnd.integerInRange(40,70);
+            
+        }
+        if(sattellite!=null){
+            sattellite.body.velocity.y = bgSpeed*8;
+            sattellite.body.velocity.x = game.rnd.integerInRange(-300,300);
+            
+        }
+        if(saturn!=null){
+            saturn.body.velocity.y = bgSpeed/2;
+            saturn.body.velocity.x = game.rnd.integerInRange(3,7);
+            
+        }
+        sharkGroup.setAll('body.gravity.y',380,false,false);
+        sharkGroup.setAll('animations.paused', false,false);
+        sharkGroup.setAll('body.velocity.y',500,false,false);
+
         ////sound
         // BGM1.resume();
         // timeStopSound.stop();
@@ -576,7 +696,7 @@ function materialGenerator(){
                 shark.reset(game.world.width, game.world.height);
                 shark.animations.frame = 25;
                 shark.animations.play('moveFromRight');
-                shark.body.velocity.x = -300;
+                shark.body.velocity.x = -300; 
                 shark.body.velocity.y = -sharkSpeed;
             }
         }
@@ -784,7 +904,7 @@ function collectArrow(){
                         var pos = game.rnd.integerInRange(waveCheckOrder+1,wave.length-1);
                         posx = wave[pos].x;
                         posy = wave[pos].y;
-                        wave[pos].arrow.kill();
+                        wave[pos].arrow.destroy();
                         wave[pos] = new arrowCreate(posx,posy,game.rnd.integerInRange(0, 3/*difficulty*/),3);
                     }
                 }
@@ -802,7 +922,7 @@ function collectArrow(){
                         var pos = game.rnd.integerInRange(waveCheckOrder+1,wave.length-1);
                         posx = wave[pos].x;
                         posy = wave[pos].y;
-                        wave[pos].arrow.kill();
+                        wave[pos].arrow.destroy();
                         wave[pos] = new arrowCreate(posx,posy,game.rnd.integerInRange(0, 3/*difficulty*/),3);
                     }
                 }
@@ -821,7 +941,7 @@ function collectArrow(){
                         var pos = game.rnd.integerInRange(waveCheckOrder+1,wave.length-1);
                         posx = wave[pos].x;
                         posy = wave[pos].y;
-                        wave[pos].arrow.kill();
+                        wave[pos].arrow.destroy();
                         wave[pos] = new arrowCreate(posx,posy,game.rnd.integerInRange(0, 3/*difficulty*/),3);
                     }
                 }
@@ -839,7 +959,7 @@ function collectArrow(){
                         var pos = game.rnd.integerInRange(waveCheckOrder+1,wave.length-1);
                         posx = wave[pos].x;
                         posy = wave[pos].y;
-                        wave[pos].arrow.kill();
+                        wave[pos].arrow.destroy();
                         wave[pos] = new arrowCreate(posx,posy,game.rnd.integerInRange(0, 3/*difficulty*/),3);
                     }
                 }
@@ -899,8 +1019,8 @@ function summonWave(length){
         game.physics.arcade.enable(sharkSeal);
         sharkSeal.events.onOutOfBounds.add(destroyObj, this);
         sharkSeal.body.velocity.x=400;
-        var travelTime = game.rnd.integerInRange(9,11);
-        game.time.events.add(Phaser.Timer.SECOND * travelTime/10, function(){
+        var travelTime = game.rnd.integerInRange(95,105);
+        game.time.events.add(Phaser.Timer.SECOND * travelTime/100, function(){
             sharkSeal.body.velocity.x=0;
             game.time.events.add(Phaser.Timer.SECOND * 2.5, function(){
                 sharkSeal.body.velocity.x=600;
