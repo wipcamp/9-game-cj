@@ -6,6 +6,7 @@ game.state.add('main', main);
 game.state.start('menu');
 function preloadMenu(){
     game.load.image('backgroundMenu', 'images/BGmenu.png');
+    game.load.image('startButton', 'images/startButton.png')
 }
 function preload() {
     game.load.image('bullet', 'images/bullet.png');
@@ -135,8 +136,12 @@ var clound3Group;
 var sun;
 var mountain;
 
+var startButton;
+
 function createMenu() {
     game.add.image(0, 0, 'backgroundMenu');
+    startButton = game.add.button(game.world.width*(4/5), game.world.height*(1/5), 'startButton', toGameplay, this, 2, 1, 0, );
+    startButton.anchor.set(0.5);
 }
 
 function createGameplay() {
@@ -1404,4 +1409,7 @@ gameEnd = function () {
     spacebarBlock.destroy();
     clearWave();
     //game.time.events.add(Phaser.Timer.SECOND * 3, toResultPage = function(){game.state.start(createResult)}, this);
+}
+function toGameplay() {
+    game.state.start('main');
 }
