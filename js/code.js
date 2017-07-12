@@ -29,6 +29,7 @@ function preload() {
     game.load.spritesheet('sharkSeal', 'images/shark.png');
     game.load.spritesheet('spacebarBlock', 'images/dontpush.png');
     game.load.spritesheet('numberText', 'images/numberText.png', 744 / 11, 78, 11);
+    game.load.spritesheet('restartBtn', 'images/restartBtn.png');
     /////metarial/////
     game.load.spritesheet('airship', 'images/airship2.png');
     game.load.spritesheet('balloon', 'images/balloon.png');
@@ -102,6 +103,8 @@ var stopTimePoint;
 var stateHandle;
 var bgChange;
 var isfirstChange;
+var isfirstOver;
+var buttonRestart;
 /////////sound variable//////////
 var timeStopSound;
 var BGMStage1;
@@ -135,6 +138,7 @@ function createGameplay() {
     stateHandle = 1;
     // stateHandle = 2;
     isfirstChange = true;
+    isfirstOver = true;
     game.physics.startSystem(Phaser.Physics.ARCADE);
     this.myWorld = game.add.group();
     this.myWorld.enableBody = true;
@@ -565,6 +569,20 @@ function update() {
         if (bgSpeed > 0) {
             bgSpeed -= 0.35;
         }
+        //================
+        if(isfirstOver){
+            isfirstOver = false;
+            buttonRestart = game.add.button(game.world.width * (1 / 2) - 40, game.world.height * (1 / 5) - 100, 'restartBtn', function(){
+                game.state.restart(true,false);
+                BGMResult.stop();
+            }, this);
+            buttonRestart.scale.setTo(0.5, 0.5);
+            buttonRestart.alpha = 0;
+        }
+        if(buttonRestart.alpha<1){
+            buttonRestart.alpha += 0.001;
+        }
+        
     }
 
     //game.physics.arcade.collide(wippo,floor);
