@@ -6,7 +6,8 @@ game.state.add('main', main);
 game.state.start('menu');
 function preloadMenu(){
     game.load.image('backgroundMenu', 'images/BGmenu.png');
-    game.load.image('startButton', 'images/startButton.png')
+    game.load.image('startButton', 'images/startButton.png');
+    game.load.image('howtoplayButton', 'images/howtoplay.png');
 }
 function preload() {
     game.load.image('bullet', 'images/bullet.png');
@@ -137,11 +138,14 @@ var sun;
 var mountain;
 
 var startButton;
+var howtoplayButton;
 
 function createMenu() {
     game.add.image(0, 0, 'backgroundMenu');
-    startButton = game.add.button(game.world.width*(4/5), game.world.height*(1/5), 'startButton', toGameplay, this, 2, 1, 0, );
+    startButton = game.add.button(game.world.width*(4/5), game.world.height*(1/5), 'startButton', toGameplay, this, 2, 1, 0);
     startButton.anchor.set(0.5);
+    howtoplayButton = game.add.button(game.world.width*(4/5), game.world.height*(1.5/5), 'howtoplayButton', toGameplay, this, 2, 1, 0);
+    howtoplayButton.anchor.set(0.5);
 }
 
 function createGameplay() {
