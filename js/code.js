@@ -1,7 +1,12 @@
 var game = new Phaser.Game(800, 600, Phaser.AUTO, "game");
 var main = { preload: preload, create: createGameplay, update: update };
+var menu = { preload: preloadMenu, create: createMenu, update: updateMenu};
+game.state.add('menu', menu);
 game.state.add('main', main);
-game.state.start('main');
+game.state.start('menu');
+function preloadMenu(){
+    game.load.image('backgroundMenu', 'images/BGmenu.png');
+}
 function preload() {
     game.load.image('bullet', 'images/bullet.png');
     game.load.image('ship', 'images/wip.png');
@@ -129,6 +134,10 @@ var clound2Group;
 var clound3Group;
 var sun;
 var mountain;
+
+function createMenu() {
+    game.add.image(0, 0, 'backgroundMenu');
+}
 
 function createGameplay() {
     game.stage.disableVisibilityChange = true;
@@ -274,6 +283,10 @@ function createGameplay() {
         mute.frame = 0;
     else
         mute.frame = 1;
+}
+
+function updateMenu() {
+    
 }
 
 var summonCooldown = 0;
