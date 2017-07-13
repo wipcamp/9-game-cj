@@ -8,6 +8,7 @@ function preloadMenu(){
     game.load.image('backgroundMenu', 'images/BGmenu.png');
     game.load.image('startButton', 'images/startButton.png');
     game.load.image('howtoplayButton', 'images/howtoplay.png');
+    game.load.image('logoGame', 'images/logoGame.png');
 }
 function preload() {
     game.load.image('bullet', 'images/bullet.png');
@@ -142,12 +143,15 @@ var mountain;
 
 var startButton;
 var howtoplayButton;
+var logoGame;
 
 function createMenu() {
     game.add.image(0, 0, 'backgroundMenu');
-    startButton = game.add.button(game.world.width*(4/5), game.world.height*(1/5), 'startButton', toGameplay, this, 2, 1, 0);
+    logoGame = game.add.image(game.world.width*(3.5/5), game.world.height*(1/5), 'logoGame');
+    logoGame.anchor.set(0.5);
+    startButton = game.add.button(game.world.width*(3.5/5), game.world.height*(2/5), 'startButton', toGameplay, this, 2, 1, 0);
     startButton.anchor.set(0.5);
-    howtoplayButton = game.add.button(game.world.width*(4/5), game.world.height*(1.5/5), 'howtoplayButton', toGameplay, this, 2, 1, 0);
+    howtoplayButton = game.add.button(game.world.width*(3.5/5), game.world.height*(2.5/5), 'howtoplayButton', toGameplay, this, 2, 1, 0);
     howtoplayButton.anchor.set(0.5);
 }
 
