@@ -9,6 +9,9 @@ function preloadMenu(){
     game.load.image('startButton', 'images/startButton.png');
     game.load.image('howtoplayButton', 'images/howtoplay.png');
     game.load.image('logoGame', 'images/logoGame.png');
+    game.load.image('creditButton', 'images/creditButton.png');
+    game.load.image('reportButton', 'images/reportButton.png');
+    game.load.image('scoreBoardButton', 'images/scoreBoardButton.png');
 }
 function preload() {
     game.load.image('bullet', 'images/bullet.png');
@@ -147,16 +150,25 @@ var mountain;
 
 var startButton;
 var howtoplayButton;
+var creditButton;
+var scoreBoardButton;
+var reportButton;
 var logoGame;
 
 function createMenu() {
     game.add.image(0, 0, 'backgroundMenu');
-    logoGame = game.add.image(game.world.width*(3.5/5), game.world.height*(1/5), 'logoGame');
+    logoGame = game.add.image(game.world.width*(3.5/5), game.world.height*(1.4/5), 'logoGame');
     logoGame.anchor.set(0.5);
-    startButton = game.add.button(game.world.width*(3.5/5), game.world.height*(2/5), 'startButton', toGameplay, this, 2, 1, 0);
+    startButton = game.add.button(game.world.width*(3.5/5), game.world.height*(2.5/5), 'startButton', toGameplay, this, 2, 1, 0);
     startButton.anchor.set(0.5);
-    howtoplayButton = game.add.button(game.world.width*(3.5/5), game.world.height*(2.5/5), 'howtoplayButton', toGameplay, this, 2, 1, 0);
+    howtoplayButton = game.add.button(game.world.width*(3.5/5), game.world.height*(3/5), 'howtoplayButton', toGameplay, this, 2, 1, 0);
     howtoplayButton.anchor.set(0.5);
+    scoreBoardButton = game.add.button(game.world.width*(3.5/5), game.world.height*(3.5/5), 'scoreBoardButton', toGameplay, this, 2, 1, 0);
+    scoreBoardButton.anchor.set(0.5);
+    creditButton = game.add.button(game.world.width*(3.5/5), game.world.height*(4/5), 'creditButton', toGameplay, this, 2, 1, 0);
+    creditButton.anchor.set(0.5);
+    reportButton = game.add.button(game.world.width*(3.5/5), game.world.height*(4.5/5), 'reportButton', toGameplay, this, 2, 1, 0);
+    reportButton.anchor.set(0.5);
 }
 
 function createGameplay() {
