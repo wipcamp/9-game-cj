@@ -32,6 +32,8 @@ function preload() {
     game.load.image('buttonLineBody', 'images/buttonLineBody.png');
     game.load.image('checkerPic', 'images/pointer.png');
     game.load.image('beam', 'images/beam.png');
+    game.load.image('checkbar', 'images/checkbar.png');
+    
 
     game.load.spritesheet('mute', 'images/mute.png', 450, 447);
     game.load.spritesheet('up', 'images/up2.png', 45, 45, 8);
@@ -43,6 +45,8 @@ function preload() {
     game.load.spritesheet('spacebarBlock', 'images/dontpush.png');
     game.load.spritesheet('numberText', 'images/numberText.png', 744 / 11, 78, 11);
     game.load.spritesheet('restartBtn', 'images/restartBtn.png');
+    game.load.spritesheet('smoke', 'images/smoke.png',200,350,2);
+
     /////metarial/////
     game.load.spritesheet('airship', 'images/airship2.png');
     game.load.spritesheet('balloon', 'images/balloon.png');
@@ -75,6 +79,7 @@ var checkerSpeed = 70;
 var checkerPic;
 var cursors;
 var progressBar;
+var checkbar;
 var spaceButton;
 var stopTimeButton;
 var wave = [];
@@ -120,6 +125,7 @@ var bgChange;
 var isfirstChange;
 var isfirstOver;
 var buttonRestart;
+var smoke;
 /////////sound variable//////////
 var timeStopSound;
 var BGMStage1;
@@ -195,6 +201,8 @@ function createGameplay() {
     checker.scale.setTo(0.05, 0.3);
     checker.body.maxVelocity.set(1500);
     checker.body.collideWorldBounds = false;
+    
+    
     
     //////////animation wippo
     // wippo.animations.add('perfectRush',[0],1,true);
@@ -279,6 +287,11 @@ function createGameplay() {
         clound.checkWorldBounds = true;
         clound.events.onOutOfBounds.add(killObj, this);
     }
+    smoke = this.add.sprite(0,0, 'smoke');
+    smoke.anchor.set(0.5);
+    smoke.animations.add('great',[0,1],20,true);
+    smoke.kill();
+    smoke.animations.play('great');
     wippo = this.add.sprite(game.world.width / 2, game.world.height * (4 / 5) + 15, 'ship');
     game.physics.arcade.enable(wippo);
     wippo.anchor.set(0.5);
@@ -372,7 +385,7 @@ function update() {
 
                     isSpacebarPressed = false;
                 }
-                checker.reset(game.world.width * (2.5 / 7), game.world.height * (3 / 5));
+                checker.reset(game.world.width * (2.5 / 7), game.world.height * (3 / 5)+10);
                 summonCooldown = game.time.now + 1500;
             }
             if (stopTimeButton.isDown && stopTimePoint > 0) {
@@ -1412,23 +1425,40 @@ gameBegin = function () {
     sun.body.velocity.y = 5;
     wippo.body.velocity.y = 0;
     bgSpeed = 20;
+    smoke.reset(wippo.x, wippo.y+160);
+    smoke.animations.play('great');
+    
     perfect = this.add.sprite(game.world.width * (3 / 5), game.world.height * (3 / 5), 'laser');
-    perfect.scale.setTo(0.25, 0.5);
+    perfect.scale.setTo(0.25, 0.3);
     greatR = this.add.sprite(perfect.x + perfect.width, perfect.y, 'laser');
-    greatR.scale.setTo(0.25, 0.5);
+    greatR.scale.setTo(0.25, 0.3);
     greatL = this.add.sprite(perfect.x - perfect.width, perfect.y, 'laser');
-    greatL.scale.setTo(0.25, 0.5);
+    greatL.scale.setTo(0.25, 0.3);
     coolR = this.add.sprite(greatR.x + greatR.width, perfect.y, 'laser');
-    coolR.scale.setTo(0.25, 0.5);
+    coolR.scale.setTo(0.25, 0.3);
     coolL = this.add.sprite(greatL.x - greatL.width, perfect.y, 'laser');
-    coolL.scale.setTo(0.25, 0.5);
+    coolL.scale.setTo(0.25, 0.3);
     badR = this.add.sprite(coolR.x + coolR.width, perfect.y, 'laser');
-    badR.scale.setTo(0.25, 0.5);
+    badR.scale.setTo(0.25, 0.3);
     badL = this.add.sprite(coolL.x - coolL.width, perfect.y, 'laser');
-    badL.scale.setTo(0.25, 0.5);
+    badL.scale.setTo(0.25, 0.3);
+    progressBar = this.add.sprite(game.world.width * (3 / 5)-40, game.world.height * (3 / 5)+10, 'beam'); 
+    progressBar.scale.setTo(0.08, 0.07); 
+    progressBar.anchor.setTo(0.5); 
+    checkbar = this.add.sprite(game.world.width * (3 / 5)+5, game.world.height * (3 / 5)+10, 'checkbar'); 
+    checkbar.scale.setTo(0.035, 0.07); 
+    checkbar.anchor.setTo(0.5); 
     summonWave(3);
-    checker.reset(game.world.width * (2.5 / 7), game.world.height * (3 / 5));
+    checker.reset(game.world.width * (2.5 / 7), game.world.height * (3 / 5)+10);
     gamemode = "ingame";
+    checkerPic = this.add.sprite(0, game.world.height * (4 / 5) + 120, 'checkerPic');
+    game.physics.arcade.enable(checkerPic);
+    checkerPic.anchor.set(0.5);
+    checkerPic.scale.setTo(0.01, 0.01);
+    checkerPic.body.maxVelocity.set(1500);
+    checkerPic.body.collideWorldBounds = false;
+    
+
     ///////////////////////////////////////////////
     stopTimePointText = game.add.sprite(game.world.width * (7 / 8), game.world.height * (1.5 / 5) - 100, 'numberText');
     stopTimePointText.frame = 1;
@@ -1456,6 +1486,8 @@ gameEnd = function () {
     badL.destroy();
     checker.destroy();
     spacebarBlock.destroy();
+    checkerPic.destroy();
+    smoke.destroy();
     clearWave();
     //game.time.events.add(Phaser.Timer.SECOND * 3, toResultPage = function(){game.state.start(createResult)}, this);
 }
