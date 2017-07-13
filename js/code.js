@@ -26,6 +26,8 @@ function preload() {
     game.load.image('buttonLineHead', 'images/buttonLineHead.png');
     game.load.image('buttonLineTail', 'images/buttonLineTail.png');
     game.load.image('buttonLineBody', 'images/buttonLineBody.png');
+    game.load.image('checkerPic', 'images/pointer.png');
+    game.load.image('beam', 'images/beam.png');
 
     game.load.spritesheet('mute', 'images/mute.png', 450, 447);
     game.load.spritesheet('up', 'images/up2.png', 45, 45, 8);
@@ -66,7 +68,9 @@ function preload() {
 var isSound = true;
 var checker;
 var checkerSpeed = 70;
+var checkerPic;
 var cursors;
+var progressBar;
 var spaceButton;
 var stopTimeButton;
 var wave = [];
@@ -172,9 +176,10 @@ function createGameplay() {
     checker = this.add.sprite(0, game.world.height * (4 / 5) + 120, 'laser');
     game.physics.arcade.enable(checker);
     checker.anchor.set(0.5);
-    checker.scale.setTo(0.05, 0.6);
+    checker.scale.setTo(0.05, 0.3);
     checker.body.maxVelocity.set(1500);
     checker.body.collideWorldBounds = false;
+    
     //////////animation wippo
     // wippo.animations.add('perfectRush',[0],1,true);
     // wippo.animations.add('rush',[0],1,true);
@@ -319,7 +324,8 @@ function update() {
         collectArrow();
         if (!isTimeStopped) {
             checker.body.velocity.x = checkerSpeed;
-
+            checkerPic.x = checker.x;
+            checkerPic.y = checker.y;
             if (spacebarBlock.alive) {
                 isSpacebarPressed = true;
                 if (spaceButton.isDown) {
@@ -530,6 +536,7 @@ function update() {
             isfirstChange = false;
             if (stateHandle == 1) {
                 bgChange = game.add.tileSprite(0, 0, this.game.world.width, this.game.world.height, 'background2');
+                BGMStage1.fadeOut(3000);
             }
             else if (stateHandle == 2) {
                 bgChange = game.add.tileSprite(0, 0, this.game.world.width, this.game.world.height, 'background3');
@@ -551,11 +558,15 @@ function update() {
             var loop = game.time.events.loop(Phaser.Timer.SECOND * 0.2, function () {
                 bg.alpha -= 0.05;
                 bgChange.alpha += 0.05;
+                mountain.alpha  -= 0.1;
+                sun.alpha  -= 0.1;
                 if (earth != null)
                     earth.alpha += 0.05;
                 if (bg.alpha < 0.0000001) {
                     isfirstChange = true;
                     gamemode = "ingame";
+                    mountain.destroy();
+                    sun.destroy();
                     bg.destroy();
                     bg = bgChange;
                     bg.autoScroll(this.levelSpeed, 0);
