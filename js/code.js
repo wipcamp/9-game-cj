@@ -53,7 +53,6 @@ function preload() {
     game.load.spritesheet('earth', 'images/earth.png');
     game.load.spritesheet('sattellite', 'images/sattellite.png');
     game.load.spritesheet('saturn', 'images/saturn.png');
-    game.load.spritesheet('sharkAlien', 'images/sharkalien.png');
     game.load.spritesheet('shark', 'images/shark2.png', 50, 50);
     game.load.spritesheet('shipAndCannon', 'images/cannon.png');
     game.load.spritesheet('clound1', 'images/clound.png');
@@ -141,7 +140,6 @@ var flatCloud;
 var airplane;
 var sharkGroup;
 var sharkM;
-var sharkAlien;
 var galaxy;
 var saturn;
 var earth;
@@ -418,12 +416,6 @@ function update() {
                     airplane.body.velocity.y = 0;
                     airplane.body.velocity.x = 0;
                 }
-                if (sharkAlien != null) {
-                    // sharkAlien.body.velocity.y = bgSpeed*5;
-                    // sharkAlien.body.velocity.x = game.rnd.integerInRange(40,70);
-                    sharkAlien.body.velocity.y = 0;
-                    sharkAlien.body.velocity.x = 0;
-                }
                 if (sattellite != null) {
                     // sattellite.body.velocity.y = bgSpeed*8;
                     // sattellite.body.velocity.x = game.rnd.integerInRange(-300,300);
@@ -522,12 +514,6 @@ function update() {
                     // airplane.body.velocity.x = -game.rnd.integerInRange(200,250);
                     airplane.body.velocity.y = 0;
                     airplane.body.velocity.x = 0;
-                }
-                if (sharkAlien != null) {
-                    // sharkAlien.body.velocity.y = bgSpeed*5;
-                    // sharkAlien.body.velocity.x = game.rnd.integerInRange(40,70);
-                    sharkAlien.body.velocity.y = 0;
-                    sharkAlien.body.velocity.x = 0;
                 }
                 if (sattellite != null) {
                     // sattellite.body.velocity.y = bgSpeed*8;
@@ -752,11 +738,6 @@ function cancelCountdownTimer(timerName) {
             airplane.body.velocity.x = -game.rnd.integerInRange(200, 250);
 
         }
-        if (sharkAlien != null) {
-            sharkAlien.body.velocity.y = bgSpeed * 5;
-            sharkAlien.body.velocity.x = game.rnd.integerInRange(40, 70);
-
-        }
         if (sattellite != null) {
             sattellite.body.velocity.y = bgSpeed * 8;
             sattellite.body.velocity.x = game.rnd.integerInRange(-300, 300);
@@ -927,29 +908,7 @@ function materialGenerator() {
             airplane.body.velocity.y = bgSpeed * 5;
         }
 
-
-
-
-
-
     } else {
-
-        if (sharkAlien == null) {
-            sharkAlien = game.add.sprite(0, 0, 'sharkAlien');
-            sharkAlien.scale.setTo(0.7, 0.7);
-            game.physics.arcade.enable(sharkAlien);
-            sharkAlien.checkWorldBounds = true;
-            sharkAlien.events.onOutOfBounds.add(function () {
-                sharkAlien.destroy();
-                sharkAlien = null;
-            }, this);
-            sharkAlien.body.velocity.y = bgSpeed * 5;
-            sharkAlien.body.velocity.x = game.rnd.integerInRange(40, 70);
-            sharkAlien.sendToBack();
-            generatorCooldown += 1 * 60;
-        } else {
-            sharkAlien.body.velocity.y = bgSpeed * 5;
-        }
 
         if (sattellite == null) {
             sattellite = game.add.sprite(300, 0, 'sattellite');
