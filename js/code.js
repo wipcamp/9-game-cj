@@ -524,6 +524,9 @@ function update() {
             buttonRestart = game.add.button(game.world.width * (1 / 2) - 40, game.world.height * (1 / 5) - 100, 'restartBtn', function(){
                 game.state.restart(true,false);
                 BGMResult.stop();
+                BGMStage1.stop();
+                BGMStage2.stop();
+                BGMStage3.stop();
             }, this);
             buttonRestart.scale.setTo(0.5, 0.5);
             buttonRestart.alpha = 0;
