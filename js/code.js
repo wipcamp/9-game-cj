@@ -384,58 +384,7 @@ function update() {
                 summonCooldown = game.time.now + 1500;
             }
             if (stopTimeButton.isDown && stopTimePoint > 0) {
-                isTimeStopped = true;
-                stopTimePoint--;
-                stopTimeCounter = 3.0;
-                stopTimeTimer = game.time.events.repeat(Phaser.Timer.SECOND * 0.1, 31, countdownTimer, this, "timeStopped");
-                
-                checker.body.velocity.x = 0;
-                tempBgSpeed = bgSpeed;
-                bgSpeed = 0;
-                stopTimePointText.destroy();
-                stopTimePointText = game.add.sprite(game.world.width * (7 / 8), game.world.height * (1.5 / 5) - 100, 'numberText');
-                stopTimePointText.frame = stopTimePoint;
-                // wippo.animations.paused = true;
-
-                ///material
-                if (airship != null) {
-                    // airship.body.velocity.y = bgSpeed*3;
-                    // airship.body.velocity.x = -game.rnd.integerInRange(60,100);
-                    airship.body.velocity.y = 0;
-                    airship.body.velocity.x = 0;
-                }
-                if (balloon != null) {
-                    // balloon.body.velocity.y = bgSpeed*4;
-                    // balloon.body.velocity.x = game.rnd.integerInRange(40,70);
-                    balloon.body.velocity.y = 0;
-                    balloon.body.velocity.x = 0;
-                }
-                if (airplane != null) {
-                    // airplane.body.velocity.y = bgSpeed*5;
-                    // airplane.body.velocity.x = -game.rnd.integerInRange(200,250);
-                    airplane.body.velocity.y = 0;
-                    airplane.body.velocity.x = 0;
-                }
-                if (sattellite != null) {
-                    // sattellite.body.velocity.y = bgSpeed*8;
-                    // sattellite.body.velocity.x = game.rnd.integerInRange(-300,300);
-                    sattellite.body.velocity.y = 0;
-                    sattellite.body.velocity.x = 0;
-                }
-                if (saturn != null) {
-                    // saturn.body.velocity.y = bgSpeed/2;
-                    // saturn.body.velocity.x = game.rnd.integerInRange(3,7);
-                    saturn.body.velocity.y = 0;
-                    saturn.body.velocity.x = 0;
-                }
-                sharkGroup.setAll('body.velocity.x', 0, false, false);
-                sharkGroup.setAll('body.velocity.y', 0, false, false);
-                sharkGroup.setAll('body.gravity.y', 0, false, false);
-                sharkGroup.setAll('animations.paused', true, false);
-
-                ////sound
-                BGMStage1.pause();
-                timeStopSound.play();
+                stoptime();
             }
         } else {
             for (var i = waveCheckOrder; i <= wave.length - 1; i++) {
@@ -482,58 +431,7 @@ function update() {
                 }, this);
             }
             if (stopTimeButton.isDown && stopTimePoint > 0) {
-                isTimeStopped = true;
-                stopTimePoint--;
-                stopTimeCounter = 3.0;
-                stopTimeTimer = game.time.events.repeat(Phaser.Timer.SECOND * 0.1, 31, countdownTimer, this, "timeStopped");
-                if(guageAliveTimer!=null){
-                    guageAliveTimer.repeatCount+=30;
-                }
-                checker.body.velocity.x = 0;
-                tempBgSpeed = bgSpeed;
-                bgSpeed = 0;
-                stopTimePointText.destroy();
-                stopTimePointText = game.add.sprite(game.world.width * (7 / 8), game.world.height * (1.5 / 5) - 100, 'numberText');
-                stopTimePointText.frame = stopTimePoint;
-                // wippo.animations.paused = true;
-
-                if (airship != null) {
-                    // airship.body.velocity.y = bgSpeed*3;
-                    // airship.body.velocity.x = -game.rnd.integerInRange(60,100);
-                    airship.body.velocity.y = 0;
-                    airship.body.velocity.x = 0;
-                }
-                if (balloon != null) {
-                    // balloon.body.velocity.y = bgSpeed*4;
-                    // balloon.body.velocity.x = game.rnd.integerInRange(40,70);
-                    balloon.body.velocity.y = 0;
-                    balloon.body.velocity.x = 0;
-                }
-                if (airplane != null) {
-                    // airplane.body.velocity.y = bgSpeed*5;
-                    // airplane.body.velocity.x = -game.rnd.integerInRange(200,250);
-                    airplane.body.velocity.y = 0;
-                    airplane.body.velocity.x = 0;
-                }
-                if (sattellite != null) {
-                    // sattellite.body.velocity.y = bgSpeed*8;
-                    // sattellite.body.velocity.x = game.rnd.integerInRange(-300,300);
-                    sattellite.body.velocity.y = 0;
-                    sattellite.body.velocity.x = 0;
-                }
-                if (saturn != null) {
-                    // saturn.body.velocity.y = bgSpeed/2;
-                    // saturn.body.velocity.x = game.rnd.integerInRange(3,7);
-                    saturn.body.velocity.y = 0;
-                    saturn.body.velocity.x = 0;
-                }
-                sharkGroup.setAll('body.velocity.x', 0, false, false);
-                sharkGroup.setAll('body.velocity.y', 0, false, false);
-                sharkGroup.setAll('body.gravity.y', 0, false, false);
-                sharkGroup.setAll('animations.paused', true, false);
-
-                BGMStage1.pause();
-                timeStopSound.play();
+                stoptime();
 
             }
         } else {
@@ -580,6 +478,8 @@ function update() {
                     mountain.destroy();
                     sun.destroy();
                     bg.destroy();
+                    sun=null;
+                    mountain=null;
                     bg = bgChange;
                     bg.autoScroll(this.levelSpeed, 0);
                     bg.fixedToCamera = true;
@@ -672,7 +572,7 @@ function countdownTimer(timerName) {
             guageTimerDigit1.destroy();
             guageTimerDecimal.destroy();
         }
-
+        
         guageTimerDigit2 = game.add.sprite(game.world.width * (1 / 5) - 80, game.world.height * (1.5 / 5) - 150, 'numberText');
         guageTimerDigit2.frame = Math.floor(guageTimeCounter / 10);
         guageTimerDigit1 = game.add.sprite(game.world.width * (1 / 5), game.world.height * (1.5 / 5) - 150, 'numberText');
@@ -685,6 +585,7 @@ function countdownTimer(timerName) {
 
         if (guageTimeCounter <= 0) {
             // wippo.animations.play("death");
+            cancelCountdownTimer("feverTime");
             gameEnd();
         }
     } else if (timerName == "timeStopped") {
@@ -706,6 +607,82 @@ function countdownTimer(timerName) {
         }
     }
 }
+function stoptime() {
+    isTimeStopped = true;
+    stopTimePoint--;
+    stopTimeCounter = 3.0;
+    stopTimeTimer = game.time.events.repeat(Phaser.Timer.SECOND * 0.1, 31, countdownTimer, this, "timeStopped");
+    if(guageAliveTimer!=null){
+        guageAliveTimer.repeatCount+=30;
+    }
+    checker.body.velocity.x = 0;
+    tempBgSpeed = bgSpeed;
+    bgSpeed = 0;
+    stopTimePointText.destroy();
+    stopTimePointText = game.add.sprite(game.world.width * (7 / 8), game.world.height * (1.5 / 5) - 100, 'numberText');
+    stopTimePointText.frame = stopTimePoint;
+    // wippo.animations.paused = true;
+
+    var cloud1=clound1Group.getFirstExists(true);
+    var cloud2=clound2Group.getFirstExists(true);
+    var cloud3=clound3Group.getFirstExists(true);
+    if(cloud1!=null){
+        cloud1.body.velocity.y = 0;
+    }
+    if(cloud2!=null){
+        cloud2.body.velocity.y = 0;
+    }
+    if(cloud3!=null){
+        cloud3.body.velocity.y = 0;
+    }
+    // clound1Group.forEachExists('body.velocity.y', this, 0)
+    // clound2Group.forEachExists('body.velocity.y', this, 0)
+    // clound3Group.forEachExists('body.velocity.y', this, 0)
+
+    if (sun != null) {
+        sun.body.velocity.y = 0;
+    }
+    if (mountain != null) {
+        mountain.body.velocity.y = 0;
+    }
+    if (airship != null) {
+        // airship.body.velocity.y = bgSpeed*3;
+        // airship.body.velocity.x = -game.rnd.integerInRange(60,100);
+        airship.body.velocity.y = 0;
+        airship.body.velocity.x = 0;
+    }
+    if (balloon != null) {
+        // balloon.body.velocity.y = bgSpeed*4;
+        // balloon.body.velocity.x = game.rnd.integerInRange(40,70);
+        balloon.body.velocity.y = 0;
+        balloon.body.velocity.x = 0;
+    }
+    if (airplane != null) {
+        // airplane.body.velocity.y = bgSpeed*5;
+        // airplane.body.velocity.x = -game.rnd.integerInRange(200,250);
+        airplane.body.velocity.y = 0;
+        airplane.body.velocity.x = 0;
+    }
+    if (sattellite != null) {
+        // sattellite.body.velocity.y = bgSpeed*8;
+        // sattellite.body.velocity.x = game.rnd.integerInRange(-300,300);
+        sattellite.body.velocity.y = 0;
+        sattellite.body.velocity.x = 0;
+    }
+    if (saturn != null) {
+        // saturn.body.velocity.y = bgSpeed/2;
+        // saturn.body.velocity.x = game.rnd.integerInRange(3,7);
+        saturn.body.velocity.y = 0;
+        saturn.body.velocity.x = 0;
+    }
+    sharkGroup.setAll('body.velocity.x', 0, false, false);
+    sharkGroup.setAll('body.velocity.y', 0, false, false);
+    sharkGroup.setAll('body.gravity.y', 0, false, false);
+    sharkGroup.setAll('animations.paused', true, false);
+
+    BGMStage1.pause();
+    timeStopSound.play();
+}
 var tempBgSpeed;
 function cancelCountdownTimer(timerName) {
     if (timerName == "feverTime") {
@@ -713,6 +690,12 @@ function cancelCountdownTimer(timerName) {
             guageTimerDigit2.destroy();
             guageTimerDigit1.destroy();
             guageTimerDecimal.destroy();
+        }
+        if (specialGuage != null) {
+            specialGuage.destroy();
+        }
+        if (specialGuageSeal != null) {
+            specialGuageSeal.destroy();
         }
     } else if (timerName == "timeStopped") {
         if (stopTimerDigit1 != null) {
@@ -724,6 +707,25 @@ function cancelCountdownTimer(timerName) {
 
         ///material
 
+        var cloud1=clound1Group.getFirstExists(true);
+        var cloud2=clound2Group.getFirstExists(true);
+        var cloud3=clound3Group.getFirstExists(true);
+        if(cloud1!=null){
+            cloud1.body.velocity.y = 1200;
+        }
+        if(cloud2!=null){
+            cloud2.body.velocity.y = 1200;
+        }
+        if(cloud3!=null){
+            cloud3.body.velocity.y = 1200;
+        }
+
+        if (sun != null) {
+            sun.body.velocity.y = 10;
+        }
+        if (mountain != null) {
+            mountain.body.velocity.y = 10;
+        }
         if (airship != null) {
             airship.body.velocity.y = bgSpeed * 3;
             airship.body.velocity.x = -game.rnd.integerInRange(60, 100);
@@ -772,9 +774,9 @@ function cancelCountdownTimer(timerName) {
 //////material function
 var generatorCooldown = 0;
 var sharkMCooldown = 60;
-var clound1Cooldown = game.rnd.integerInRange(80,120);
-var clound2Cooldown = game.rnd.integerInRange(80,120);
-var clound3Cooldown = game.rnd.integerInRange(80,120);
+var clound1Cooldown = game.rnd.integerInRange(180,240);
+var clound2Cooldown = game.rnd.integerInRange(240,280);
+var clound3Cooldown = game.rnd.integerInRange(300,340);
 function materialGenerator() {
     if (stateHandle == 1) {
         //BG1
@@ -800,12 +802,14 @@ function materialGenerator() {
             }
         }
         if (clound1Cooldown <= 0) {
-            clound1Cooldown = game.rnd.integerInRange(80,120);
+            clound1Cooldown = game.rnd.integerInRange(120,240);
             var clound = clound1Group.getFirstExists(false);
-            var cloundLaunchAt = game.rnd.integerInRange(20, game.world.height * (2/3));
-            var spawnSide = game.rnd.integerInRange(0, 1);
-            var cloundSpeed = game.rnd.integerInRange(200, 400);
-            if(spawnSide==0){
+            var cloundLaunchAt = game.rnd.integerInRange(20, game.world.width-20);
+            //var spawnSide = game.rnd.integerInRange(0, 1);
+            var cloundSpeed = game.rnd.integerInRange(1200, 1400);
+            clound.reset(cloundLaunchAt,0);
+            clound.body.velocity.y = cloundSpeed;
+            /*if(spawnSide==0){
                 clound.reset(0,cloundLaunchAt);
                 clound.body.velocity.x = cloundSpeed;
                 clound.body.velocity.y = 0;
@@ -814,15 +818,17 @@ function materialGenerator() {
                 clound.reset(game.world.width,cloundLaunchAt);
                 clound.body.velocity.x = -cloundSpeed;
                 clound.body.velocity.y = 0;
-            }
+            }*/
         }
         if (clound2Cooldown <= 0) {
-            clound2Cooldown = game.rnd.integerInRange(80,120);
+            clound2Cooldown = game.rnd.integerInRange(180,300);
             var clound = clound2Group.getFirstExists(false);
             var cloundLaunchAt = game.rnd.integerInRange(20, game.world.height * (2/3));
-            var spawnSide = game.rnd.integerInRange(0, 1);
-            var cloundSpeed = game.rnd.integerInRange(200, 400);
-            if(spawnSide==0){
+            // var spawnSide = game.rnd.integerInRange(0, 1);
+            var cloundSpeed = game.rnd.integerInRange(1000, 1400);
+            clound.reset(cloundLaunchAt,0);
+            clound.body.velocity.y = cloundSpeed;
+            /*if(spawnSide==0){
                 clound.reset(0,cloundLaunchAt);
                 clound.body.velocity.x = cloundSpeed;
                 clound.body.velocity.y = 0;
@@ -831,15 +837,17 @@ function materialGenerator() {
                 clound.reset(game.world.width,cloundLaunchAt);
                 clound.body.velocity.x = -cloundSpeed;
                 clound.body.velocity.y = 0;
-            }
+            }*/
         }
         if (clound3Cooldown <= 0) {
-            clound3Cooldown = game.rnd.integerInRange(80,120);
+            clound3Cooldown = game.rnd.integerInRange(240,360);
             var clound = clound3Group.getFirstExists(false);
             var cloundLaunchAt = game.rnd.integerInRange(20, game.world.height * (2/3));
-            var spawnSide = game.rnd.integerInRange(0, 1);
-            var cloundSpeed = game.rnd.integerInRange(200, 400);
-            if(spawnSide==0){
+            // var spawnSide = game.rnd.integerInRange(0, 1);
+            var cloundSpeed = game.rnd.integerInRange(1000, 1200);
+            clound.reset(cloundLaunchAt,0);
+            clound.body.velocity.y = cloundSpeed;           
+            /*if(spawnSide==0){
                 clound.reset(0,cloundLaunchAt);
                 clound.body.velocity.x = cloundSpeed;
                 clound.body.velocity.y = 0;
@@ -848,7 +856,7 @@ function materialGenerator() {
                 clound.reset(game.world.width,cloundLaunchAt);
                 clound.body.velocity.x = -cloundSpeed;
                 clound.body.velocity.y = 0;
-            }
+            }*/
         }
 
         clound1Cooldown--;
@@ -1428,6 +1436,8 @@ gameEnd = function () {
     badR.destroy();
     badL.destroy();
     checker.destroy();
+    progressBar.destroy();
+    checkbar.destroy();
     spacebarBlock.destroy();
     checkerPic.destroy();
     smoke.destroy();
