@@ -333,17 +333,18 @@ function updateMenu() {
 
 var summonCooldown = 0;
 function update() {
-    if (!isTimeStopped) {
-        materialGenerator();
-    }
+    
     /*if(!this.game.world.bounds.intersects(wippo)){
         wippo.kill();
         checker.body.velocity.x = 0;
     }*/
     bg.tilePosition.y += bgSpeed;
     if (gamemode == "prepare") {
-
+        materialGenerator();
     } else if (gamemode == "ingame") {
+        if (!isTimeStopped) {
+            materialGenerator();
+        }
         //this.scoreText.setText('Score : ' + this.score);
         collectArrow();
         if (!isTimeStopped) {
@@ -394,6 +395,9 @@ function update() {
         }
 
     } else if (gamemode == "feverTime") {
+        if (!isTimeStopped) {
+            materialGenerator();
+        }
         if (!specialGuageIsSpawned) {
             specialGuage = this.add.sprite(game.world.width * (1 / 5), game.world.height * (1.5 / 5), 'guage');
             specialGuageSeal = this.add.sprite(game.world.width * (1 / 5) + 6, game.world.height * (1.5 / 5) + 6, 'guageSeal');
