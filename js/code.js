@@ -41,7 +41,6 @@ function preload() {
     game.load.spritesheet('right', 'images/right2.png', 45, 45, 8);
     game.load.spritesheet('left', 'images/left2.png', 45, 45, 8);
     game.load.spritesheet('laser', 'images/biglaser.png');
-    game.load.spritesheet('sharkSeal', 'images/shark.png');
     game.load.spritesheet('spacebarBlock', 'images/dontpush.png');
     game.load.spritesheet('numberText', 'images/numberText.png', 744 / 11, 78, 11);
     game.load.spritesheet('restartBtn', 'images/restartBtn.png');
@@ -104,7 +103,6 @@ var specialGuage;
 var specialGuageSeal;
 var isSpacebarPressed;
 var spacebarBlock;
-var spacebarBlockIsSpawned;
 var isSpacebarDown;
 var maxGuage;
 var guageAliveTimer;
@@ -233,7 +231,6 @@ function createGameplay() {
     spacebarBlock = this.add.sprite(game.world.width * (3 / 5), game.world.height * (3 / 5) - 20, 'spacebarBlock');
     spacebarBlock.scale.setTo(0.7, 0.7);
     spacebarBlock.kill();
-    spacebarBlockIsSpawned = false;
 
     sharkGroup = game.add.group();
     sharkGroup.enableBody = true;
@@ -1185,24 +1182,11 @@ function clearWave() {
 function summonWave(length) {
     // var l = wave.length;
     var randObstacle = game.rnd.integerInRange(1, 6);
-    if (randObstacle == 1) {
-        sharkSeal = game.add.sprite(0, game.world.height * (3 / 5) - 60, 'sharkSeal');
-        sharkSeal.scale.setTo(0.06, 0.06);
-        game.physics.arcade.enable(sharkSeal);
-        sharkSeal.events.onOutOfBounds.add(destroyObj, this);
-        sharkSeal.body.velocity.x = 400;
-        var travelTime = game.rnd.integerInRange(95, 105);
-        game.time.events.add(Phaser.Timer.SECOND * travelTime / 100, function () {
-            sharkSeal.body.velocity.x = 0;
-            game.time.events.add(Phaser.Timer.SECOND * 2.5, function () {
-                sharkSeal.body.velocity.x = 600;
-            }, this);
-
-        }, this);
-    } else if (randObstacle == 2) {
+    if (randObstacle == 2) {
         spacebarBlock.revive();
         spacebarBlock.bringToTop();
     }
+    
 
     //var startPositon;
     /*if(length==3){
