@@ -94,7 +94,7 @@ var badL, badR;
 var wippo;
 var floor;
 var bg;
-var bgSpeed = 0;
+var bgSpeed;
 var score;
 var gamemode;
 var specialGuageIsSpawned;
@@ -333,7 +333,7 @@ function updateMenu() {
 
 var summonCooldown = 0;
 function update() {
-    
+
     /*if(!this.game.world.bounds.intersects(wippo)){
         wippo.kill();
         checker.body.velocity.x = 0;
@@ -362,7 +362,7 @@ function update() {
                 checkAccuracy();
                 clearWave();
                 spaceKeyDownTimer = game.time.now + 1500;
-                if ((score >= 100 && score < 600) || (score >= 800 && score < 1300)) {
+                if ((score >= 100 && score < 600) /*||====== (score >= 800 && score < 1300)*/) {
                     gamemode = "feverTime";
                     guageTimeCounter = 15.0;
                     guageAliveTimer = game.time.events.repeat(Phaser.Timer.SECOND * 0.1, 151, countdownTimer, this, "feverTime");
@@ -472,15 +472,19 @@ function update() {
             var loop = game.time.events.loop(Phaser.Timer.SECOND * 0.2, function () {
                 bg.alpha -= 0.05;
                 bgChange.alpha += 0.05;
-                mountain.alpha  -= 0.1;
-                sun.alpha  -= 0.1;
+                if (mountain != null)
+                    mountain.alpha  -= 0.1;
+                if (sun != null)
+                    sun.alpha  -= 0.1;      
                 if (earth != null)
                     earth.alpha += 0.05;
                 if (bg.alpha < 0.0000001) {
                     isfirstChange = true;
                     gamemode = "ingame";
-                    mountain.destroy();
-                    sun.destroy();
+                    if (mountain != null)
+                        mountain.destroy();
+                    if (sun != null)    
+                        sun.destroy();
                     bg.destroy();
                     sun=null;
                     mountain=null;
@@ -515,10 +519,10 @@ function update() {
         // }
 
     } else if (gamemode == "gameover") {
+        materialGenerator();
         if (bgSpeed > 0) {
             bgSpeed -= 0.35;
         }
-        //================
         if(isfirstOver){
             isfirstOver = false;
             buttonRestart = game.add.button(game.world.width * (1 / 2) - 40, game.world.height * (1 / 5) - 100, 'restartBtn', function(){
@@ -609,7 +613,6 @@ function countdownTimer(timerName) {
         if (stopTimeCounter <= 0) {
             isTimeStopped = false;
             cancelCountdownTimer("timeStopped");
-            //===============
 
         }
     }
@@ -642,10 +645,6 @@ function stoptime() {
     if(cloud3!=null){
         cloud3.body.velocity.y = 0;
     }
-    // clound1Group.forEachExists('body.velocity.y', this, 0)
-    // clound2Group.forEachExists('body.velocity.y', this, 0)
-    // clound3Group.forEachExists('body.velocity.y', this, 0)
-
     if (sun != null) {
         sun.body.velocity.y = 0;
     }
@@ -784,6 +783,9 @@ var sharkMCooldown = 60;
 var clound1Cooldown = game.rnd.integerInRange(180,240);
 var clound2Cooldown = game.rnd.integerInRange(240,280);
 var clound3Cooldown = game.rnd.integerInRange(300,340);
+var airshipCooldown = game.rnd.integerInRange(180,360);
+var balloonCooldown = game.rnd.integerInRange(60,240);
+var airplaneCooldown = game.rnd.integerInRange(120,300);
 function materialGenerator() {
     if (stateHandle == 1) {
         //BG1
@@ -830,7 +832,7 @@ function materialGenerator() {
         if (clound2Cooldown <= 0) {
             clound2Cooldown = game.rnd.integerInRange(180,300);
             var clound = clound2Group.getFirstExists(false);
-            var cloundLaunchAt = game.rnd.integerInRange(20, game.world.height * (2/3));
+            var cloundLaunchAt = game.rnd.integerInRange(20, game.world.width-20);
             // var spawnSide = game.rnd.integerInRange(0, 1);
             var cloundSpeed = game.rnd.integerInRange(1000, 1400);
             clound.reset(cloundLaunchAt,0);
@@ -849,7 +851,7 @@ function materialGenerator() {
         if (clound3Cooldown <= 0) {
             clound3Cooldown = game.rnd.integerInRange(240,360);
             var clound = clound3Group.getFirstExists(false);
-            var cloundLaunchAt = game.rnd.integerInRange(20, game.world.height * (2/3));
+            var cloundLaunchAt = game.rnd.integerInRange(20, game.world.width-20);
             // var spawnSide = game.rnd.integerInRange(0, 1);
             var cloundSpeed = game.rnd.integerInRange(1000, 1200);
             clound.reset(cloundLaunchAt,0);
@@ -872,56 +874,62 @@ function materialGenerator() {
         sharkMCooldown--;
     } else if (stateHandle == 2) {
         //BG2
-        if (airship == null) {
-            airship = game.add.sprite(game.world.width, 0, 'airship');
-            airship.scale.setTo(0.5, 0.5);
+        if (airship == null && airplaneCooldown <= 0) {
+            var airshipSpawnAt = game.rnd.integerInRange(game.world.width/3, game.world.width-20);
+            var airshipScale = game.rnd.integerInRange(5, 6)/10;
+            airship = game.add.sprite(airshipSpawnAt, 0, 'airship');
+            airship.scale.setTo(airshipScale, airshipScale);
             game.physics.arcade.enable(airship);
+            airship.anchor.set(0.5);
             airship.checkWorldBounds = true;
             airship.events.onOutOfBounds.add(function () {
                 airship.destroy();
                 airship = null;
             }, this);
-            airship.body.velocity.y = bgSpeed * 3;
-            airship.body.velocity.x = -game.rnd.integerInRange(60, 100);
+            airship.body.velocity.y = bgSpeed * 40;
+            airship.body.velocity.x = -game.rnd.integerInRange(400, 600);
             airship.sendToBack();
-            generatorCooldown += 1 * 60;
-        } else {
-            airship.body.velocity.y = bgSpeed * 3;
+            airshipCooldown = game.rnd.integerInRange(300,420);
         }
 
-        if (balloon == null) {
-            balloon = game.add.sprite(0, 0, 'balloon');
-            balloon.scale.setTo(0.2, 0.2);
+        if (balloon == null && balloonCooldown <= 0) {
+            var balloonSpawnAt = game.rnd.integerInRange(20, game.world.width-20);
+            var balloonScale = game.rnd.integerInRange(2, 3)/10;
+            balloon = game.add.sprite(balloonSpawnAt, 0, 'balloon');
+            balloon.scale.setTo(balloonScale, balloonScale);
             game.physics.arcade.enable(balloon);
+            balloon.anchor.set(0.5);
             balloon.checkWorldBounds = true;
             balloon.events.onOutOfBounds.add(function () {
                 balloon.destroy();
                 balloon = null;
             }, this);
-            balloon.body.velocity.y = bgSpeed * 4;
-            balloon.body.velocity.x = game.rnd.integerInRange(40, 70);
+            balloon.body.velocity.y = bgSpeed * 35;
+            balloon.body.velocity.x = game.rnd.integerInRange(100, 300);
             balloon.sendToBack();
-            generatorCooldown += 1 * 60;
-        } else {
-            balloon.body.velocity.y = bgSpeed * 4;
+            balloonCooldown = game.rnd.integerInRange(120,300);
         }
 
-        if (airplane == null) {
-            airplane = game.add.sprite(game.world.width, 0, 'airplane');
-            airplane.scale.setTo(0.5, 0.5);
+        if (airplane == null && airplaneCooldown <= 0) {
+            var airplaneSpawnAt = game.rnd.integerInRange(game.world.width/3, game.world.width-20);
+            var airplaneScale = game.rnd.integerInRange(5, 6)/10;
+            airplane = game.add.sprite(airplaneSpawnAt, 0, 'airplane');
+            airplane.scale.setTo(airplaneScale, airplaneScale);
             game.physics.arcade.enable(airplane);
+            airplane.anchor.set(0.5);
             airplane.checkWorldBounds = true;
             airplane.events.onOutOfBounds.add(function () {
                 airplane.destroy();
                 airplane = null;
             }, this);
-            airplane.body.velocity.y = bgSpeed * 5;
-            airplane.body.velocity.x = -game.rnd.integerInRange(200, 250);
+            airplane.body.velocity.y = bgSpeed * 45;
+            airplane.body.velocity.x = -game.rnd.integerInRange(600, 800);
             airplane.sendToBack();
-            generatorCooldown += 1 * 60;
-        } else {
-            airplane.body.velocity.y = bgSpeed * 5;
-        }
+            airplaneCooldown = game.rnd.integerInRange(240,360);
+        } 
+        airshipCooldown--;
+        balloonCooldown--;
+        airplaneCooldown--;
 
     } else {
 
@@ -993,7 +1001,7 @@ function checkAccuracy() {
         game.time.events.add(Phaser.Timer.SECOND * 2, function () {
             statusText.destroy();
         }, this);
-        bgSpeed = 20;
+        bgSpeed = 30;
         score += 90;
         perfectStack = 0;
         // wippo.animations.play("rush");
@@ -1003,7 +1011,7 @@ function checkAccuracy() {
         game.time.events.add(Phaser.Timer.SECOND * 2, function () {
             statusText.destroy();
         }, this);
-        bgSpeed = 5;
+        bgSpeed = 20;
         score += 60;
         perfectStack = 0;
         // wippo.animations.play("rush");
@@ -1013,7 +1021,7 @@ function checkAccuracy() {
         game.time.events.add(Phaser.Timer.SECOND * 2, function () {
             statusText.destroy();
         }, this);
-        bgSpeed = 5;
+        bgSpeed = 20;
         score += 30;
         perfectStack = 0;
         // wippo.animations.play("rush");
