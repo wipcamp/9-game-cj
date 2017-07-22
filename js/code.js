@@ -44,7 +44,7 @@ function preload() {
     game.load.spritesheet('spacebarBlock', 'images/dontpush.png');
     game.load.spritesheet('numberText', 'images/numberText.png', 744 / 11, 78, 11);
     game.load.spritesheet('restartBtn', 'images/restartBtn.png');
-    game.load.spritesheet('smoke', 'images/smoke.png',200,350,5);
+    game.load.spritesheet('smoke', 'images/smoke.png',800,600,10);
 
     /////metarial/////
     game.load.spritesheet('airship', 'images/airship2.png');
@@ -280,7 +280,7 @@ function createGameplay() {
     smoke = this.add.sprite(0,0, 'smoke');
     game.physics.arcade.enable(smoke);
     smoke.anchor.set(0.5);
-    smoke.animations.add('great',[0,1,2,3,4],40,true);
+    smoke.animations.add('great',[0,1,2,3,4,5,6,7,8,9],40,true);
     smoke.kill();
     smoke.animations.play('great');
 
@@ -1399,7 +1399,7 @@ wippoLaunch = function () {
     mountain.body.velocity.y = 10;
     sun.body.velocity.y = 10;
     wippo.body.velocity.y = -150;
-    smoke.reset(wippo.x, wippo.y+160);
+    smoke.reset(wippo.x+20, wippo.y+110);
     smoke.body.velocity.y = -150;
     bgSpeed = 60;
     game.time.events.add(Phaser.Timer.SECOND * 2, gameBegin, this);
@@ -1409,7 +1409,7 @@ gameBegin = function () {
     sun.body.velocity.y = 5;
     wippo.body.velocity.y = 0;
     bgSpeed = 20;
-    smoke.reset(wippo.x, wippo.y+160);
+    smoke.reset(wippo.x+20, wippo.y+110);
     smoke.animations.play('great');
 
     perfect = this.add.sprite(game.world.width * (3 / 5), game.world.height * (3 / 5), 'laser');
