@@ -210,12 +210,6 @@ function createGameplay() {
     mountain.body.collideWorldBounds = false;
     mountain.body.immovable = true;
 
-    floor = this.add.sprite(0, game.world.height * (3 / 5), 'shipAndCannon');
-    game.physics.arcade.enable(floor);
-    floor.scale.setTo(0.1, 0.1);
-    floor.body.collideWorldBounds = false;
-    floor.body.immovable = true;
-
     sun = this.add.sprite(game.world.width * (4 / 5), game.world.height * (0.5 / 5), 'sun');
     game.physics.arcade.enable(sun);
     sun.scale.setTo(0.5, 0.5);
@@ -290,6 +284,13 @@ function createGameplay() {
     wippo = this.add.sprite(game.world.width / 2, game.world.height * (4 / 5) + 15, 'ship');
     game.physics.arcade.enable(wippo);
     wippo.anchor.set(0.5);
+
+    floor = this.add.sprite(game.world.width/2, game.world.height * (3 / 5), 'shipAndCannon');
+    game.physics.arcade.enable(floor);
+    floor.scale.setTo(1, 1);
+    floor.body.collideWorldBounds = false;
+    floor.body.immovable = true;
+    floor.anchor.set(0.5);
 
     game.time.events.add(Phaser.Timer.SECOND * 2, wippoLaunch, this);
     isSpacebarDown = false;
