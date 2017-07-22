@@ -44,7 +44,7 @@ function preload() {
     game.load.spritesheet('spacebarBlock', 'images/dontpush.png');
     game.load.spritesheet('numberText', 'images/numberText.png', 744 / 11, 78, 11);
     game.load.spritesheet('restartBtn', 'images/restartBtn.png');
-    game.load.spritesheet('smoke', 'images/smoke.png',200,350,2);
+    game.load.spritesheet('smoke', 'images/smoke.png',200,350,5);
 
     /////metarial/////
     game.load.spritesheet('airship', 'images/airship2.png');
@@ -284,7 +284,7 @@ function createGameplay() {
     }
     smoke = this.add.sprite(0,0, 'smoke');
     smoke.anchor.set(0.5);
-    smoke.animations.add('great',[0,1],20,true);
+    smoke.animations.add('great',[0,1,2,3,4],20,true);
     smoke.kill();
     smoke.animations.play('great');
     wippo = this.add.sprite(game.world.width / 2, game.world.height * (4 / 5) + 15, 'ship');
