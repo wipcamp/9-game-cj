@@ -277,6 +277,7 @@ function createGameplay() {
         clound.events.onOutOfBounds.add(killObj, this);
     }
     smoke = this.add.sprite(0,0, 'smoke');
+    game.physics.arcade.enable(smoke);
     smoke.anchor.set(0.5);
     smoke.animations.add('great',[0,1,2,3,4],20,true);
     smoke.kill();
@@ -1384,6 +1385,8 @@ wippoLaunch = function () {
     mountain.body.velocity.y = 10;
     sun.body.velocity.y = 10;
     wippo.body.velocity.y = -150;
+    smoke.reset(wippo.x, wippo.y+160);
+    smoke.body.velocity.y = -150;
     bgSpeed = 60;
     game.time.events.add(Phaser.Timer.SECOND * 2, gameBegin, this);
 }
