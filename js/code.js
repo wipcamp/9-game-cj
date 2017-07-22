@@ -391,7 +391,7 @@ function update() {
                     summonWave(6);
                     if (!isSpacebarPressed) {
                         // wippo.animations.play("death");
-                        gameEnd();
+                        //gameEnd();====== จะได้ไม่ต้องกด spacebar (test material อยู่)
                     }
 
                     isSpacebarPressed = false;
@@ -534,7 +534,6 @@ function update() {
         // }
 
     } else if (gamemode == "gameover") {
-        materialGenerator();
         if (bgSpeed > 0) {
             bgSpeed -= 0.35;
         }
@@ -748,17 +747,17 @@ function cancelCountdownTimer(timerName) {
             mountain.body.velocity.y = 10;
         }
         if (airship != null) {
-            airship.body.velocity.y = bgSpeed * 3;
-            airship.body.velocity.x = -game.rnd.integerInRange(60, 100);
+            airship.body.velocity.y = bgSpeed * 40;
+            airship.body.velocity.x = -500;
         }
         if (balloon != null) {
-            balloon.body.velocity.y = bgSpeed * 4;
-            balloon.body.velocity.x = game.rnd.integerInRange(40, 70);
+            balloon.body.velocity.y = bgSpeed * 35;
+            balloon.body.velocity.x = 200;
 
         }
         if (airplane != null) {
-            airplane.body.velocity.y = bgSpeed * 5;
-            airplane.body.velocity.x = -game.rnd.integerInRange(200, 250);
+            airplane.body.velocity.y = bgSpeed * 45;
+            airplane.body.velocity.x = -700;
 
         }
         if (sattellite != null) {
@@ -798,9 +797,9 @@ var sharkMCooldown = 60;
 var clound1Cooldown = game.rnd.integerInRange(180,240);
 var clound2Cooldown = game.rnd.integerInRange(240,280);
 var clound3Cooldown = game.rnd.integerInRange(300,340);
-var airshipCooldown = game.rnd.integerInRange(180,360);
+var airshipCooldown = 480;
 var balloonCooldown = game.rnd.integerInRange(60,240);
-var airplaneCooldown = game.rnd.integerInRange(120,300);
+var airplaneCooldown = 300;
 function materialGenerator() {
     if (stateHandle == 1) {
         //BG1
@@ -829,58 +828,28 @@ function materialGenerator() {
             clound1Cooldown = game.rnd.integerInRange(120,240);
             var clound = clound1Group.getFirstExists(false);
             var cloundLaunchAt = game.rnd.integerInRange(20, game.world.width-20);
-            //var spawnSide = game.rnd.integerInRange(0, 1);
             var cloundSpeed = game.rnd.integerInRange(1200, 1400);
             clound.reset(cloundLaunchAt,0);
             clound.body.velocity.y = cloundSpeed;
-            /*if(spawnSide==0){
-                clound.reset(0,cloundLaunchAt);
-                clound.body.velocity.x = cloundSpeed;
-                clound.body.velocity.y = 0;
-            }
-            else{
-                clound.reset(game.world.width,cloundLaunchAt);
-                clound.body.velocity.x = -cloundSpeed;
-                clound.body.velocity.y = 0;
-            }*/
+
         }
         if (clound2Cooldown <= 0) {
             clound2Cooldown = game.rnd.integerInRange(180,300);
             var clound = clound2Group.getFirstExists(false);
             var cloundLaunchAt = game.rnd.integerInRange(20, game.world.width-20);
-            // var spawnSide = game.rnd.integerInRange(0, 1);
             var cloundSpeed = game.rnd.integerInRange(1000, 1400);
             clound.reset(cloundLaunchAt,0);
             clound.body.velocity.y = cloundSpeed;
-            /*if(spawnSide==0){
-                clound.reset(0,cloundLaunchAt);
-                clound.body.velocity.x = cloundSpeed;
-                clound.body.velocity.y = 0;
-            }
-            else{
-                clound.reset(game.world.width,cloundLaunchAt);
-                clound.body.velocity.x = -cloundSpeed;
-                clound.body.velocity.y = 0;
-            }*/
+
         }
         if (clound3Cooldown <= 0) {
             clound3Cooldown = game.rnd.integerInRange(240,360);
             var clound = clound3Group.getFirstExists(false);
             var cloundLaunchAt = game.rnd.integerInRange(20, game.world.width-20);
-            // var spawnSide = game.rnd.integerInRange(0, 1);
             var cloundSpeed = game.rnd.integerInRange(1000, 1200);
             clound.reset(cloundLaunchAt,0);
             clound.body.velocity.y = cloundSpeed;
-            /*if(spawnSide==0){
-                clound.reset(0,cloundLaunchAt);
-                clound.body.velocity.x = cloundSpeed;
-                clound.body.velocity.y = 0;
-            }
-            else{
-                clound.reset(game.world.width,cloundLaunchAt);
-                clound.body.velocity.x = -cloundSpeed;
-                clound.body.velocity.y = 0;
-            }*/
+
         }
 
         clound1Cooldown--;
@@ -889,9 +858,9 @@ function materialGenerator() {
         sharkMCooldown--;
     } else if (stateHandle == 2) {
         //BG2
-        if (airship == null && airplaneCooldown <= 0) {
+        if (airship == null && airshipCooldown <= 0) {
             var airshipSpawnAt = game.rnd.integerInRange(game.world.width/3, game.world.width-20);
-            var airshipScale = game.rnd.integerInRange(5, 6)/10;
+            var airshipScale = game.rnd.integerInRange(80, 85)/100;
             airship = game.add.sprite(airshipSpawnAt, 0, 'airship');
             airship.scale.setTo(airshipScale, airshipScale);
             game.physics.arcade.enable(airship);
@@ -902,14 +871,14 @@ function materialGenerator() {
                 airship = null;
             }, this);
             airship.body.velocity.y = bgSpeed * 40;
-            airship.body.velocity.x = -game.rnd.integerInRange(400, 600);
+            airship.body.velocity.x = -game.rnd.integerInRange(0, 500);
             airship.sendToBack();
-            airshipCooldown = game.rnd.integerInRange(300,420);
+            airshipCooldown = game.rnd.integerInRange(480,540);
         }
 
         if (balloon == null && balloonCooldown <= 0) {
             var balloonSpawnAt = game.rnd.integerInRange(20, game.world.width-20);
-            var balloonScale = game.rnd.integerInRange(2, 3)/10;
+            var balloonScale = game.rnd.integerInRange(28, 33)/100;
             balloon = game.add.sprite(balloonSpawnAt, 0, 'balloon');
             balloon.scale.setTo(balloonScale, balloonScale);
             game.physics.arcade.enable(balloon);
@@ -920,14 +889,14 @@ function materialGenerator() {
                 balloon = null;
             }, this);
             balloon.body.velocity.y = bgSpeed * 35;
-            balloon.body.velocity.x = game.rnd.integerInRange(100, 300);
+            balloon.body.velocity.x = game.rnd.integerInRange(-200, 200);
             balloon.sendToBack();
-            balloonCooldown = game.rnd.integerInRange(120,300);
+            balloonCooldown = game.rnd.integerInRange(180,300);
         }
 
         if (airplane == null && airplaneCooldown <= 0) {
             var airplaneSpawnAt = game.rnd.integerInRange(game.world.width/3, game.world.width-20);
-            var airplaneScale = game.rnd.integerInRange(5, 6)/10;
+            var airplaneScale = game.rnd.integerInRange(75, 80)/100;
             airplane = game.add.sprite(airplaneSpawnAt, 0, 'airplane');
             airplane.scale.setTo(airplaneScale, airplaneScale);
             game.physics.arcade.enable(airplane);
@@ -938,10 +907,41 @@ function materialGenerator() {
                 airplane = null;
             }, this);
             airplane.body.velocity.y = bgSpeed * 45;
-            airplane.body.velocity.x = -game.rnd.integerInRange(600, 800);
+            airplane.body.velocity.x = -game.rnd.integerInRange(0, 600);
             airplane.sendToBack();
-            airplaneCooldown = game.rnd.integerInRange(240,360);
+            airplaneCooldown = 420 ;
         }
+        if (clound1Cooldown <= 0) {
+            clound1Cooldown = game.rnd.integerInRange(120,240);
+            var clound = clound1Group.getFirstExists(false);
+            var cloundLaunchAt = game.rnd.integerInRange(20, game.world.width-20);
+            var cloundSpeed = game.rnd.integerInRange(1200, 1400);
+            clound.reset(cloundLaunchAt,0);
+            clound.body.velocity.y = cloundSpeed;
+
+        }
+        if (clound2Cooldown <= 0) {
+            clound2Cooldown = game.rnd.integerInRange(180,300);
+            var clound = clound2Group.getFirstExists(false);
+            var cloundLaunchAt = game.rnd.integerInRange(20, game.world.width-20);
+            var cloundSpeed = game.rnd.integerInRange(1000, 1400);
+            clound.reset(cloundLaunchAt,0);
+            clound.body.velocity.y = cloundSpeed;
+
+        }
+        if (clound3Cooldown <= 0) {
+            clound3Cooldown = game.rnd.integerInRange(240,360);
+            var clound = clound3Group.getFirstExists(false);
+            var cloundLaunchAt = game.rnd.integerInRange(20, game.world.width-20);
+            var cloundSpeed = game.rnd.integerInRange(1000, 1200);
+            clound.reset(cloundLaunchAt,0);
+            clound.body.velocity.y = cloundSpeed;
+
+        }
+
+        clound1Cooldown--;
+        clound2Cooldown--;
+        clound3Cooldown--;
         airshipCooldown--;
         balloonCooldown--;
         airplaneCooldown--;
@@ -1036,7 +1036,7 @@ function checkAccuracy() {
         game.time.events.add(Phaser.Timer.SECOND * 2, function () {
             statusText.destroy();
         }, this);
-        bgSpeed = 20;
+        bgSpeed = 15;
         score += 30;
         perfectStack = 0;
         // wippo.animations.play("rush");
