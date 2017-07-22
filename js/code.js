@@ -92,7 +92,8 @@ var greatR, greatL;
 var coolL, coolR;
 var badL, badR;
 var wippo;
-var floor;
+var floorFront;
+var floorBack;
 var bg;
 var bgSpeed;
 var score;
@@ -282,16 +283,28 @@ function createGameplay() {
     smoke.animations.add('great',[0,1,2,3,4],40,true);
     smoke.kill();
     smoke.animations.play('great');
+
+    floorBack = this.add.sprite(game.world.width/2, game.world.height * (4.7 / 5), 'shipAndCannon');
+    game.physics.arcade.enable(floorBack);
+    floorBack.scale.setTo(1, 1);
+    floorBack.body.collideWorldBounds = false;
+    floorBack.body.immovable = true;
+    floorBack.anchor.set(0.5);
+    floorBack.animations.add('back',[0],1,false);
+    floorBack.play('back');
+
     wippo = this.add.sprite(game.world.width / 2, game.world.height * (4 / 5) + 15, 'ship');
     game.physics.arcade.enable(wippo);
     wippo.anchor.set(0.5);
 
-    floor = this.add.sprite(game.world.width/2, game.world.height * (4.7 / 5), 'shipAndCannon');
-    game.physics.arcade.enable(floor);
-    floor.scale.setTo(1, 1);
-    floor.body.collideWorldBounds = false;
-    floor.body.immovable = true;
-    floor.anchor.set(0.5);
+    floorFront = this.add.sprite(game.world.width/2, game.world.height * (4.7 / 5), 'shipAndCannon');
+    game.physics.arcade.enable(floorFront);
+    floorFront.scale.setTo(1, 1);
+    floorFront.body.collideWorldBounds = false;
+    floorFront.body.immovable = true;
+    floorFront.anchor.set(0.5);
+    floorFront.animations.add('front',[1],1,false);
+    floorFront.play('front');
 
     game.time.events.add(Phaser.Timer.SECOND * 2, wippoLaunch, this);
     isSpacebarDown = false;
@@ -1381,7 +1394,8 @@ function checkOverlap(spriteA, spriteB) {
     return Phaser.Rectangle.intersects(boundsA, boundsB);
 }
 wippoLaunch = function () {
-    floor.body.velocity.y = 400;
+    floorFront.body.velocity.y = 400;
+    floorBack.body.velocity.y = 400;
     mountain.body.velocity.y = 10;
     sun.body.velocity.y = 10;
     wippo.body.velocity.y = -150;
