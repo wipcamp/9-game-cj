@@ -69,6 +69,11 @@ function preload() {
     game.load.audio('menu','sound/Menu.mp3');
     game.load.audio('death','sound/Death.mp3');
     game.load.audio('wrongButton','sound/WrongButton.mp3');
+    game.load.audio('perfect','sound/perfect.mp3');
+    game.load.audio('great','sound/Great.mp3');
+    game.load.audio('cool','sound/Fair.mp3');
+    game.load.audio('bad','sound/bad.mp3');
+
 }
 
 var isSound = true;
@@ -133,6 +138,10 @@ var fallSound;
 var BGMMenu;
 var BGMResult;
 var wrongButtonSound;
+var perfectSound;
+var greatSound;
+var coolSound;
+var badSound;
 
 /////////material variable///////
 var airship;
@@ -312,6 +321,7 @@ function createGameplay() {
     perfectStack = 0;
     stopTimePoint = 10;
     //gamemode = "feverTime";
+
     ////sound////
     timeStopSound = game.add.audio('timestop');
     BGMStage1 = game.add.audio('BGMStage1');
@@ -322,6 +332,10 @@ function createGameplay() {
     BGMResult = game.add.audio('death');
     wrongButtonSound = game.add.audio('wrongButton');
     wrongButtonSound.volume = 0.6;
+    perfectSound = game.add.audio('perfect');
+    greatSound = game.add.audio('great');
+    coolSound = game.add.audio('cool');
+    badSound = game.add.audio('bad');
     BGMStage1.play();
     //wippo.events.onOutOfBounds.add(gameEnd(), this);
 
@@ -1008,6 +1022,7 @@ function checkAccuracy() {
         bgSpeed = 40;
         difficulty++;
         score += 180;
+        perfectSound.play();
         //////////animation wippo
         // wippo.animations.play("perfectRush");
     }
@@ -1019,6 +1034,7 @@ function checkAccuracy() {
         bgSpeed = 30;
         score += 90;
         perfectStack = 0;
+        greatSound.play();
         // wippo.animations.play("rush");
     }
     else if (completeArrow && (checkOverlap(checker, coolR) || checkOverlap(checker, coolL))) {
@@ -1029,6 +1045,7 @@ function checkAccuracy() {
         bgSpeed = 20;
         score += 60;
         perfectStack = 0;
+        coolSound.play();
         // wippo.animations.play("rush");
     }
     else if (completeArrow && (checkOverlap(checker, badR) || checkOverlap(checker, badL))) {
@@ -1039,6 +1056,7 @@ function checkAccuracy() {
         bgSpeed = 15;
         score += 30;
         perfectStack = 0;
+        badSound.play();
         // wippo.animations.play("rush");
     }
     else {
