@@ -1,6 +1,6 @@
 var game = new Phaser.Game(800, 600, Phaser.AUTO, "game");
 var main = { preload: preload, create: createGameplay, update: update };
-var menu = { preload: preloadMenu, create: createMenu, update: updateMenu};
+var menu = { preload: preloadMenu, create: createMenu};
 game.state.add('menu', menu);
 game.state.add('main', main);
 game.state.start('menu');
@@ -317,10 +317,6 @@ function createGameplay() {
         mute.frame = 0;
     else
         mute.frame = 1;
-}
-
-function updateMenu() {
-    
 }
 
 var summonCooldown = 0;
