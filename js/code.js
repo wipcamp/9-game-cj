@@ -396,7 +396,7 @@ function update() {
                 checkAccuracy();
                 clearWave();
                 spaceKeyDownTimer = game.time.now + 1500;
-                if ((score >= 100 && score < 600) /*||====== (score >= 800 && score < 1300)*/) {
+                if ((score >= 100 && score < 600) ||(score >= 1800 && score < 2300)) {
                     gamemode = "feverTime";
                     guageTimeCounter = 15.0;
                     guageAliveTimer = game.time.events.repeat(Phaser.Timer.SECOND * 0.1, 151, countdownTimer, this, "feverTime");
@@ -500,6 +500,7 @@ function update() {
                 earth.body.velocity.y = 3;
                 earth.sendToBack();
                 earth.alpha = 0;
+                BGMStage2.fadeOut(3000);
             }
             bgChange.alpha = 0;
             bgChange.sendToBack();
@@ -515,10 +516,17 @@ function update() {
                 if (bg.alpha < 0.0000001) {
                     isfirstChange = true;
                     gamemode = "ingame";
-                    if (mountain != null)
-                        mountain.destroy();
-                    if (sun != null)
-                        sun.destroy();
+                    if (stateHandle == 1) {
+                        BGMStage2.play();
+                        if (mountain != null)
+                            mountain.destroy();
+                    }else if (stateHandle == 2) {
+                        BGMStage3.play();
+                        if (sun != null)
+                            sun.destroy();
+                    }
+                    
+                    
                     bg.destroy();
                     sun=null;
                     mountain=null;
@@ -720,6 +728,8 @@ function stoptime() {
     sharkGroup.setAll('animations.paused', true, false);
 
     BGMStage1.pause();
+    BGMStage2.pause();
+    BGMStage3.pause();
     timeStopSound.play();
 }
 var tempBgSpeed;
