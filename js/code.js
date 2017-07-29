@@ -1,17 +1,17 @@
 var game = new Phaser.Game(800, 600, Phaser.AUTO, "game");
 var main = { preload: preload, create: createGameplay, update: update };
-var menu = { preload: preloadMenu, create: createMenu, update: updateMenu};
+var menu = { preload: preloadMenu, create: createMenu};
 game.state.add('menu', menu);
 game.state.add('main', main);
 game.state.start('menu');
 function preloadMenu(){
     game.load.image('backgroundMenu', 'images/BGmenu.png');
-    game.load.image('startButton', 'images/startButton.png');
-    game.load.image('howtoplayButton', 'images/howtoplay.png');
+    game.load.spritesheet('startButton', 'images/startButton.png', 205, 48);
+    game.load.spritesheet('howtoplayButton', 'images/howtoplay.png', 206, 50);
     game.load.image('logoGame', 'images/logoGame.png');
     game.load.image('creditButton', 'images/creditButton.png');
-    game.load.image('reportButton', 'images/reportButton.png');
-    game.load.image('scoreBoardButton', 'images/scoreBoardButton.png');
+    game.load.spritesheet('reportButton', 'images/reportButton.png', 207, 48);
+    game.load.spritesheet('scoreBoardButton', 'images/scoreBoardButton.png', 205, 49);
 
     game.load.spritesheet('mute', 'images/mute.png', 450, 447);
 
@@ -362,10 +362,6 @@ function createGameplay() {
         mute.frame = 0;
     else
         mute.frame = 1;
-}
-
-function updateMenu() {
-
 }
 
 var summonCooldown = 0;
