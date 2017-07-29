@@ -12,6 +12,11 @@ function preloadMenu(){
     game.load.image('creditButton', 'images/creditButton.png');
     game.load.image('reportButton', 'images/reportButton.png');
     game.load.image('scoreBoardButton', 'images/scoreBoardButton.png');
+
+    game.load.spritesheet('mute', 'images/mute.png', 450, 447);
+
+    ////sound////
+    game.load.audio('BGMMenu','sound/BGMMenu.mp3');
 }
 function preload() {
     game.load.image('bullet', 'images/bullet.png');
@@ -34,8 +39,6 @@ function preload() {
     game.load.image('beam', 'images/beam.png');
     game.load.image('checkbar', 'images/checkbar.png');
 
-
-    game.load.spritesheet('mute', 'images/mute.png', 450, 447);
     game.load.spritesheet('up', 'images/up2.png', 45, 45, 8);
     game.load.spritesheet('down', 'images/down2.png', 45, 45, 8);
     game.load.spritesheet('right', 'images/right2.png', 45, 45, 8);
@@ -66,7 +69,6 @@ function preload() {
     game.load.audio('BGMStage3','sound/BGMStage3.mp3');
     game.load.audio('timestop','sound/timeStop.mp3');
     game.load.audio('fall','sound/PlayerFall.mp3');
-    game.load.audio('menu','sound/Menu.mp3');
     game.load.audio('death','sound/Death.mp3');
     game.load.audio('wrongButton','sound/WrongButton.mp3');
     game.load.audio('perfect','sound/perfect.mp3');
@@ -168,6 +170,7 @@ var reportButton;
 var logoGame;
 
 function createMenu() {
+    game.stage.disableVisibilityChange = true;
     game.add.image(0, 0, 'backgroundMenu');
     logoGame = game.add.image(game.world.width*(3.5/5), game.world.height*(1.4/5), 'logoGame');
     logoGame.anchor.set(0.5);
@@ -181,6 +184,10 @@ function createMenu() {
     creditButton.anchor.set(0.5);
     reportButton = game.add.button(game.world.width*(3.5/5), game.world.height*(4.5/5), 'reportButton', toGameplay, this, 2, 1, 0);
     reportButton.anchor.set(0.5);
+    BGMMenu = game.add.audio('BGMMenu');
+    BGMMenu.loopFull();
+    mute = game.add.button(750, 20, 'mute', muteSounds, this);
+    mute.scale.setTo(0.08, 0.08);
 }
 
 function createGameplay() {
@@ -323,12 +330,13 @@ function createGameplay() {
     //gamemode = "feverTime";
 
     ////sound////
+    BGMMenu.stop();
     timeStopSound = game.add.audio('timestop');
     BGMStage1 = game.add.audio('BGMStage1');
     BGMStage2 = game.add.audio('BGMStage2');
     BGMStage3 = game.add.audio('BGMStage3');
     fallSound = game.add.audio('fall');
-    BGMMenu = game.add.audio('menu');
+    BGMMenu = game.add.audio('BGMMenu');
     BGMResult = game.add.audio('death');
     wrongButtonSound = game.add.audio('wrongButton');
     wrongButtonSound.volume = 0.6;
