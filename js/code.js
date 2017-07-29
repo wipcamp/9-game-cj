@@ -185,6 +185,7 @@ function createMenu() {
     reportButton = game.add.button(game.world.width*(3.5/5), game.world.height*(4.5/5), 'reportButton', toGameplay, this, 2, 1, 0);
     reportButton.anchor.set(0.5);
     BGMMenu = game.add.audio('BGMMenu');
+    BGMMenu.volume = 0.4;
     BGMMenu.loopFull();
     mute = game.add.button(750, 20, 'mute', muteSounds, this);
     mute.scale.setTo(0.08, 0.08);
