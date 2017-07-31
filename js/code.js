@@ -22,9 +22,9 @@ function preload() {
     game.load.image('bullet', 'images/bullet.png');
     game.load.image('ship', 'images/wip.png');
     game.load.image('enemy_ship', 'images/enemyship.png');
-    game.load.image('background3', 'images/BG-galaxy.png');
-    game.load.image('background1', 'images/firstState.png');
-    game.load.image('background2', 'images/secondState.png');
+    game.load.image('background3', 'images/BgState3.png');
+    game.load.image('background1', 'images/BgState1.png');
+    game.load.image('background2', 'images/BgState2.png');
     game.load.image('miss', 'images/miss.png');
     game.load.image('bad', 'images/bad.png');
     game.load.image('cool', 'images/cool.png');
@@ -78,15 +78,15 @@ function preload() {
 
 var isSound = true;
 var checker;
-var checkerSpeed = 70;
+var checkerSpeed;
 var checkerPic;
 var cursors;
 var progressBar;
 var checkbar;
 var spaceButton;
 var stopTimeButton;
-var wave = [];
-var buttonLine = [];
+var wave;
+var buttonLine;
 var waveCheckOrder = 0;
 var arrow = ["up", "down", "right", "left"];
 var difficulty = 1;
@@ -101,6 +101,7 @@ var floorFront;
 var floorBack;
 var bg;
 var bgSpeed;
+var perfectSpeed = 0.5;
 var score;
 var gamemode;
 var specialGuageIsSpawned;
@@ -196,9 +197,11 @@ function createGameplay() {
     game.physics.startSystem(Phaser.Physics.ARCADE);
     this.myWorld = game.add.group();
     this.myWorld.enableBody = true;
-    bg = this.add.tileSprite(0, 0, this.game.world.width, this.game.world.height, 'background1');
-    bg.autoScroll(this.levelSpeed, 0);
+    bg = this.add.tileSprite(0, 0, 800, 600, 'background1');
+    // bg.autoScroll(this.levelSpeed, 0);
     bg.fixedToCamera = true;
+    bg.tilePosition.y += 600;
+    bgSpeed = 0;
     spaceButton = this.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
     stopTimeButton = this.input.keyboard.addKey(Phaser.KeyCode.ENTER);
     cursors = this.input.keyboard.createCursorKeys();
@@ -211,22 +214,33 @@ function createGameplay() {
     checker.scale.setTo(0.05, 0.3);
     checker.body.maxVelocity.set(1500);
     checker.body.collideWorldBounds = false;
-
-
+    checkerSpeed = 70;
+    wave = [];
+    buttonLine = [];
 
     //////////animation wippo
     // wippo.animations.add('perfectRush',[0],1,true);
     // wippo.animations.add('rush',[0],1,true);
     // wippo.animations.add('death',[0],1,true);
 
-
-    gamemode = "begin";
+    gamemode = "prepare";
     // gamemode="changingState";
     specialGuageIsSpawned = false;
     isSpacebarPressed = false;
     spacebarBlock = this.add.sprite(game.world.width * (3 / 5), game.world.height * (3 / 5) - 20, 'spacebarBlock');
     spacebarBlock.scale.setTo(0.7, 0.7);
     spacebarBlock.kill();
+
+    //// material ///////////////////////////////////////////////////////////
+    airship = null;
+    balloon = null;
+    flatCloud = null;
+    airplane = null;
+    sharkM = null;
+    galaxy = null;
+    saturn = null;
+    earth = null;
+    sattellite = null;
 
     sharkGroup = game.add.group();
     sharkGroup.enableBody = true;
@@ -243,7 +257,8 @@ function createGameplay() {
     }
     sharkGroup.callAll('animations.add', 'animations', 'moveFromLeft', [26, 27, 28], 100, true);
     sharkGroup.callAll('animations.add', 'animations', 'moveFromRight', [26, 27, 28], 100, true);
-    ///////////////////////////////////////////////////////////////
+    
+
     clound1Group = game.add.group();
     clound1Group.enableBody = true;
     clound1Group.physicsBodyType = Phaser.Physics.ARCADE;
@@ -360,7 +375,12 @@ function update() {
     }*/
     bg.tilePosition.y += bgSpeed;
     if (gamemode == "prepare") {
-        materialGenerator();
+        // materialGenerator();
+        if(wippo.y <= 200){
+            // gameBegin(); << error with this , don't know WHYYYYY!?
+            game.time.events.add(Phaser.Timer.SECOND * 0, gameBegin, this); //and it's work with this.
+        }
+
     } else if (gamemode == "ingame") {
         if (!isTimeStopped) {
             materialGenerator();
@@ -382,7 +402,7 @@ function update() {
                 checkAccuracy();
                 clearWave();
                 spaceKeyDownTimer = game.time.now + 1500;
-                if ((score >= 100 && score < 600) ||(score >= 1800 && score < 2300)) {
+                if ((score >= 1000 && score < 1400) ||(score >= 2600 && score < 3000)) {
                     gamemode = "feverTime";
                     guageTimeCounter = 15.0;
                     guageAliveTimer = game.time.events.repeat(Phaser.Timer.SECOND * 0.1, 151, countdownTimer, this, "feverTime");
@@ -396,7 +416,7 @@ function update() {
                     summonWave(6);
                     if (!isSpacebarPressed) {
                         // wippo.animations.play("death");
-                        //gameEnd();====== จะได้ไม่ต้องกด spacebar (test material อยู่)
+                        gameEnd();//====== จะได้ไม่ต้องกด spacebar (test material อยู่)
                     }
 
                     isSpacebarPressed = false;
@@ -470,10 +490,12 @@ function update() {
             isfirstChange = false;
             if (stateHandle == 1) {
                 bgChange = game.add.tileSprite(0, 0, this.game.world.width, this.game.world.height, 'background2');
+                bgChange.tilePosition.y += 600;
                 BGMStage1.fadeOut(3000);
             }
             else if (stateHandle == 2) {
                 bgChange = game.add.tileSprite(0, 0, this.game.world.width, this.game.world.height, 'background3');
+                bgChange.tilePosition.y += 600;
                 earth = game.add.sprite(game.world.width / 2, game.world.height / 1.5, 'earth');
                 earth.scale.setTo(0.5, 0.5);
                 earth.anchor.setTo(0.5);
@@ -998,9 +1020,9 @@ function checkAccuracy() {
         game.time.events.add(Phaser.Timer.SECOND * 2, function () {
             statusText.destroy();
         }, this);
-        bgSpeed = 40;
+        bgSpeed = perfectSpeed;
         difficulty++;
-        score += 180;
+        score += 200;
         perfectSound.play();
         //////////animation wippo
         // wippo.animations.play("perfectRush");
@@ -1010,8 +1032,8 @@ function checkAccuracy() {
         game.time.events.add(Phaser.Timer.SECOND * 2, function () {
             statusText.destroy();
         }, this);
-        bgSpeed = 30;
-        score += 90;
+        bgSpeed = perfectSpeed*90/100;
+        score += 175;
         perfectStack = 0;
         greatSound.play();
         // wippo.animations.play("rush");
@@ -1021,8 +1043,8 @@ function checkAccuracy() {
         game.time.events.add(Phaser.Timer.SECOND * 2, function () {
             statusText.destroy();
         }, this);
-        bgSpeed = 20;
-        score += 60;
+        bgSpeed = perfectSpeed*80/100;
+        score += 150;
         perfectStack = 0;
         coolSound.play();
         // wippo.animations.play("rush");
@@ -1032,8 +1054,8 @@ function checkAccuracy() {
         game.time.events.add(Phaser.Timer.SECOND * 2, function () {
             statusText.destroy();
         }, this);
-        bgSpeed = 15;
-        score += 30;
+        bgSpeed = perfectSpeed*70/100;
+        score += 125;
         perfectStack = 0;
         badSound.play();
         // wippo.animations.play("rush");
@@ -1396,12 +1418,12 @@ wippoLaunch = function () {
     wippo.body.velocity.y = -150;
     smoke.reset(wippo.x+20, wippo.y+110);
     smoke.body.velocity.y = -150;
-    bgSpeed = 60;
-    game.time.events.add(Phaser.Timer.SECOND * 2, gameBegin, this);
+    bgSpeed = perfectSpeed;
+    // game.time.events.add(Phaser.Timer.SECOND * 2, gameBegin, this);
 }
 gameBegin = function () {
     wippo.body.velocity.y = 0;
-    bgSpeed = 20;
+    bgSpeed = perfectSpeed*80/100;
     smoke.reset(wippo.x+20, wippo.y+110);
     smoke.animations.play('great');
 
