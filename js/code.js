@@ -61,7 +61,6 @@ function preload() {
     game.load.spritesheet('clound1', 'images/clound.png');
     game.load.spritesheet('clound2', 'images/clound2.png');
     game.load.spritesheet('clound3', 'images/clound3.png');
-    game.load.spritesheet('mountain', 'images/mountain.png');
     ////sound////
     game.load.audio('BGMStage1','sound/BGMStage1.mp3');
     game.load.audio('BGMStage2','sound/BGMStage2.mp3');
@@ -158,7 +157,6 @@ var sattellite;
 var clound1Group;
 var clound2Group;
 var clound3Group;
-var mountain;
 
 var startButton;
 var howtoplayButton;
@@ -220,11 +218,6 @@ function createGameplay() {
     // wippo.animations.add('perfectRush',[0],1,true);
     // wippo.animations.add('rush',[0],1,true);
     // wippo.animations.add('death',[0],1,true);
-
-    mountain = this.add.sprite(0, game.world.height * (3 / 5), 'mountain');
-    game.physics.arcade.enable(mountain);
-    mountain.body.collideWorldBounds = false;
-    mountain.body.immovable = true;
 
 
     gamemode = "begin";
@@ -500,8 +493,6 @@ function update() {
             var loop = game.time.events.loop(Phaser.Timer.SECOND * 0.2, function () {
                 bg.alpha -= 0.05;
                 bgChange.alpha += 0.05;
-                if (mountain != null)
-                    mountain.alpha  -= 0.1;
                 if (earth != null)
                     earth.alpha += 0.05;
                 if (bg.alpha < 0.0000001) {
@@ -509,15 +500,12 @@ function update() {
                     gamemode = "ingame";
                     if (stateHandle == 1) {
                         BGMStage2.play();
-                        if (mountain != null)
-                            mountain.destroy();
                     }else if (stateHandle == 2) {
                         BGMStage3.play();
                     }
                     
                     
                     bg.destroy();
-                    mountain=null;
                     bg = bgChange;
                     bg.autoScroll(this.levelSpeed, 0);
                     bg.fixedToCamera = true;
@@ -674,9 +662,6 @@ function stoptime() {
     if(cloud3!=null){
         cloud3.body.velocity.y = 0;
     }
-    if (mountain != null) {
-        mountain.body.velocity.y = 0;
-    }
     if (airship != null) {
         // airship.body.velocity.y = bgSpeed*3;
         // airship.body.velocity.x = -game.rnd.integerInRange(60,100);
@@ -754,9 +739,6 @@ function cancelCountdownTimer(timerName) {
             cloud3.body.velocity.y = 1200;
         }
 
-        if (mountain != null) {
-            mountain.body.velocity.y = 10;
-        }
         if (airship != null) {
             airship.body.velocity.y = bgSpeed * 40;
             airship.body.velocity.x = -500;
@@ -1411,7 +1393,6 @@ function checkOverlap(spriteA, spriteB) {
 wippoLaunch = function () {
     floorFront.body.velocity.y = 400;
     floorBack.body.velocity.y = 400;
-    mountain.body.velocity.y = 10;
     wippo.body.velocity.y = -150;
     smoke.reset(wippo.x+20, wippo.y+110);
     smoke.body.velocity.y = -150;
@@ -1419,7 +1400,6 @@ wippoLaunch = function () {
     game.time.events.add(Phaser.Timer.SECOND * 2, gameBegin, this);
 }
 gameBegin = function () {
-    mountain.body.velocity.y = 5;
     wippo.body.velocity.y = 0;
     bgSpeed = 20;
     smoke.reset(wippo.x+20, wippo.y+110);
