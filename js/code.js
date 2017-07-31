@@ -62,7 +62,6 @@ function preload() {
     game.load.spritesheet('clound2', 'images/clound2.png');
     game.load.spritesheet('clound3', 'images/clound3.png');
     game.load.spritesheet('mountain', 'images/mountain.png');
-    game.load.spritesheet('sun', 'images/sun.png');
     ////sound////
     game.load.audio('BGMStage1','sound/BGMStage1.mp3');
     game.load.audio('BGMStage2','sound/BGMStage2.mp3');
@@ -159,7 +158,6 @@ var sattellite;
 var clound1Group;
 var clound2Group;
 var clound3Group;
-var sun;
 var mountain;
 
 var startButton;
@@ -228,11 +226,6 @@ function createGameplay() {
     mountain.body.collideWorldBounds = false;
     mountain.body.immovable = true;
 
-    sun = this.add.sprite(game.world.width * (4 / 5), game.world.height * (0.5 / 5), 'sun');
-    game.physics.arcade.enable(sun);
-    sun.scale.setTo(0.5, 0.5);
-    sun.body.collideWorldBounds = false;
-    sun.body.immovable = true;
 
     gamemode = "begin";
     // gamemode="changingState";
@@ -509,8 +502,6 @@ function update() {
                 bgChange.alpha += 0.05;
                 if (mountain != null)
                     mountain.alpha  -= 0.1;
-                if (sun != null)
-                    sun.alpha  -= 0.1;
                 if (earth != null)
                     earth.alpha += 0.05;
                 if (bg.alpha < 0.0000001) {
@@ -522,13 +513,10 @@ function update() {
                             mountain.destroy();
                     }else if (stateHandle == 2) {
                         BGMStage3.play();
-                        if (sun != null)
-                            sun.destroy();
                     }
                     
                     
                     bg.destroy();
-                    sun=null;
                     mountain=null;
                     bg = bgChange;
                     bg.autoScroll(this.levelSpeed, 0);
@@ -686,9 +674,6 @@ function stoptime() {
     if(cloud3!=null){
         cloud3.body.velocity.y = 0;
     }
-    if (sun != null) {
-        sun.body.velocity.y = 0;
-    }
     if (mountain != null) {
         mountain.body.velocity.y = 0;
     }
@@ -769,9 +754,6 @@ function cancelCountdownTimer(timerName) {
             cloud3.body.velocity.y = 1200;
         }
 
-        if (sun != null) {
-            sun.body.velocity.y = 10;
-        }
         if (mountain != null) {
             mountain.body.velocity.y = 10;
         }
@@ -1430,7 +1412,6 @@ wippoLaunch = function () {
     floorFront.body.velocity.y = 400;
     floorBack.body.velocity.y = 400;
     mountain.body.velocity.y = 10;
-    sun.body.velocity.y = 10;
     wippo.body.velocity.y = -150;
     smoke.reset(wippo.x+20, wippo.y+110);
     smoke.body.velocity.y = -150;
@@ -1439,7 +1420,6 @@ wippoLaunch = function () {
 }
 gameBegin = function () {
     mountain.body.velocity.y = 5;
-    sun.body.velocity.y = 5;
     wippo.body.velocity.y = 0;
     bgSpeed = 20;
     smoke.reset(wippo.x+20, wippo.y+110);
