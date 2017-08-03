@@ -685,6 +685,7 @@ function stoptime() {
     stopTimePointText.destroy();
     stopTimePointText = game.add.sprite(game.world.width * (7 / 8), game.world.height * (1.5 / 5) - 100, 'numberText');
     stopTimePointText.frame = stopTimePoint;
+    smoke.animations.paused = true; 
     // wippo.animations.paused = true;
 
     var cloud1=clound1Group.getFirstExists(true);
@@ -759,6 +760,7 @@ function cancelCountdownTimer(timerName) {
             stopTimerDecimal.destroy();
         }
         bgSpeed = tempBgSpeed;
+        smoke.animations.paused = false; 
         // wippo.animations.paused = false;
 
         ///material
