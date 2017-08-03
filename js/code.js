@@ -391,16 +391,17 @@ function update() {
             checker.body.velocity.x = checkerSpeed;
             checkerPic.x = checker.x;
             checkerPic.y = checker.y;
-            if (spacebarBlock.alive) {
-                isSpacebarPressed = true;
-                if (spaceButton.isDown) {
+            if (spacebarBlock.alive) {             
+                if (spaceButton.isDown && game.time.now > spaceKeyDownTimer) {
                     // wippo.animations.play("death");
+                    console.log("death reason : spacebarBlock.")
                     gameEnd();
                 }
             } else if (spaceButton.isDown && game.time.now > spaceKeyDownTimer) {
                 isSpacebarPressed = true;
                 checkAccuracy();
                 clearWave();
+                
                 spaceKeyDownTimer = game.time.now + 1500;
                 if ((score >= 1000 && score < 1400) ||(score >= 2600 && score < 3000)) {
                     gamemode = "feverTime";
@@ -408,20 +409,22 @@ function update() {
                     guageAliveTimer = game.time.events.repeat(Phaser.Timer.SECOND * 0.1, 151, countdownTimer, this, "feverTime");
                 }
             }
-            if (checker.x > game.world.width * (5 / 7)) {
-                if (spacebarBlock.alive) {
-                    spacebarBlock.kill();
-                }
+            if (!checkOverlap(checker, progressBar)/*checker.x > game.world.width * (5 / 7)*/) {
                 if (game.time.now > summonCooldown) {
-                    summonWave(6);
-                    if (!isSpacebarPressed) {
+                    summonWave();
+                    if (!isSpacebarPressed && !spacebarBlock.alive) {
                         // wippo.animations.play("death");
-                        gameEnd();//====== จะได้ไม่ต้องกด spacebar (test material อยู่)
+                        console.log("death reason : isSpacebarPressed = false.")
+                        gameEnd();//====== comment ทิ้งเพื่อไม่ต้องกด spacebar
                     }
 
                     isSpacebarPressed = false;
                 }
-                checker.reset(game.world.width * (2.5 / 7), game.world.height * (3 / 5)+10);
+                if (spacebarBlock.alive) {
+                    spacebarBlock.kill();
+                }
+                //checker.reset(game.world.width * (2.5 / 7), game.world.height * (3 / 5)+10);
+                checker.reset(progressBar.x, progressBar.y);
                 summonCooldown = game.time.now + 1500;
             }
             if (stopTimeButton.isDown && stopTimePoint > 0) {
@@ -636,6 +639,7 @@ function countdownTimer(timerName) {
         if (guageTimeCounter <= 0) {
             // wippo.animations.play("death");
             cancelCountdownTimer("feverTime");
+            console.log("death reason : guage time's up.")
             gameEnd();
         }
     } else if (timerName == "timeStopped") {
@@ -1006,6 +1010,7 @@ function materialGenerator() {
 
 function checkAccuracy() {
     var completeArrow = (waveCheckOrder == wave.length);
+    var result = false;
     if (completeArrow && checkOverlap(checker, perfect)) {
         statusText = game.add.image(game.world.width * (1 / 4), game.world.height * (3 / 4), 'perfect');
 
@@ -1024,6 +1029,7 @@ function checkAccuracy() {
         difficulty++;
         score += 200;
         perfectSound.play();
+        result = true;
         //////////animation wippo
         // wippo.animations.play("perfectRush");
     }
@@ -1036,6 +1042,7 @@ function checkAccuracy() {
         score += 175;
         perfectStack = 0;
         greatSound.play();
+        result = true;
         // wippo.animations.play("rush");
     }
     else if (completeArrow && (checkOverlap(checker, coolR) || checkOverlap(checker, coolL))) {
@@ -1045,8 +1052,10 @@ function checkAccuracy() {
         }, this);
         bgSpeed = perfectSpeed*80/100;
         score += 150;
+        difficulty-=2;
         perfectStack = 0;
         coolSound.play();
+        result = true;
         // wippo.animations.play("rush");
     }
     else if (completeArrow && (checkOverlap(checker, badR) || checkOverlap(checker, badL))) {
@@ -1056,8 +1065,10 @@ function checkAccuracy() {
         }, this);
         bgSpeed = perfectSpeed*70/100;
         score += 125;
+        difficulty = 1;
         perfectStack = 0;
         badSound.play();
+        result = true;
         // wippo.animations.play("rush");
     }
     else {
@@ -1065,11 +1076,14 @@ function checkAccuracy() {
         game.time.events.add(Phaser.Timer.SECOND * 2, function () {
             statusText.destroy();
         }, this);
+        console.log("death reason : miss.")
         gameEnd();
         perfectStack = 0;
+        result = false;
         // wippo.animations.play("death");
     }
     statusText.scale.setTo(0.2, 0.2);
+    return result;
 
 }
 
@@ -1195,7 +1209,15 @@ function clearWave() {
     }
     //wave = [];
 }
-function summonWave(length) {
+function summonWave() {
+    var length;
+    if(difficulty<=2){
+        length = 3;
+    }else if(difficulty>=8){
+        length = 7;
+    }else{
+        length = difficulty;
+    }
     // var l = wave.length;
     var randObstacle = game.rnd.integerInRange(1, 6);
     if (randObstacle == 2) {
@@ -1441,14 +1463,15 @@ gameBegin = function () {
     badR.scale.setTo(0.25, 0.3);
     badL = this.add.sprite(coolL.x - coolL.width, perfect.y, 'laser');
     badL.scale.setTo(0.25, 0.3);
-    progressBar = this.add.sprite(game.world.width * (3 / 5)-40, game.world.height * (3 / 5)+10, 'beam');
+    progressBar = this.add.sprite(game.world.width * (2 / 5), game.world.height * (3 / 5)+10, 'beam');
     progressBar.scale.setTo(0.08, 0.07);
-    progressBar.anchor.setTo(0.5);
+    progressBar.anchor.setTo(0,0.5);
     checkbar = this.add.sprite(game.world.width * (3 / 5)+5, game.world.height * (3 / 5)+10, 'checkbar');
     checkbar.scale.setTo(0.035, 0.07);
     checkbar.anchor.setTo(0.5);
-    summonWave(3);
-    checker.reset(game.world.width * (2.5 / 7), game.world.height * (3 / 5)+10);
+    summonWave();
+    //checker.reset(game.world.width * (2.5 / 7), game.world.height * (3 / 5)+10);
+    checker.reset(progressBar.x, progressBar.y);
     gamemode = "ingame";
     checkerPic = this.add.sprite(0, game.world.height * (4 / 5) + 120, 'checkerPic');
     game.physics.arcade.enable(checkerPic);
