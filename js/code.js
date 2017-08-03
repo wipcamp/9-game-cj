@@ -405,10 +405,9 @@ function update() {
                 clearWave();
                 
                 spaceKeyDownTimer = game.time.now + 1400;
-                if ((score >= 1000 && score < 1400) ||(score >= 2600 && score < 3000)) {
-                if (bg.tilePosition.y >= 1400/*(score >= 1000 && score < 1400) ||(score >= 2600 && score < 3000)*/) {
-                    bgSpeed=perfectSpeed*30/100;
-                    gamemode = "feverTime";
+                if (bg.tilePosition.y >= 1400) {
+                    bgSpeed=perfectSpeed*30/100; 
+                    gamemode = "feverTime"; 
                     guageTimeCounter = 15.0;
                     guageAliveTimer = game.time.events.repeat(Phaser.Timer.SECOND * 0.1, 151, countdownTimer, this, "feverTime");
                 }
@@ -471,7 +470,6 @@ function update() {
                 specialGuage.destroy();
                 specialGuageSeal.destroy();
                 gamemode = "changingState";
-                bgSpeed = perfectSpeed;
                 game.time.events.remove(guageAliveTimer);
                 game.time.events.add(Phaser.Timer.SECOND * 1, function () {
 
@@ -568,7 +566,7 @@ function update() {
 
     } else if (gamemode == "gameover") {
         if (wippo.alive) {
-            bgSpeed = -perfectSpeed*60/100;
+            bgSpeed = -perfectSpeed*90/100;
         }else{
             bgSpeed = 0;
         }
