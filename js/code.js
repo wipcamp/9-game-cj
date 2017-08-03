@@ -1435,9 +1435,15 @@ function killObj(obj) {
     obj.kill();
 }
 function checkOverlap(spriteA, spriteB) {
-    var boundsA = spriteA.getBounds();
-    var boundsB = spriteB.getBounds();
-    return Phaser.Rectangle.intersects(boundsA, boundsB);
+    try {   
+        var boundsA = spriteA.getBounds();
+        var boundsB = spriteB.getBounds();
+        return Phaser.Rectangle.intersects(boundsA, boundsB);   
+    } catch (error) {
+        //when error occur returning true to avoid unexpect arrow wave that summon when is not(!) overlapping.
+        return true;
+    }
+    
 }
 wippoLaunch = function () {
     floorFront.body.velocity.y = 400;
