@@ -402,7 +402,7 @@ function update() {
                 checkAccuracy();
                 clearWave();
                 
-                spaceKeyDownTimer = game.time.now + 1500;
+                spaceKeyDownTimer = game.time.now + 1400;
                 if ((score >= 1000 && score < 1400) ||(score >= 2600 && score < 3000)) {
                     gamemode = "feverTime";
                     guageTimeCounter = 15.0;
@@ -1012,7 +1012,7 @@ function checkAccuracy() {
     var completeArrow = (waveCheckOrder == wave.length);
     var result = false;
     if (completeArrow && checkOverlap(checker, perfect)) {
-        statusText = game.add.image(game.world.width * (1 / 4), game.world.height * (3 / 4), 'perfect');
+        statusText = game.add.image(game.world.width * (1 / 2), game.world.height * (4 / 5), 'perfect');
 
         perfectStack++;
         if (perfectStack >= 3 && stopTimePoint < 3) {
@@ -1022,7 +1022,7 @@ function checkAccuracy() {
             stopTimePointText = game.add.sprite(game.world.width * (7 / 8), game.world.height * (1.5 / 5) - 100, 'numberText');
             stopTimePointText.frame = stopTimePoint;
         }
-        game.time.events.add(Phaser.Timer.SECOND * 2, function () {
+        game.time.events.add(Phaser.Timer.SECOND * 1.5, function () {
             statusText.destroy();
         }, this);
         bgSpeed = perfectSpeed;
@@ -1034,8 +1034,8 @@ function checkAccuracy() {
         // wippo.animations.play("perfectRush");
     }
     else if (completeArrow && (checkOverlap(checker, greatR) || checkOverlap(checker, greatL))) {
-        statusText = game.add.image(game.world.width * (1 / 4), game.world.height * (3 / 4), 'great');
-        game.time.events.add(Phaser.Timer.SECOND * 2, function () {
+        statusText = game.add.image(game.world.width * (1 / 2), game.world.height * (4 / 5), 'great');
+        game.time.events.add(Phaser.Timer.SECOND * 1.5, function () {
             statusText.destroy();
         }, this);
         bgSpeed = perfectSpeed*90/100;
@@ -1046,8 +1046,8 @@ function checkAccuracy() {
         // wippo.animations.play("rush");
     }
     else if (completeArrow && (checkOverlap(checker, coolR) || checkOverlap(checker, coolL))) {
-        statusText = game.add.image(game.world.width * (1 / 4), game.world.height * (3 / 4), 'cool');
-        game.time.events.add(Phaser.Timer.SECOND * 2, function () {
+        statusText = game.add.image(game.world.width * (1 / 2), game.world.height * (4 / 5), 'cool');
+        game.time.events.add(Phaser.Timer.SECOND * 1.5, function () {
             statusText.destroy();
         }, this);
         bgSpeed = perfectSpeed*80/100;
@@ -1059,8 +1059,8 @@ function checkAccuracy() {
         // wippo.animations.play("rush");
     }
     else if (completeArrow && (checkOverlap(checker, badR) || checkOverlap(checker, badL))) {
-        statusText = game.add.image(game.world.width * (1 / 4), game.world.height * (3 / 4), 'bad');
-        game.time.events.add(Phaser.Timer.SECOND * 2, function () {
+        statusText = game.add.image(game.world.width * (1 / 2), game.world.height * (4 / 5), 'bad');
+        game.time.events.add(Phaser.Timer.SECOND * 1.5, function () {
             statusText.destroy();
         }, this);
         bgSpeed = perfectSpeed*70/100;
@@ -1072,8 +1072,8 @@ function checkAccuracy() {
         // wippo.animations.play("rush");
     }
     else {
-        statusText = game.add.image(game.world.width * (1 / 4), game.world.height * (3 / 4), 'miss');
-        game.time.events.add(Phaser.Timer.SECOND * 2, function () {
+        statusText = game.add.image(game.world.width * (1 / 2), game.world.height * (4 / 5), 'miss');
+        game.time.events.add(Phaser.Timer.SECOND * 1.5, function () {
             statusText.destroy();
         }, this);
         console.log("death reason : miss.")
@@ -1082,7 +1082,8 @@ function checkAccuracy() {
         result = false;
         // wippo.animations.play("death");
     }
-    statusText.scale.setTo(0.2, 0.2);
+    statusText.anchor.set(0.5);
+    statusText.scale.setTo(0.1, 0.1);
     return result;
 
 }
