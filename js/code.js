@@ -314,6 +314,8 @@ function createGameplay() {
     wippo = this.add.sprite(game.world.width / 2, game.world.height * (4 / 5) + 15, 'ship');
     game.physics.arcade.enable(wippo);
     wippo.anchor.set(0.5);
+    wippo.checkWorldBounds = true;
+    wippo.events.onOutOfBounds.add(killObj, this);
 
     floorFront = this.add.sprite(game.world.width/2, game.world.height * (4.7 / 5), 'shipAndCannon');
     game.physics.arcade.enable(floorFront);
@@ -562,8 +564,10 @@ function update() {
         // }
 
     } else if (gamemode == "gameover") {
-        if (bgSpeed > 0) {
-            bgSpeed -= 0.35;
+        if (wippo.alive) {
+            bgSpeed = -perfectSpeed*90/100;
+        }else{
+            bgSpeed = 0;
         }
         if(isfirstOver){
             isfirstOver = false;
