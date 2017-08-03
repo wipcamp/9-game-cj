@@ -408,6 +408,10 @@ function update() {
                 if (bg.tilePosition.y >= 1400) {
                     bgSpeed=perfectSpeed*30/100; 
                     gamemode = "feverTime"; 
+                    checker.alpha = 0.5; 
+                    checkerPic.alpha = 0.5; 
+                    checkbar.alpha = 0.5; 
+                    progressBar.alpha = 0.5; 
                     guageTimeCounter = 15.0;
                     guageAliveTimer = game.time.events.repeat(Phaser.Timer.SECOND * 0.1, 151, countdownTimer, this, "feverTime");
                 }
@@ -472,8 +476,6 @@ function update() {
                 gamemode = "changingState";
                 game.time.events.remove(guageAliveTimer);
                 game.time.events.add(Phaser.Timer.SECOND * 1, function () {
-
-                    checker.alpha = 1;
                     cancelCountdownTimer("feverTime");
                     maxGuage = 100;
                     isSpacebarDown = false;
@@ -526,6 +528,10 @@ function update() {
                 if (bg.alpha < 0.0000001) {
                     isfirstChange = true;
                     gamemode = "ingame";
+                    checker.alpha = 1; 
+                    checkerPic.alpha = 1; 
+                    checkbar.alpha = 1; 
+                    progressBar.alpha = 1; 
                     if (stateHandle == 1) {
                         BGMStage2.play();
                     }else if (stateHandle == 2) {
@@ -1477,6 +1483,13 @@ gameBegin = function () {
     badR.scale.setTo(0.25, 0.3);
     badL = this.add.sprite(coolL.x - coolL.width, perfect.y, 'laser');
     badL.scale.setTo(0.25, 0.3);
+    perfect.alpha = 0; 
+    greatL.alpha = 0; 
+    greatR.alpha = 0; 
+    coolL.alpha = 0; 
+    coolR.alpha = 0; 
+    badL.alpha = 0; 
+    badR.alpha = 0; 
     checkbar = this.add.sprite(game.world.width * (3 / 5)+5, game.world.height * (3 / 5)+10, 'checkbar');
     checkbar.scale.setTo(0.035, 0.07);
     checkbar.anchor.setTo(0.5);
