@@ -1459,8 +1459,10 @@ gameBegin = function () {
     bgSpeed = perfectSpeed*80/100;
     smoke.reset(wippo.x+20, wippo.y+110);
     smoke.animations.play('great');
-
-    perfect = this.add.sprite(game.world.width * (3 / 5), game.world.height * (3 / 5), 'laser');
+    progressBar = this.add.sprite(game.world.width * (2 / 5), game.world.height * (3 / 5)+10, 'beam');
+    progressBar.scale.setTo(0.08, 0.07);
+    progressBar.anchor.setTo(0,0.5);
+    perfect = this.add.sprite(game.world.width * (3 / 5)+1, progressBar.y-7, 'laser');
     perfect.scale.setTo(0.25, 0.3);
     greatR = this.add.sprite(perfect.x + perfect.width, perfect.y, 'laser');
     greatR.scale.setTo(0.25, 0.3);
@@ -1474,9 +1476,6 @@ gameBegin = function () {
     badR.scale.setTo(0.25, 0.3);
     badL = this.add.sprite(coolL.x - coolL.width, perfect.y, 'laser');
     badL.scale.setTo(0.25, 0.3);
-    progressBar = this.add.sprite(game.world.width * (2 / 5), game.world.height * (3 / 5)+10, 'beam');
-    progressBar.scale.setTo(0.08, 0.07);
-    progressBar.anchor.setTo(0,0.5);
     checkbar = this.add.sprite(game.world.width * (3 / 5)+5, game.world.height * (3 / 5)+10, 'checkbar');
     checkbar.scale.setTo(0.035, 0.07);
     checkbar.anchor.setTo(0.5);
