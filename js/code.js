@@ -103,6 +103,13 @@ var bg;
 var bgSpeed;
 var perfectSpeed = 0.5;
 var score;
+var scoreShow;
+var scoreDigit1;
+var scoreDigit2;
+var scoreDigit3;
+var scoreDigit4;
+var scoreDigit5;
+var scoreDigit6;
 var gamemode;
 var specialGuageIsSpawned;
 var specialGuage;
@@ -351,7 +358,13 @@ function createGameplay() {
     BGMStage1.play();
     //wippo.events.onOutOfBounds.add(gameEnd(), this);
 
-    score = 0;
+    scoreShow = score = 0;
+    scoreDigit6 = game.add.sprite(0, 0, 'numberText');
+    scoreDigit5 = game.add.sprite(scoreDigit6.x + scoreDigit6.width, 0, 'numberText');
+    scoreDigit4 = game.add.sprite(scoreDigit5.x + scoreDigit5.width, 0, 'numberText');
+    scoreDigit3 = game.add.sprite(scoreDigit4.x + scoreDigit4.width, 0, 'numberText');
+    scoreDigit2 = game.add.sprite(scoreDigit3.x + scoreDigit3.width, 0, 'numberText');
+    scoreDigit1 = game.add.sprite(scoreDigit2.x + scoreDigit2.width, 0, 'numberText');
     /*this.score = 0;
     this.scoreText;
     this.scoreText = game.add.text(perfect.x, perfect.y-400, 'Score : ' + this.score, {
@@ -376,6 +389,7 @@ function update() {
         checker.body.velocity.x = 0;
     }*/
     bg.tilePosition.y += bgSpeed;
+    updateScore();
     if (gamemode == "prepare") {
         // materialGenerator();
         if(wippo.y <= 200){
@@ -384,6 +398,7 @@ function update() {
         }
 
     } else if (gamemode == "ingame") {
+        
         if (!isTimeStopped) {
             materialGenerator();
         }
@@ -1098,6 +1113,21 @@ function checkAccuracy() {
     statusText.anchor.set(0.5);
     statusText.scale.setTo(0.1, 0.1);
     return result;
+
+}
+
+function updateScore(){
+    scoreDigit1.frame = scoreShow%10;
+    scoreDigit2.frame = Math.floor(scoreShow / 10)%10;
+    scoreDigit3.frame = Math.floor(scoreShow / 100)%10;
+    scoreDigit4.frame = Math.floor(scoreShow / 1000)%10;
+    scoreDigit5.frame = Math.floor(scoreShow / 10000)%10;
+    scoreDigit6.frame = Math.floor(scoreShow / 100000)%10;
+    if(score>scoreShow+2){
+        scoreShow+=2;
+    }else if(score>scoreShow){
+        scoreShow++;
+    }
 
 }
 
