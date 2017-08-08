@@ -415,10 +415,10 @@ function update() {
                 if (bg.tilePosition.y >= 1400) {
                     bgSpeed=perfectSpeed*30/100; 
                     gamemode = "feverTime"; 
-                    checker.alpha = 0.5; 
-                    checkerPic.alpha = 0.5; 
-                    checkbar.alpha = 0.5; 
-                    progressBar.alpha = 0.5; 
+                    checker.alpha = 0; 
+                    checkerPic.alpha = 0; 
+                    checkbar.alpha = 0; 
+                    progressBar.alpha = 0; 
                     guageTimeCounter = 15.0;
                     guageAliveTimer = game.time.events.repeat(Phaser.Timer.SECOND * 0.1, 151, countdownTimer, this, "feverTime");
                 }
