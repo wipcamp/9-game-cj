@@ -256,7 +256,7 @@ function createGameplay() {
     }
     sharkGroup.callAll('animations.add', 'animations', 'moveFromLeft', [26, 27, 28], 100, true);
     sharkGroup.callAll('animations.add', 'animations', 'moveFromRight', [26, 27, 28], 100, true);
-    
+
 
     clound1Group = game.add.group();
     clound1Group.enableBody = true;
@@ -265,7 +265,7 @@ function createGameplay() {
         var clound = clound1Group.create(0, 0, 'clound1');
         clound.exists = false;
         clound.visible = false;
-        clound.scale.setTo(0.5, 0.5);
+        //clound.scale.setTo(0.5, 0.5);
         clound.anchor.set(0.5);
         clound.checkWorldBounds = true;
         clound.events.onOutOfBounds.add(killObj, this);
@@ -277,7 +277,7 @@ function createGameplay() {
         var clound = clound2Group.create(0, 0, 'clound2');
         clound.exists = false;
         clound.visible = false;
-        clound.scale.setTo(0.5, 0.5);
+        //clound.scale.setTo(0.5, 0.5);
         clound.anchor.set(0.5);
         clound.checkWorldBounds = true;
         clound.events.onOutOfBounds.add(killObj, this);
@@ -289,7 +289,7 @@ function createGameplay() {
         var clound = clound3Group.create(0, 0, 'clound3');
         clound.exists = false;
         clound.visible = false;
-        clound.scale.setTo(0.5, 0.5);
+        //clound.scale.setTo(0.5, 0.5);
         clound.anchor.set(0.5);
         clound.checkWorldBounds = true;
         clound.events.onOutOfBounds.add(killObj, this);
@@ -544,8 +544,8 @@ function update() {
                     }else if (stateHandle == 2) {
                         BGMStage3.play();
                     }
-                    
-                    
+
+
                     bg.destroy();
                     bg = bgChange;
                     bg.autoScroll(this.levelSpeed, 0);
@@ -833,8 +833,8 @@ function materialGenerator() {
             var cloundLaunchAt = game.rnd.integerInRange(20, game.world.width-20);
             var cloundSpeed = game.rnd.integerInRange(1200, 1400);
             clound.reset(cloundLaunchAt,0);
-            clound.body.velocity.y = cloundSpeed;
-
+            //clound.body.velocity.y = cloundSpeed;
+            clound.body.velocity.y = 200;
         }
         if (clound2Cooldown <= 0) {
             clound2Cooldown = game.rnd.integerInRange(180,300);
@@ -842,8 +842,8 @@ function materialGenerator() {
             var cloundLaunchAt = game.rnd.integerInRange(20, game.world.width-20);
             var cloundSpeed = game.rnd.integerInRange(1000, 1400);
             clound.reset(cloundLaunchAt,0);
-            clound.body.velocity.y = cloundSpeed;
-
+            //clound.body.velocity.y = cloundSpeed;
+            clound.body.velocity.y = 200;
         }
         if (clound3Cooldown <= 0) {
             clound3Cooldown = game.rnd.integerInRange(240,360);
@@ -851,8 +851,8 @@ function materialGenerator() {
             var cloundLaunchAt = game.rnd.integerInRange(20, game.world.width-20);
             var cloundSpeed = game.rnd.integerInRange(1000, 1200);
             clound.reset(cloundLaunchAt,0);
-            clound.body.velocity.y = cloundSpeed;
-
+            //clound.body.velocity.y = cloundSpeed;
+            clound.body.velocity.y = 200;
         }
 
         clound1Cooldown--;
