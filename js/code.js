@@ -501,6 +501,9 @@ function update() {
         }
 
     } else if (gamemode == "changingState") {
+        if(bgChange!=null){
+            bgChange.tilePosition.y += bgSpeed;
+        }
         if (isfirstChange) {
             isfirstChange = false;
             if (stateHandle == 1) {
@@ -548,6 +551,7 @@ function update() {
                     
                     bg.destroy();
                     bg = bgChange;
+                    bgChange = null;
                     bg.autoScroll(this.levelSpeed, 0);
                     bg.fixedToCamera = true;
                     game.time.events.remove(loop);
