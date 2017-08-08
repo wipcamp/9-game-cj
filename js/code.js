@@ -50,9 +50,6 @@ function preload() {
     game.load.spritesheet('smoke', 'images/smoke.png',800,600,10);
 
     /////metarial/////
-    game.load.spritesheet('airship', 'images/airship2.png');
-    game.load.spritesheet('balloon', 'images/balloon.png');
-    game.load.spritesheet('airplane', 'images/airplane2.png');
     game.load.spritesheet('earth', 'images/earth.png');
     game.load.spritesheet('sattellite', 'images/sattellite.png');
     game.load.spritesheet('saturn', 'images/saturn.png');
@@ -152,10 +149,7 @@ var coolSound;
 var badSound;
 
 /////////material variable///////
-var airship;
-var balloon;
 var flatCloud;
-var airplane;
 var sharkGroup;
 var sharkM;
 var galaxy;
@@ -239,10 +233,7 @@ function createGameplay() {
     spacebarBlock.kill();
 
     //// material ///////////////////////////////////////////////////////////
-    airship = null;
-    balloon = null;
     flatCloud = null;
-    airplane = null;
     sharkM = null;
     galaxy = null;
     saturn = null;
@@ -715,24 +706,6 @@ function stoptime() {
     if(cloud3!=null){
         cloud3.body.velocity.y = 0;
     }
-    if (airship != null) {
-        // airship.body.velocity.y = bgSpeed*3;
-        // airship.body.velocity.x = -game.rnd.integerInRange(60,100);
-        airship.body.velocity.y = 0;
-        airship.body.velocity.x = 0;
-    }
-    if (balloon != null) {
-        // balloon.body.velocity.y = bgSpeed*4;
-        // balloon.body.velocity.x = game.rnd.integerInRange(40,70);
-        balloon.body.velocity.y = 0;
-        balloon.body.velocity.x = 0;
-    }
-    if (airplane != null) {
-        // airplane.body.velocity.y = bgSpeed*5;
-        // airplane.body.velocity.x = -game.rnd.integerInRange(200,250);
-        airplane.body.velocity.y = 0;
-        airplane.body.velocity.x = 0;
-    }
     if (sattellite != null) {
         // sattellite.body.velocity.y = bgSpeed*8;
         // sattellite.body.velocity.x = game.rnd.integerInRange(-300,300);
@@ -792,21 +765,6 @@ function cancelCountdownTimer(timerName) {
         if(cloud3!=null){
             cloud3.body.velocity.y = 1200;
         }
-
-        if (airship != null) {
-            airship.body.velocity.y = bgSpeed * 40;
-            airship.body.velocity.x = -500;
-        }
-        if (balloon != null) {
-            balloon.body.velocity.y = bgSpeed * 35;
-            balloon.body.velocity.x = 200;
-
-        }
-        if (airplane != null) {
-            airplane.body.velocity.y = bgSpeed * 45;
-            airplane.body.velocity.x = -700;
-
-        }
         if (sattellite != null) {
             sattellite.body.velocity.y = bgSpeed * 8;
             sattellite.body.velocity.x = game.rnd.integerInRange(-300, 300);
@@ -844,9 +802,6 @@ var sharkMCooldown = 60;
 var clound1Cooldown = game.rnd.integerInRange(180,240);
 var clound2Cooldown = game.rnd.integerInRange(240,280);
 var clound3Cooldown = game.rnd.integerInRange(300,340);
-var airshipCooldown = 480;
-var balloonCooldown = game.rnd.integerInRange(60,240);
-var airplaneCooldown = 300;
 function materialGenerator() {
     if (stateHandle == 1) {
         //BG1
@@ -905,59 +860,6 @@ function materialGenerator() {
         sharkMCooldown--;
     } else if (stateHandle == 2) {
         //BG2
-        if (airship == null && airshipCooldown <= 0) {
-            var airshipSpawnAt = game.rnd.integerInRange(game.world.width/3, game.world.width-20);
-            var airshipScale = game.rnd.integerInRange(80, 85)/100;
-            airship = game.add.sprite(airshipSpawnAt, 0, 'airship');
-            airship.scale.setTo(airshipScale, airshipScale);
-            game.physics.arcade.enable(airship);
-            airship.anchor.set(0.5);
-            airship.checkWorldBounds = true;
-            airship.events.onOutOfBounds.add(function () {
-                airship.destroy();
-                airship = null;
-            }, this);
-            airship.body.velocity.y = bgSpeed * 40;
-            airship.body.velocity.x = -game.rnd.integerInRange(0, 500);
-            airship.sendToBack();
-            airshipCooldown = game.rnd.integerInRange(480,540);
-        }
-
-        if (balloon == null && balloonCooldown <= 0) {
-            var balloonSpawnAt = game.rnd.integerInRange(20, game.world.width-20);
-            var balloonScale = game.rnd.integerInRange(28, 33)/100;
-            balloon = game.add.sprite(balloonSpawnAt, 0, 'balloon');
-            balloon.scale.setTo(balloonScale, balloonScale);
-            game.physics.arcade.enable(balloon);
-            balloon.anchor.set(0.5);
-            balloon.checkWorldBounds = true;
-            balloon.events.onOutOfBounds.add(function () {
-                balloon.destroy();
-                balloon = null;
-            }, this);
-            balloon.body.velocity.y = bgSpeed * 35;
-            balloon.body.velocity.x = game.rnd.integerInRange(-200, 200);
-            balloon.sendToBack();
-            balloonCooldown = game.rnd.integerInRange(180,300);
-        }
-
-        if (airplane == null && airplaneCooldown <= 0) {
-            var airplaneSpawnAt = game.rnd.integerInRange(game.world.width/3, game.world.width-20);
-            var airplaneScale = game.rnd.integerInRange(75, 80)/100;
-            airplane = game.add.sprite(airplaneSpawnAt, 0, 'airplane');
-            airplane.scale.setTo(airplaneScale, airplaneScale);
-            game.physics.arcade.enable(airplane);
-            airplane.anchor.set(0.5);
-            airplane.checkWorldBounds = true;
-            airplane.events.onOutOfBounds.add(function () {
-                airplane.destroy();
-                airplane = null;
-            }, this);
-            airplane.body.velocity.y = bgSpeed * 45;
-            airplane.body.velocity.x = -game.rnd.integerInRange(0, 600);
-            airplane.sendToBack();
-            airplaneCooldown = 420 ;
-        }
         if (clound1Cooldown <= 0) {
             clound1Cooldown = game.rnd.integerInRange(120,240);
             var clound = clound1Group.getFirstExists(false);
@@ -989,9 +891,6 @@ function materialGenerator() {
         clound1Cooldown--;
         clound2Cooldown--;
         clound3Cooldown--;
-        airshipCooldown--;
-        balloonCooldown--;
-        airplaneCooldown--;
 
     } else {
 
