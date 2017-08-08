@@ -86,7 +86,7 @@ var wave;
 var buttonLine;
 var waveCheckOrder = 0;
 var arrow = ["up", "down", "right", "left"];
-var difficulty = 1;
+var difficulty;
 var arrowKeyDownTimer = 0;
 var spaceKeyDownTimer = 0;
 var perfect;
@@ -218,6 +218,7 @@ function createGameplay() {
     checkerSpeed = 70;
     wave = [];
     buttonLine = [];
+    difficulty = 1;
 
     //////////animation wippo
     // wippo.animations.add('perfectRush',[0],1,true);
