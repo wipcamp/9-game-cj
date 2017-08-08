@@ -58,6 +58,8 @@ function preload() {
     game.load.spritesheet('clound1', 'images/clound.png');
     game.load.spritesheet('clound2', 'images/clound2.png');
     game.load.spritesheet('clound3', 'images/clound3.png');
+    game.load.spritesheet('cloudStartStage2', 'images/cloudStartStage2.png');
+    
     ////sound////
     game.load.audio('BGMStage1','sound/BGMStage1.mp3');
     game.load.audio('BGMStage2','sound/BGMStage2.mp3');
@@ -159,7 +161,7 @@ var sattellite;
 var clound1Group;
 var clound2Group;
 var clound3Group;
-
+var cloudStartStage2;
 var startButton;
 var howtoplayButton;
 var creditButton;
@@ -429,7 +431,7 @@ function update() {
                     if (!isSpacebarPressed && !spacebarBlock.alive) {
                         // wippo.animations.play("death");
                         console.log("death reason : isSpacebarPressed = false.")
-                        gameEnd();//====== comment ทิ้งเพื่อไม่ต้องกด spacebar
+                        //gameEnd();//====== comment ทิ้งเพื่อไม่ต้องกด spacebar
                     }
 
                     isSpacebarPressed = false;
@@ -504,12 +506,31 @@ function update() {
         if(bgChange!=null){
             bgChange.tilePosition.y += bgSpeed;
         }
+        if(cloudStartStage2 != null){
+            if(cloudStartStage2.y>500&&cloudStartStage2.body.velocity.y>5){
+                cloudStartStage2.body.velocity.y-=5;
+            }
+        }
         if (isfirstChange) {
             isfirstChange = false;
             if (stateHandle == 1) {
                 bgChange = game.add.tileSprite(0, 0, this.game.world.width, this.game.world.height, 'background2');
                 bgChange.tilePosition.y += 600;
                 BGMStage1.fadeOut(3000);
+                cloudStartStage2 = game.add.sprite(0, 0, 'cloudStartStage2');
+                cloudStartStage2.anchor.setTo(0,0.5);
+                game.physics.arcade.enable(cloudStartStage2);
+                cloudStartStage2.checkWorldBounds = true;
+                cloudStartStage2.events.onOutOfBounds.add(function () {
+                    cloudStartStage2.destroy();
+                    cloudStartStage2 = null;
+                }, this);
+                cloudStartStage2.body.velocity.y = 150;
+                cloudStartStage2.sendToBack();
+                wippo.sendToBack();
+                smoke.sendToBack();
+                bg.sendToBack();
+
             }
             else if (stateHandle == 2) {
                 bgChange = game.add.tileSprite(0, 0, this.game.world.width, this.game.world.height, 'background3');
