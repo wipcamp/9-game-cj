@@ -1157,8 +1157,8 @@ function summonWave() {
     var length;
     if(difficulty<=2){
         length = 3;
-    }else if(difficulty>=8){
-        length = 7;
+    }else if(difficulty>=9){
+        length = 8;
     }else{
         length = difficulty;
     }
