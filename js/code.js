@@ -947,7 +947,7 @@ function checkAccuracy() {
         statusText = game.add.image(game.world.width * (1 / 2), game.world.height * (4 / 5), 'perfect');
 
         perfectStack++;
-        if (perfectStack >= 3 && stopTimePoint < 3) {
+        if (perfectStack >= 4 && stopTimePoint < 3) {
             stopTimePoint++;
             perfectStack = 0;
             stopTimePointText.destroy();
