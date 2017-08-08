@@ -45,7 +45,7 @@ function preload() {
     game.load.spritesheet('left', 'images/left2.png', 45, 45, 8);
     game.load.spritesheet('laser', 'images/biglaser.png');
     game.load.spritesheet('spacebarBlock', 'images/dontpush.png');
-    game.load.spritesheet('numberText', 'images/numberText.png', 744 / 11, 78, 11);
+    game.load.spritesheet('numberText', 'images/numberText.png', 495 / 11, 60, 11);
     game.load.spritesheet('restartBtn', 'images/restartBtn.png');
     game.load.spritesheet('smoke', 'images/smoke.png',800,600,10);
 
@@ -59,7 +59,7 @@ function preload() {
     game.load.spritesheet('clound2', 'images/clound2.png');
     game.load.spritesheet('clound3', 'images/clound3.png');
     game.load.spritesheet('cloudStartStage2', 'images/cloudStartStage2.png');
-    
+
     ////sound////
     game.load.audio('BGMStage1','sound/BGMStage1.mp3');
     game.load.audio('BGMStage2','sound/BGMStage2.mp3');
@@ -392,7 +392,7 @@ function update() {
         }
 
     } else if (gamemode == "ingame") {
-        
+
         if (!isTimeStopped) {
             materialGenerator();
         }
@@ -402,7 +402,7 @@ function update() {
             checker.body.velocity.x = checkerSpeed;
             checkerPic.x = checker.x;
             checkerPic.y = checker.y;
-            if (spacebarBlock.alive) {             
+            if (spacebarBlock.alive) {
                 if (spaceButton.isDown && game.time.now > spaceKeyDownTimer) {
                     // wippo.animations.play("death");
                     console.log("death reason : spacebarBlock.")
@@ -412,15 +412,15 @@ function update() {
                 isSpacebarPressed = true;
                 checkAccuracy();
                 clearWave();
-                
+
                 spaceKeyDownTimer = game.time.now + 1400;
                 if (bg.tilePosition.y >= 1400) {
-                    bgSpeed=perfectSpeed*30/100; 
-                    gamemode = "feverTime"; 
-                    checker.alpha = 0; 
-                    checkerPic.alpha = 0; 
-                    checkbar.alpha = 0; 
-                    progressBar.alpha = 0; 
+                    bgSpeed=perfectSpeed*30/100;
+                    gamemode = "feverTime";
+                    checker.alpha = 0;
+                    checkerPic.alpha = 0;
+                    checkbar.alpha = 0;
+                    progressBar.alpha = 0;
                     guageTimeCounter = 15.0;
                     guageAliveTimer = game.time.events.repeat(Phaser.Timer.SECOND * 0.1, 151, countdownTimer, this, "feverTime");
                 }
@@ -559,10 +559,10 @@ function update() {
                 if (bg.alpha < 0.0000001) {
                     isfirstChange = true;
                     gamemode = "ingame";
-                    checker.alpha = 1; 
-                    checkerPic.alpha = 1; 
-                    checkbar.alpha = 1; 
-                    progressBar.alpha = 1; 
+                    checker.alpha = 1;
+                    checkerPic.alpha = 1;
+                    checkbar.alpha = 1;
+                    progressBar.alpha = 1;
                     if (stateHandle == 1) {
                         BGMStage2.play();
                     }else if (stateHandle == 2) {
@@ -717,7 +717,7 @@ function stoptime() {
     stopTimePointText.destroy();
     stopTimePointText = game.add.sprite(game.world.width * (7 / 8), game.world.height * (1.5 / 5) - 100, 'numberText');
     stopTimePointText.frame = stopTimePoint;
-    smoke.animations.paused = true; 
+    smoke.animations.paused = true;
     // wippo.animations.paused = true;
 
     var cloud1=clound1Group.getFirstExists(true);
@@ -774,7 +774,7 @@ function cancelCountdownTimer(timerName) {
             stopTimerDecimal.destroy();
         }
         bgSpeed = tempBgSpeed;
-        smoke.animations.paused = false; 
+        smoke.animations.paused = false;
         // wippo.animations.paused = false;
 
         ///material
@@ -1399,15 +1399,15 @@ function killObj(obj) {
     obj.kill();
 }
 function checkOverlap(spriteA, spriteB) {
-    try {   
+    try {
         var boundsA = spriteA.getBounds();
         var boundsB = spriteB.getBounds();
-        return Phaser.Rectangle.intersects(boundsA, boundsB);   
+        return Phaser.Rectangle.intersects(boundsA, boundsB);
     } catch (error) {
         //when error occur returning true to avoid unexpect arrow wave that summon when is not(!) overlapping.
         return true;
     }
-    
+
 }
 wippoLaunch = function () {
     floorFront.body.velocity.y = 400;
@@ -1440,13 +1440,13 @@ gameBegin = function () {
     badR.scale.setTo(0.25, 0.3);
     badL = this.add.sprite(coolL.x - coolL.width, perfect.y, 'laser');
     badL.scale.setTo(0.25, 0.3);
-    perfect.alpha = 0; 
-    greatL.alpha = 0; 
-    greatR.alpha = 0; 
-    coolL.alpha = 0; 
-    coolR.alpha = 0; 
-    badL.alpha = 0; 
-    badR.alpha = 0; 
+    perfect.alpha = 0;
+    greatL.alpha = 0;
+    greatR.alpha = 0;
+    coolL.alpha = 0;
+    coolR.alpha = 0;
+    badL.alpha = 0;
+    badR.alpha = 0;
     checkbar = this.add.sprite(game.world.width * (3 / 5)+5, game.world.height * (3 / 5)+10, 'checkbar');
     checkbar.scale.setTo(0.035, 0.07);
     checkbar.anchor.setTo(0.5);
