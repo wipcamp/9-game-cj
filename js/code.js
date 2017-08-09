@@ -242,6 +242,7 @@ function createGameplay() {
     saturn = null;
     earth = null;
     sattellite = null;
+    cloudStartStage2 = null;
 
     sharkGroup = game.add.group();
     sharkGroup.enableBody = true;
@@ -774,6 +775,7 @@ function cancelCountdownTimer(timerName) {
             stopTimerDecimal.destroy();
         }
         bgSpeed = tempBgSpeed;
+
         smoke.animations.paused = false;
         // wippo.animations.paused = false;
 
@@ -1480,19 +1482,19 @@ gameEnd = function () {
 
     gamemode = "gameover";
     wippo.body.velocity.y = 200;
-    perfect.destroy();
-    greatR.destroy();
-    greatL.destroy();
-    coolR.destroy();
-    coolL.destroy();
-    badR.destroy();
-    badL.destroy();
-    checker.destroy();
-    progressBar.destroy();
-    checkbar.destroy();
-    spacebarBlock.destroy();
-    checkerPic.destroy();
-    smoke.destroy();
+    perfect.alpha = 0;
+    greatR.alpha = 0;
+    greatL.alpha = 0;
+    coolR.alpha = 0;
+    coolL.alpha = 0;
+    badR.alpha = 0;
+    badL.alpha = 0;
+    checker.alpha = 0;
+    progressBar.alpha = 0;
+    checkbar.alpha = 0;
+    spacebarBlock.alpha = 0;
+    checkerPic.alpha = 0;
+    smoke.alpha = 0;
     clearWave();
     //game.time.events.add(Phaser.Timer.SECOND * 3, toResultPage = function(){game.state.start(createResult)}, this);
 }
