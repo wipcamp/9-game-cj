@@ -529,7 +529,7 @@ function update() {
             bgChange.tilePosition.y += bgSpeed;
         }
         if(cloudStartStage2 != null){
-            if(cloudStartStage2.y>500&&cloudStartStage2.body.velocity.y>5){
+            if(cloudStartStage2.y>500&&cloudStartStage2.body.velocity.y>10){
                 cloudStartStage2.body.velocity.y-=5;
             }
         }
