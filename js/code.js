@@ -122,8 +122,10 @@ var guageTimeCounter;
 var guageTimerDigit2 = null;
 var guageTimerDigit1 = null;
 var guageTimerDecimal = null;
+var guageTimerDecPoint;
 var stopTimerDigit1;
 var stopTimerDecimal;
+var stopTimerDecPoint;
 var stopTimeTimer;
 var stopTimeCounter;
 var stopTimePointText;
@@ -234,6 +236,15 @@ function createGameplay() {
     spacebarBlock = this.add.sprite(game.world.width * (3 / 5), game.world.height * (3 / 5) - 20, 'spacebarBlock');
     spacebarBlock.scale.setTo(0.7, 0.7);
     spacebarBlock.kill();
+    guageTimerDecPoint = game.add.sprite(
+        (guageTimerDigit2.x + guageTimerDigit2.width + guageTimerDigit1.x + guageTimerDigit1.width)/2,  guageTimerDigit2.y, 'numberText');
+    guageTimerDecPoint.frame = 10;
+    guageTimerDecPoint.alpha = 0;
+    stopTimerDecPoint = game.add.sprite(
+        stopTimerDigit1.x + stopTimerDigit1.width, stopTimerDigit1.y, 'numberText');
+    stopTimerDecPoint.anchor.set(0.5,0);
+    stopTimerDecPoint.frame = 10;
+    stopTimerDecPoint.alpha = 0;
 
     //// material ///////////////////////////////////////////////////////////
     flatCloud = null;
@@ -668,6 +679,7 @@ function countdownTimer(timerName) {
             guageTimerDigit2.destroy();
             guageTimerDigit1.destroy();
             guageTimerDecimal.destroy();
+            guageTimerDecPoint.alpha = 1;
         }
 
         guageTimerDigit2 = game.add.sprite(game.world.width * (1 / 5) - 80, game.world.height * (1.5 / 5) - 150, 'numberText');
@@ -690,6 +702,7 @@ function countdownTimer(timerName) {
         if (stopTimerDigit1 != null) {
             stopTimerDigit1.destroy();
             stopTimerDecimal.destroy();
+            stopTimerDecPoint.alpha = 1;
         }
         stopTimerDigit1 = game.add.sprite(game.world.width * (1 / 2) - 40, game.world.height * (1 / 5) - 100, 'numberText');
         stopTimerDigit1.frame = Math.floor(stopTimeCounter % 10);
@@ -762,6 +775,7 @@ function cancelCountdownTimer(timerName) {
             guageTimerDigit2.destroy();
             guageTimerDigit1.destroy();
             guageTimerDecimal.destroy();
+            guageTimerDecPoint.alpha = 0;
         }
         if (specialGuage != null) {
             specialGuage.destroy();
@@ -773,6 +787,7 @@ function cancelCountdownTimer(timerName) {
         if (stopTimerDigit1 != null) {
             stopTimerDigit1.destroy();
             stopTimerDecimal.destroy();
+            stopTimerDecPoint.alpha = 0;
         }
         bgSpeed = tempBgSpeed;
 
