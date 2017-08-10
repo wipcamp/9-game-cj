@@ -233,7 +233,7 @@ function createGameplay() {
     // gamemode="changingState";
     specialGuageIsSpawned = false;
     isSpacebarPressed = false;
-    spacebarBlock = this.add.sprite(game.world.width * (3 / 5), game.world.height * (3 / 5) - 20, 'spacebarBlock');
+    spacebarBlock = this.add.sprite(game.world.width * (3 / 5) - 40, game.world.height * (3 / 5) - 20, 'spacebarBlock');
     spacebarBlock.scale.setTo(0.7, 0.7);
     spacebarBlock.kill();
     guageTimerDigit2 = game.add.sprite(game.world.width * (1 / 5) - 40 , game.world.height * (1 / 5) , 'numberText');
