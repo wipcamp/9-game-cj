@@ -119,9 +119,9 @@ var isSpacebarDown;
 var maxGuage;
 var guageAliveTimer;
 var guageTimeCounter;
-var guageTimerDigit2 = null;
-var guageTimerDigit1 = null;
-var guageTimerDecimal = null;
+var guageTimerDigit2;
+var guageTimerDigit1;
+var guageTimerDecimal;
 var guageTimerDecPoint;
 var stopTimerDigit1;
 var stopTimerDecimal;
@@ -236,14 +236,24 @@ function createGameplay() {
     spacebarBlock = this.add.sprite(game.world.width * (3 / 5), game.world.height * (3 / 5) - 20, 'spacebarBlock');
     spacebarBlock.scale.setTo(0.7, 0.7);
     spacebarBlock.kill();
+    guageTimerDigit2 = game.add.sprite(game.world.width * (1 / 5) - 40 , game.world.height * (1 / 5) , 'numberText');
+    guageTimerDigit1 = game.add.sprite(guageTimerDigit2.x + guageTimerDigit2.width, guageTimerDigit2.y, 'numberText');
     guageTimerDecPoint = game.add.sprite(
         (guageTimerDigit2.x + guageTimerDigit2.width + guageTimerDigit1.x + guageTimerDigit1.width)/2,  guageTimerDigit2.y, 'numberText');
+    guageTimerDecimal = game.add.sprite(guageTimerDigit1.x + guageTimerDigit1.width,  guageTimerDigit2.y, 'numberText');
     guageTimerDecPoint.frame = 10;
+    guageTimerDigit2.alpha = 0;
+    guageTimerDigit1.alpha = 0;
+    guageTimerDecimal.alpha = 0;
     guageTimerDecPoint.alpha = 0;
+    stopTimerDigit1 = game.add.sprite(game.world.width * (1 / 2) - 40, game.world.height * (1 / 5) - 100, 'numberText');
+    stopTimerDecimal = game.add.sprite(stopTimerDigit1.x + stopTimerDigit1.width, stopTimerDigit1.y, 'numberText');
     stopTimerDecPoint = game.add.sprite(
         stopTimerDigit1.x + stopTimerDigit1.width, stopTimerDigit1.y, 'numberText');
     stopTimerDecPoint.anchor.set(0.5,0);
     stopTimerDecPoint.frame = 10;
+    stopTimerDigit1.alpha = 0;
+    stopTimerDecimal.alpha = 0;
     stopTimerDecPoint.alpha = 0;
 
     //// material ///////////////////////////////////////////////////////////
@@ -675,20 +685,20 @@ function muteSounds() {
 
 function countdownTimer(timerName) {
     if (timerName == "feverTime") {
-        if (guageTimerDigit2 != null) {
-            guageTimerDigit2.destroy();
-            guageTimerDigit1.destroy();
-            guageTimerDecimal.destroy();
+        if (guageTimerDigit2.alpha == 0) {
+            guageTimerDigit2.alpha = 1;
+            guageTimerDigit1.alpha = 1;
+            guageTimerDecimal.alpha = 1;
             guageTimerDecPoint.alpha = 1;
         }
-
-        guageTimerDigit2 = game.add.sprite(game.world.width * (1 / 5) - 80, game.world.height * (1.5 / 5) - 150, 'numberText');
+        guageTimerDigit2.bringToTop();
+        guageTimerDigit1.bringToTop();
+        guageTimerDecimal.bringToTop();
+        guageTimerDecPoint.bringToTop();
         guageTimerDigit2.frame = Math.floor(guageTimeCounter / 10);
-        guageTimerDigit1 = game.add.sprite(game.world.width * (1 / 5), game.world.height * (1.5 / 5) - 150, 'numberText');
         guageTimerDigit1.frame = Math.floor(guageTimeCounter % 10);
-
-        guageTimerDecimal = game.add.sprite(game.world.width * (1 / 5) + 80, game.world.height * (1.5 / 5) - 150, 'numberText');
         guageTimerDecimal.frame = Math.floor(guageTimeCounter * 10 % 10);
+        
         if (!isTimeStopped)
             guageTimeCounter -= 0.1;
 
@@ -699,14 +709,15 @@ function countdownTimer(timerName) {
             gameEnd();
         }
     } else if (timerName == "timeStopped") {
-        if (stopTimerDigit1 != null) {
-            stopTimerDigit1.destroy();
-            stopTimerDecimal.destroy();
+        if (stopTimerDigit1.alpha == 0) {
+            stopTimerDigit1.alpha = 1;
+            stopTimerDecimal.alpha = 1;
             stopTimerDecPoint.alpha = 1;
+            stopTimerDigit1.bringToTop();
+            stopTimerDecimal.bringToTop();
+            stopTimerDecPoint.bringToTop();
         }
-        stopTimerDigit1 = game.add.sprite(game.world.width * (1 / 2) - 40, game.world.height * (1 / 5) - 100, 'numberText');
         stopTimerDigit1.frame = Math.floor(stopTimeCounter % 10);
-        stopTimerDecimal = game.add.sprite(game.world.width * (1 / 2) + 40, game.world.height * (1 / 5) - 100, 'numberText');
         stopTimerDecimal.frame = Math.floor(stopTimeCounter * 10 % 10);
 
         stopTimeCounter -= 0.1;
@@ -771,10 +782,10 @@ function stoptime() {
 var tempBgSpeed;
 function cancelCountdownTimer(timerName) {
     if (timerName == "feverTime") {
-        if (guageTimerDigit2 != null) {
-            guageTimerDigit2.destroy();
-            guageTimerDigit1.destroy();
-            guageTimerDecimal.destroy();
+        if (guageTimerDigit2.alpha == 1) {
+            guageTimerDigit2.alpha = 0;
+            guageTimerDigit1.alpha = 0;
+            guageTimerDecimal.alpha = 0;
             guageTimerDecPoint.alpha = 0;
         }
         if (specialGuage != null) {
@@ -784,9 +795,9 @@ function cancelCountdownTimer(timerName) {
             specialGuageSeal.destroy();
         }
     } else if (timerName == "timeStopped") {
-        if (stopTimerDigit1 != null) {
-            stopTimerDigit1.destroy();
-            stopTimerDecimal.destroy();
+        if (stopTimerDigit1.alpha == 1) {
+            stopTimerDigit1.alpha = 0;
+            stopTimerDecimal.alpha = 0;
             stopTimerDecPoint.alpha = 0;
         }
         bgSpeed = tempBgSpeed;
