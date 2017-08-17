@@ -56,8 +56,6 @@ function preload() {
     game.load.spritesheet('shark', 'images/shark2.png', 50, 50);
     game.load.spritesheet('shipAndCannon', 'images/cannon.png',800,240,2);
     game.load.spritesheet('clound1', 'images/clound.png');
-    game.load.spritesheet('clound2', 'images/clound2.png');
-    game.load.spritesheet('clound3', 'images/clound3.png');
     game.load.spritesheet('cloudStartStage2', 'images/cloudStartStage2.png');
 
     ////sound////
@@ -161,8 +159,6 @@ var saturn;
 var earth;
 var sattellite;
 var clound1Group;
-var clound2Group;
-var clound3Group;
 var cloudStartStage2;
 var startButton;
 var howtoplayButton;
@@ -290,34 +286,11 @@ function createGameplay() {
         clound.exists = false;
         clound.visible = false;
         //clound.scale.setTo(0.5, 0.5);
-        clound.anchor.set(0.5);
+        clound.anchor.set(0.5,0.6);
         clound.checkWorldBounds = true;
         clound.events.onOutOfBounds.add(killObj, this);
     }
-    clound2Group = game.add.group();
-    clound2Group.enableBody = true;
-    clound2Group.physicsBodyType = Phaser.Physics.ARCADE;
-    for (var i = 0; i < 100; i++) {
-        var clound = clound2Group.create(0, 0, 'clound2');
-        clound.exists = false;
-        clound.visible = false;
-        //clound.scale.setTo(0.5, 0.5);
-        clound.anchor.set(0.5);
-        clound.checkWorldBounds = true;
-        clound.events.onOutOfBounds.add(killObj, this);
-    }
-    clound3Group = game.add.group();
-    clound3Group.enableBody = true;
-    clound3Group.physicsBodyType = Phaser.Physics.ARCADE;
-    for (var i = 0; i < 100; i++) {
-        var clound = clound3Group.create(0, 0, 'clound3');
-        clound.exists = false;
-        clound.visible = false;
-        //clound.scale.setTo(0.5, 0.5);
-        clound.anchor.set(0.5);
-        clound.checkWorldBounds = true;
-        clound.events.onOutOfBounds.add(killObj, this);
-    }
+    
     smoke = this.add.sprite(0,0, 'smoke');
     game.physics.arcade.enable(smoke);
     smoke.anchor.set(0.5);
@@ -746,16 +719,8 @@ function stoptime() {
     // wippo.animations.paused = true;
 
     var cloud1=clound1Group.getFirstExists(true);
-    var cloud2=clound2Group.getFirstExists(true);
-    var cloud3=clound3Group.getFirstExists(true);
     if(cloud1!=null){
         cloud1.body.velocity.y = 0;
-    }
-    if(cloud2!=null){
-        cloud2.body.velocity.y = 0;
-    }
-    if(cloud3!=null){
-        cloud3.body.velocity.y = 0;
     }
     if (sattellite != null) {
         // sattellite.body.velocity.y = bgSpeed*8;
@@ -808,16 +773,8 @@ function cancelCountdownTimer(timerName) {
         ///material
 
         var cloud1=clound1Group.getFirstExists(true);
-        var cloud2=clound2Group.getFirstExists(true);
-        var cloud3=clound3Group.getFirstExists(true);
         if(cloud1!=null){
-            cloud1.body.velocity.y = 1200;
-        }
-        if(cloud2!=null){
-            cloud2.body.velocity.y = 1200;
-        }
-        if(cloud3!=null){
-            cloud3.body.velocity.y = 1200;
+            cloud1.body.velocity.y = 70;
         }
         if (sattellite != null) {
             sattellite.body.velocity.y = bgSpeed * 8;
@@ -853,9 +810,7 @@ function cancelCountdownTimer(timerName) {
 //////material function
 var generatorCooldown = 0;
 var sharkMCooldown = 60;
-var clound1Cooldown = game.rnd.integerInRange(180,240);
-var clound2Cooldown = game.rnd.integerInRange(240,280);
-var clound3Cooldown = game.rnd.integerInRange(300,340);
+var clound1Cooldown = 120;
 function materialGenerator() {
     if (stateHandle == 1) {
         //BG1
@@ -881,70 +836,30 @@ function materialGenerator() {
             }
         }
         if (clound1Cooldown <= 0) {
-            clound1Cooldown = game.rnd.integerInRange(120,240);
+            clound1Cooldown = game.rnd.integerInRange(660,720);
             var clound = clound1Group.getFirstExists(false);
             var cloundLaunchAt = game.rnd.integerInRange(20, game.world.width-20);
-            var cloundSpeed = game.rnd.integerInRange(1200, 1400);
+            // var cloundSpeed = game.rnd.integerInRange(1200, 1400);
             clound.reset(cloundLaunchAt,0);
             //clound.body.velocity.y = cloundSpeed;
-            clound.body.velocity.y = 200;
-        }
-        if (clound2Cooldown <= 0) {
-            clound2Cooldown = game.rnd.integerInRange(180,300);
-            var clound = clound2Group.getFirstExists(false);
-            var cloundLaunchAt = game.rnd.integerInRange(20, game.world.width-20);
-            var cloundSpeed = game.rnd.integerInRange(1000, 1400);
-            clound.reset(cloundLaunchAt,0);
-            //clound.body.velocity.y = cloundSpeed;
-            clound.body.velocity.y = 200;
-        }
-        if (clound3Cooldown <= 0) {
-            clound3Cooldown = game.rnd.integerInRange(240,360);
-            var clound = clound3Group.getFirstExists(false);
-            var cloundLaunchAt = game.rnd.integerInRange(20, game.world.width-20);
-            var cloundSpeed = game.rnd.integerInRange(1000, 1200);
-            clound.reset(cloundLaunchAt,0);
-            //clound.body.velocity.y = cloundSpeed;
-            clound.body.velocity.y = 200;
+            clound.body.velocity.y = 70;
         }
 
         clound1Cooldown--;
-        clound2Cooldown--;
-        clound3Cooldown--;
         sharkMCooldown--;
     } else if (stateHandle == 2) {
         //BG2
         if (clound1Cooldown <= 0) {
-            clound1Cooldown = game.rnd.integerInRange(120,240);
+            clound1Cooldown = game.rnd.integerInRange(660,720);
             var clound = clound1Group.getFirstExists(false);
             var cloundLaunchAt = game.rnd.integerInRange(20, game.world.width-20);
-            var cloundSpeed = game.rnd.integerInRange(1200, 1400);
+            // var cloundSpeed = game.rnd.integerInRange(1200, 1400);
             clound.reset(cloundLaunchAt,0);
-            clound.body.velocity.y = cloundSpeed;
-
-        }
-        if (clound2Cooldown <= 0) {
-            clound2Cooldown = game.rnd.integerInRange(180,300);
-            var clound = clound2Group.getFirstExists(false);
-            var cloundLaunchAt = game.rnd.integerInRange(20, game.world.width-20);
-            var cloundSpeed = game.rnd.integerInRange(1000, 1400);
-            clound.reset(cloundLaunchAt,0);
-            clound.body.velocity.y = cloundSpeed;
-
-        }
-        if (clound3Cooldown <= 0) {
-            clound3Cooldown = game.rnd.integerInRange(240,360);
-            var clound = clound3Group.getFirstExists(false);
-            var cloundLaunchAt = game.rnd.integerInRange(20, game.world.width-20);
-            var cloundSpeed = game.rnd.integerInRange(1000, 1200);
-            clound.reset(cloundLaunchAt,0);
-            clound.body.velocity.y = cloundSpeed;
+            clound.body.velocity.y = 70;
 
         }
 
         clound1Cooldown--;
-        clound2Cooldown--;
-        clound3Cooldown--;
 
     } else {
 
