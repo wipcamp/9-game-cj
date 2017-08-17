@@ -5,6 +5,10 @@ game.state.add('menu', menu);
 game.state.add('main', main);
 game.state.start('menu');
 function preloadMenu(){
+    game.load.onLoadStart.add(loadStart, this);
+    game.load.onFileComplete.add(fileComplete, this);
+    game.load.onLoadComplete.add(loadComplete, this);
+    game.stage.backgroundColor = '#182d3b';
     game.load.image('backgroundMenu', 'images/BGmenu.png');
     game.load.spritesheet('startButton', 'images/startButton.png', 205, 48);
     game.load.spritesheet('howtoplayButton', 'images/howtoplay.png', 206, 50);
@@ -74,6 +78,8 @@ function preload() {
 }
 
 var isSound = true;
+var loadingText;
+//////// ingame variable /////
 var checker;
 var checkerSpeed;
 var checkerPic;
@@ -169,6 +175,7 @@ var logoGame;
 
 function createMenu() {
     game.stage.disableVisibilityChange = true;
+    
     game.add.image(0, 0, 'backgroundMenu');
     logoGame = game.add.image(game.world.width*(3.5/5), game.world.height*(1.4/5), 'logoGame');
     logoGame.anchor.set(0.5);
@@ -188,9 +195,20 @@ function createMenu() {
     mute = game.add.button(750, 20, 'mute', muteSounds, this);
     mute.scale.setTo(0.08, 0.08);
 }
+function loadStart() {  
+    loadingText = game.add.text(game.world.width/2, game.world.height/2, 'Loading 0%', { fill: '#ffffff' });
+    loadingText.anchor.set(0.5);
+}
+function fileComplete(progress, cacheKey, success, totalLoaded, totalFiles) {
+    loadingText.setText("Loading " + progress + "%");
+}
+function loadComplete() {  
+    loadingText.destroy();
+}
 
 function createGameplay() {
     game.stage.disableVisibilityChange = true;
+    
     stateHandle = 1;
     // stateHandle = 2;
     isfirstChange = true;
@@ -369,6 +387,7 @@ function createGameplay() {
     else
         mute.frame = 1;
 }
+
 
 var summonCooldown = 0;
 function update() {
