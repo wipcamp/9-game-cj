@@ -74,6 +74,7 @@ function preload() {
     game.load.audio('great','sound/Great.mp3');
     game.load.audio('cool','sound/Fair.mp3');
     game.load.audio('bad','sound/bad.mp3');
+    game.load.audio('passStage','sound/PassStage.mp3');
 
 }
 
@@ -155,6 +156,7 @@ var perfectSound;
 var greatSound;
 var coolSound;
 var badSound;
+var passStageSound;
 
 /////////material variable///////
 var flatCloud;
@@ -362,6 +364,8 @@ function createGameplay() {
     greatSound = game.add.audio('great');
     coolSound = game.add.audio('cool');
     badSound = game.add.audio('bad');
+    passStageSound = game.add.audio('passStage');
+    passStageSound.volume = 0.6;
     BGMStage1.play();
     //wippo.events.onOutOfBounds.add(gameEnd(), this);
 
@@ -594,6 +598,7 @@ function update() {
                     stateHandle++;
                 }
             }, this);
+            passStageSound.play();
         }
         //bg.autoScroll(this.levelSpeed, 0);
         //bg.fixedToCamera = true;
