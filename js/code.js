@@ -42,6 +42,7 @@ function preload() {
     game.load.image('checkerPic', 'images/pointer.png');
     game.load.image('beam', 'images/beam.png');
     game.load.image('checkbar', 'images/checkbar.png');
+    game.load.image('stopwatch', 'images/stopwatch.png');
 
     game.load.spritesheet('up', 'images/up2.png', 45, 45, 8);
     game.load.spritesheet('down', 'images/down2.png', 45, 45, 8);
@@ -145,6 +146,7 @@ var isfirstChange;
 var isfirstOver;
 var buttonRestart;
 var smoke;
+var stopwatchIcon;
 /////////sound variable//////////
 var timeStopSound;
 var BGMStage1;
@@ -1445,6 +1447,9 @@ gameBegin = function () {
 
 
     ///////////////////////////////////////////////
+    stopwatchIcon = this.add.sprite(game.world.width*(85/100), game.world.height*(20/100), 'stopwatch');
+    stopwatchIcon.anchor.set(0.5);
+    stopwatchIcon.scale.setTo(0.5,0.5);
     stopTimePointText = game.add.sprite(game.world.width * (7 / 8), game.world.height * (1.5 / 5) - 100, 'numberText');
     stopTimePointText.frame = 1;
 }
