@@ -368,6 +368,10 @@ function createGameplay() {
     greatSound = game.add.audio('great');
     coolSound = game.add.audio('cool');
     badSound = game.add.audio('bad');
+    perfectSound.volume = 0.6;
+    greatSound.volume = 0.6;
+    coolSound.volume = 0.6;
+    badSound.volume = 0.6;
     getTimeStopPoint = game.add.audio('getSkillPoint');
     getTimeStopPoint.volume = 2.5;
     cannonShoot = game.add.audio('cannonShoot');
