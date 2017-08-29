@@ -544,6 +544,7 @@ function update() {
                 wippo.sendToBack();
                 smoke.sendToBack();
                 bg.sendToBack();
+                clound1Group.setAll('alpha',0.65);
 
             }
             else if (stateHandle == 2) {
