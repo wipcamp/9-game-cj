@@ -74,6 +74,7 @@ function preload() {
     game.load.audio('great','sound/Great.mp3');
     game.load.audio('cool','sound/Fair.mp3');
     game.load.audio('bad','sound/bad.mp3');
+    game.load.audio('getSkillPoint','sound/getStopTime.mp3');
     game.load.audio('passStage','sound/PassStage.mp3');
     game.load.audio('cannonShoot','sound/CannonShoot.mp3');
 
@@ -157,6 +158,7 @@ var perfectSound;
 var greatSound;
 var coolSound;
 var badSound;
+var getTimeStopPoint;
 var cannonShoot;
 var passStageSound;
 
@@ -348,7 +350,7 @@ function createGameplay() {
     isSpacebarDown = false;
     maxGuage = 100;
     perfectStack = 0;
-    stopTimePoint = 10;
+    stopTimePoint = 1;
     //gamemode = "feverTime";
 
     ////sound////
@@ -366,6 +368,8 @@ function createGameplay() {
     greatSound = game.add.audio('great');
     coolSound = game.add.audio('cool');
     badSound = game.add.audio('bad');
+    getTimeStopPoint = game.add.audio('getSkillPoint');
+    getTimeStopPoint.volume = 2.5;
     cannonShoot = game.add.audio('cannonShoot');
     cannonShoot.volume = 0.6;
     passStageSound = game.add.audio('passStage');
@@ -946,6 +950,7 @@ function checkAccuracy() {
             stopTimePointText.destroy();
             stopTimePointText = game.add.sprite(game.world.width * (7 / 8), game.world.height * (1.5 / 5) - 100, 'numberText');
             stopTimePointText.frame = stopTimePoint;
+            getTimeStopPoint.play();
         }
         game.time.events.add(Phaser.Timer.SECOND * 1.5, function () {
             statusText.destroy();
