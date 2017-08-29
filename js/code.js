@@ -198,8 +198,9 @@ function createMenu() {
     BGMMenu = game.add.audio('BGMMenu');
     BGMMenu.volume = 0.4;
     BGMMenu.loopFull();
-    mute = game.add.button(750, 20, 'mute', muteSounds, this);
+    mute = game.add.button(game.world.width*(97/100), game.world.height*(96/100), 'mute', muteSounds, this);
     mute.scale.setTo(0.08, 0.08);
+    mute.anchor.set(0.5);
 }
 function loadStart() {  
     loadingText = game.add.text(game.world.width/2, game.world.height/2, 'Loading 0%', { fill: '#ffffff' });
@@ -396,8 +397,9 @@ function createGameplay() {
     })*/
 
     /////mute
-    mute = game.add.button(750, 20, 'mute', muteSounds, this);
+    mute = game.add.button(game.world.width*(97/100), game.world.height*(96/100), 'mute', muteSounds, this);
     mute.scale.setTo(0.08, 0.08);
+    mute.anchor.set(0.5);
     if (isSound)
         mute.frame = 0;
     else
