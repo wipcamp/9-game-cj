@@ -240,7 +240,7 @@ function createGameplay() {
     checker.scale.setTo(0.05, 0.3);
     checker.body.maxVelocity.set(1500);
     checker.body.collideWorldBounds = false;
-    checkerSpeed = 70;
+    checkerSpeed = 60;
     wave = [];
     buttonLine = [];
     difficulty = 1;
@@ -1405,8 +1405,8 @@ gameBegin = function () {
     bgSpeed = perfectSpeed*80/100;
     smoke.reset(wippo.x+20, wippo.y+110);
     smoke.animations.play('great');
-    progressBar = this.add.sprite(game.world.width * (2 / 5), game.world.height * (3 / 5)+10, 'beam');
-    progressBar.scale.setTo(0.08, 0.07);
+    progressBar = this.add.sprite(game.world.width * (35 / 100), game.world.height * (3 / 5)+10, 'beam');
+    progressBar.scale.setTo(0.09, 0.07);
     progressBar.anchor.setTo(0,0.5);
     perfect = this.add.sprite(game.world.width * (3 / 5)+1, progressBar.y-7, 'laser');
     perfect.scale.setTo(0.25, 0.3);
