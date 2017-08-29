@@ -951,8 +951,6 @@ function checkAccuracy() {
         if (perfectStack >= 4 && stopTimePoint < 3) {
             stopTimePoint++;
             perfectStack = 0;
-            stopTimePointText.destroy();
-            stopTimePointText = game.add.sprite(game.world.width * (7 / 8), game.world.height * (1.5 / 5) - 100, 'numberText');
             stopTimePointText.frame = stopTimePoint;
             getTimeStopPoint.play();
         }
