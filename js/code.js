@@ -75,6 +75,7 @@ function preload() {
     game.load.audio('cool','sound/Fair.mp3');
     game.load.audio('bad','sound/bad.mp3');
     game.load.audio('passStage','sound/PassStage.mp3');
+    game.load.audio('cannonShoot','sound/CannonShoot.mp3');
 
 }
 
@@ -156,6 +157,7 @@ var perfectSound;
 var greatSound;
 var coolSound;
 var badSound;
+var cannonShoot;
 var passStageSound;
 
 /////////material variable///////
@@ -364,6 +366,8 @@ function createGameplay() {
     greatSound = game.add.audio('great');
     coolSound = game.add.audio('cool');
     badSound = game.add.audio('bad');
+    cannonShoot = game.add.audio('cannonShoot');
+    cannonShoot.volume = 0.6;
     passStageSound = game.add.audio('passStage');
     passStageSound.volume = 0.6;
     BGMStage1.play();
@@ -1384,6 +1388,7 @@ wippoLaunch = function () {
     smoke.reset(wippo.x+20, wippo.y+110);
     smoke.body.velocity.y = -150;
     bgSpeed = perfectSpeed;
+    cannonShoot.play()
     // game.time.events.add(Phaser.Timer.SECOND * 2, gameBegin, this);
 }
 gameBegin = function () {
