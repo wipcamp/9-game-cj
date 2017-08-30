@@ -1404,3 +1404,46 @@ gameEnd = function () {
 function toGameplay() {
     game.state.start('main');
 }
+
+
+
+/*function setScore() {
+    var highscore = 0;
+    var sals = dbSals.child(id);
+    sals.on('value', function(snapshot) {
+        highscore = snapshot.val().highscore;
+        if(highscore=== undefined){
+           highscore=0;
+        }
+    });
+
+    if(highscore < score){
+        dbSals.child(id).update(
+            {    "name" : name,
+                 "score" : score,
+                 "highscore" : score
+            }
+        );
+    }else{
+
+        dbSals.child(id).update(
+             {
+                 "name" : name,
+                 "score" : score,
+             }
+        );
+    }
+}
+function sendReportMessage(report) {
+    var rndText = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    for (var i = 0; i < 5; i++) {
+        rndText += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    var rnd = game.rnd.integerInRange(0, 1000000) + rndText + (new Date()).getTime();
+    var dbEtkReport = firebase.database().ref().child("report-sals");
+    var sals = dbEtkReport.child(rnd);
+    sals.update({
+        'message': report
+    });
+}*/
