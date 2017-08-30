@@ -84,6 +84,7 @@ function preload() {
 var isSound = true;
 var loadingText;
 //////// ingame variable /////
+var perSpawn;
 var checker;
 var checkerSpeed;
 var checkerPic;
@@ -217,7 +218,9 @@ function loadComplete() {
 
 function createGameplay() {
     game.stage.disableVisibilityChange = true;
-    
+    perSpawn = [90, 5, 5, 0];
+    for(i=1;i<4;i++)
+        perSpawn[i]+=perSpawn[i-1];
     stateHandle = 1;
     // stateHandle = 2;
     isfirstChange = true;
@@ -439,7 +442,6 @@ function update() {
             if (spacebarBlock.alive) {
                 if (spaceButton.isDown && game.time.now > spaceKeyDownTimer) {
                     // wippo.animations.play("death");
-                    console.log("death reason : spacebarBlock.")
                     gameEnd();
                 }
             } else if (spaceButton.isDown && game.time.now > spaceKeyDownTimer) {
@@ -464,7 +466,6 @@ function update() {
                     summonWave();
                     if (!isSpacebarPressed && !spacebarBlock.alive) {
                         // wippo.animations.play("death");
-                        console.log("death reason : isSpacebarPressed = false.")
                         //gameEnd();//====== comment ทิ้งเพื่อไม่ต้องกด spacebar
                     }
 
@@ -548,6 +549,12 @@ function update() {
         if (isfirstChange) {
             isfirstChange = false;
             if (stateHandle == 1) {
+                perSpawn[0] = 70;
+                perSpawn[1] = 15;
+                perSpawn[2] = 10;
+                perSpawn[3] = 5;
+                for(i=1;i<4;i++)
+                    perSpawn[i]+=perSpawn[i-1];
                 bgChange = game.add.tileSprite(0, 0, this.game.world.width, this.game.world.height, 'background2');
                 bgChange.tilePosition.y += 600;
                 BGMStage1.fadeOut(3000);
@@ -568,6 +575,12 @@ function update() {
 
             }
             else if (stateHandle == 2) {
+                perSpawn[0] = 50;
+                perSpawn[1] = 25;
+                perSpawn[2] = 10;
+                perSpawn[3] = 15;
+                for(i=1;i<4;i++)
+                    perSpawn[i]+=perSpawn[i-1];
                 bgChange = game.add.tileSprite(0, 0, this.game.world.width, this.game.world.height, 'background3');
                 bgChange.tilePosition.y += 600;
                 earth = game.add.sprite(game.world.width / 2, game.world.height / 1.5, 'earth');
@@ -719,7 +732,6 @@ function countdownTimer(timerName) {
         if (guageTimeCounter <= 0) {
             // wippo.animations.play("death");
             cancelCountdownTimer("feverTime");
-            console.log("death reason : guage time's up.")
             gameEnd();
         }
     } else if (timerName == "timeStopped") {
@@ -962,7 +974,7 @@ function checkAccuracy() {
             statusText.destroy();
         }, this);
         bgSpeed = perfectSpeed;
-        difficulty++;
+        difficulty+=2;
         score += 200;
         perfectSound.play();
         result = true;
@@ -975,6 +987,7 @@ function checkAccuracy() {
             statusText.destroy();
         }, this);
         bgSpeed = perfectSpeed*90/100;
+        difficulty++;
         score += 175;
         perfectStack = 0;
         greatSound.play();
@@ -988,7 +1001,7 @@ function checkAccuracy() {
         }, this);
         bgSpeed = perfectSpeed*80/100;
         score += 150;
-        difficulty-=2;
+        difficulty--;
         perfectStack = 0;
         coolSound.play();
         result = true;
@@ -1012,7 +1025,6 @@ function checkAccuracy() {
         game.time.events.add(Phaser.Timer.SECOND * 1.5, function () {
             statusText.destroy();
         }, this);
-        console.log("death reason : miss.")
         gameEnd();
         perfectStack = 0;
         result = false;
@@ -1046,7 +1058,7 @@ function collectArrow() {
             isHoldDown = true;
             if (wave[waveCheckOrder].name == "up") {
                 wave[waveCheckOrder].arrow.animations.play('correct');
-                if (wave[waveCheckOrder].type == 1) {
+                if (wave[waveCheckOrder].type == 3) {
                     if (waveCheckOrder + 1 < wave.length - 1) {
                         var pos = game.rnd.integerInRange(waveCheckOrder + 1, wave.length - 1);
                         posx = wave[pos].x;
@@ -1065,7 +1077,7 @@ function collectArrow() {
             isHoldDown = true;
             if (wave[waveCheckOrder].name == "down") {
                 wave[waveCheckOrder].arrow.animations.play('correct');
-                if (wave[waveCheckOrder].type == 1) {
+                if (wave[waveCheckOrder].type == 3) {
                     if (waveCheckOrder + 1 < wave.length - 1) {
                         var pos = game.rnd.integerInRange(waveCheckOrder + 1, wave.length - 1);
                         posx = wave[pos].x;
@@ -1085,7 +1097,7 @@ function collectArrow() {
             isHoldDown = true;
             if (wave[waveCheckOrder].name == "right") {
                 wave[waveCheckOrder].arrow.animations.play('correct');
-                if (wave[waveCheckOrder].type == 1) {
+                if (wave[waveCheckOrder].type == 3) {
                     if (waveCheckOrder + 1 < wave.length - 1) {
                         var pos = game.rnd.integerInRange(waveCheckOrder + 1, wave.length - 1);
                         posx = wave[pos].x;
@@ -1104,7 +1116,7 @@ function collectArrow() {
             isHoldDown = true;
             if (wave[waveCheckOrder].name == "left") {
                 wave[waveCheckOrder].arrow.animations.play('correct');
-                if (wave[waveCheckOrder].type == 1) {
+                if (wave[waveCheckOrder].type == 3) {
                     if (waveCheckOrder + 1 < wave.length - 1) {
                         var pos = game.rnd.integerInRange(waveCheckOrder + 1, wave.length - 1);
                         posx = wave[pos].x;
@@ -1163,12 +1175,10 @@ function clearWave() {
 }
 function summonWave() {
     var length;
-    if(difficulty<=2){
-        length = 3;
-    }else if(difficulty>=9){
-        length = 8;
+    if(difficulty<=6){
+        length = difficulty+2;
     }else{
-        length = difficulty;
+        length = 8;
     }
     // var l = wave.length;
     var randObstacle = game.rnd.integerInRange(1, 6);
@@ -1193,6 +1203,7 @@ function summonWave() {
         y = game.world.height * 3.5 / 5;
     }
     clearWave();
+    console.log("length = "+length);
     for (var i = 0; i < length; i++) {
         ////create button line
         if (i > 0) {
@@ -1209,7 +1220,14 @@ function summonWave() {
         //////
 
         var rand = game.rnd.integerInRange(0, 3/*difficulty*/);
-        wave.push(new arrowCreate(x, y, rand, null));
+        var randType = game.rnd.integerInRange(0,99);
+        for(j=0;j<4;j++){
+            if(randType<perSpawn[j]){
+                randType = j;
+                break;
+            }
+        }
+        wave.push(new arrowCreate(x, y, rand, randType));
         //waveCheck.push(false);
         //wave[i]=new arrowCreate(x,y,rand);
         x += 50;
@@ -1345,7 +1363,6 @@ gameBegin = function () {
     checkerPic.scale.setTo(0.01, 0.01);
     checkerPic.body.maxVelocity.set(1500);
     checkerPic.body.collideWorldBounds = false;
-
 
     ///////////////////////////////////////////////
     stopwatchIcon = this.add.sprite(game.world.width*(85/100), game.world.height*(20/100), 'stopwatch');
