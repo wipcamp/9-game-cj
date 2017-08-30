@@ -1254,165 +1254,66 @@ function summonWave() {
         //////
 
         var rand = game.rnd.integerInRange(0, 3/*difficulty*/);
-        wave.push(new arrowCreate(x, y, rand, game.rnd.integerInRange(0, 2)));
+        wave.push(new arrowCreate(x, y, rand, null));
         //waveCheck.push(false);
         //wave[i]=new arrowCreate(x,y,rand);
         x += 50;
     }
 }
 arrowCreate = function (x, y, rand, type) {
+    /*
+        0 up
+        1 down
+        2 left
+        3 right
+    */ 
     this.x = x;
     this.y = y;
     this.type = type;
     this.game = game;
     this.alive = true;
-    if (this.type == 0) {
-        var randomType = game.rnd.integerInRange(1, 10);
-        if (rand == 0) {
-            this.arrow = game.add.sprite(x, y, 'up');
-            this.arrow.anchor.set(0.5);
-            this.arrow.scale.setTo(1, 1);
-            this.name = "up";
-            if (randomType <= 7) {
-                this.arrow.animations.add('default', [0], 1, true);
-                this.arrow.animations.add('correct', [1], 1, true);
-                this.arrow.animations.play('default');
-            } else if (randomType > 7) {
-                this.arrow.animations.add('default', [2], 1, true);
-                this.arrow.animations.add('correct', [1], 1, true);
-                this.arrow.animations.play('default');
-            }
-            //this.up.name = index.toString();
-        } else if (rand == 1) {
-            this.arrow = game.add.sprite(x, y, 'down');
-            this.arrow.anchor.set(0.5);
-            this.arrow.scale.setTo(1, 1);
-            this.name = "down";
-            if (randomType <= 7) {
-                this.arrow.animations.add('default', [0], 1, true);
-                this.arrow.animations.add('correct', [1], 1, true);
-                this.arrow.animations.play('default');
-            } else if (randomType > 7) {
-                this.arrow.animations.add('default', [2], 1, true);
-                this.arrow.animations.add('correct', [1], 1, true);
-                this.arrow.animations.play('default');
-            }
-            //this.down.name = index.toString();
-        } else if (rand == 2) {
-            this.arrow = game.add.sprite(x, y, 'right');
-            this.arrow.anchor.set(0.5);
-            this.arrow.scale.setTo(1, 1);
-            this.name = "right";
-            if (randomType <= 7) {
-                this.arrow.animations.add('default', [0], 1, true);
-                this.arrow.animations.add('correct', [1], 1, true);
-                this.arrow.animations.play('default');
-            } else if (randomType > 7) {
-                this.arrow.animations.add('default', [2], 1, true);
-                this.arrow.animations.add('correct', [1], 1, true);
-                this.arrow.animations.play('default');
-            }
-            //this.right.name = index.toString();
-        } else {
-            this.arrow = game.add.sprite(x, y, 'left');
-            this.arrow.anchor.set(0.5);
-            this.arrow.scale.setTo(1, 1);
-            this.name = "left";
-            if (randomType <= 7) {
-                this.arrow.animations.add('default', [0], 1, true);
-                this.arrow.animations.add('correct', [1], 1, true);
-                this.arrow.animations.play('default');
-            } else if (randomType > 7) {
-                this.arrow.animations.add('default', [2], 1, true);
-                this.arrow.animations.add('correct', [1], 1, true);
-                this.arrow.animations.play('default');
-            }
-            //this.left.name = index.toString();
-        }
+    this.arrow = null;
+    
+    if (rand == 0) {
+        this.arrow = game.add.sprite(x, y, 'up');
+        this.name = "up";
+    } else if (rand == 1) {
+        this.arrow = game.add.sprite(x, y, 'down');
+        this.name = "down";
+    } else if (rand == 2) {
+        this.arrow = game.add.sprite(x, y, 'right');
+        this.name = "right";
+    } else {
+        this.arrow = game.add.sprite(x, y, 'left');
+        this.name = "left";
     }
-    else if (this.type == 1) {
-        //Type changer Arrow
-        if (rand == 0) {
-            this.arrow = game.add.sprite(x, y, 'up');
-            this.name = "up";
-            //this.up.name = index.toString();
-        } else if (rand == 1) {
-            this.arrow = game.add.sprite(x, y, 'down');
-            this.name = "down";
-            //this.down.name = index.toString();
-        } else if (rand == 2) {
-            this.arrow = game.add.sprite(x, y, 'right');
-            this.name = "right";
-            //this.right.name = index.toString();
-        } else {
-            this.arrow = game.add.sprite(x, y, 'left');
-            this.name = "left";
-            //this.left.name = index.toString();
-        }
-        // this.arrow.alpha=0.6;
+
+    if(this.type==0){ //normal
+        this.arrow.animations.add('default', [0], 1, true);
+        this.arrow.animations.add('correct', [1], 1, true);
+        this.arrow.animations.play('default');
+        this.arrow.anchor.set(0.5);
+        this.arrow.scale.setTo(1, 1);
+    }
+    else if(this.type==1){ //reverse
+        this.arrow.animations.add('default', [2], 1, true);
+        this.arrow.animations.add('correct', [1], 1, true);
+        this.arrow.animations.play('default');
+        this.arrow.anchor.set(0.5);
+        this.arrow.scale.setTo(1, 1);
+    }
+    else if(this.type==2){ //invis
+        this.arrow.anchor.set(0.5);
+        this.arrow.scale.setTo(1, 1);
+        this.arrow.animations.add('default', [4, 4, 4, 3], 2, false);
+        this.arrow.animations.add('correct', [1], 1, true);
+        this.arrow.animations.play('default');
+    }
+    else{ // rotate
         this.arrow.anchor.set(0.5);
         this.arrow.scale.setTo(1, 1);
         this.arrow.animations.add('default', [5], 1, true);
         this.arrow.animations.add('out', [3], 1, true);
-        this.arrow.animations.add('correct', [1], 1, true);
-        this.arrow.animations.play('default');
-
-    }
-    else if (this.type == 2) {
-        //Type fading Arrow
-        if (rand == 0) {
-            this.arrow = game.add.sprite(x, y, 'up');
-            this.name = "up";
-            //this.up.name = index.toString();
-        } else if (rand == 1) {
-            this.arrow = game.add.sprite(x, y, 'down');
-            this.name = "down";
-            //this.down.name = index.toString();
-        } else if (rand == 2) {
-            this.arrow = game.add.sprite(x, y, 'right');
-            this.name = "right";
-            //this.right.name = index.toString();
-        } else {
-            this.arrow = game.add.sprite(x, y, 'left');
-            this.name = "left";
-            //this.left.name = index.toString();
-        }
-        // this.arrow.alpha = 0.8;
-        this.arrow.anchor.set(0.5);
-        this.arrow.scale.setTo(1, 1);
-        // this.arrow.animations.add('default',[0],1,true);
-        // this.arrow.animations.add('out',[3],1,true);
-        this.arrow.animations.add('default', [4, 4, 4, 3], 2, false);
-        this.arrow.animations.add('correct', [1], 1, true);
-        this.arrow.animations.play('default');
-        // game.time.events.add(Phaser.Timer.SECOND * 2, function(){
-        //     if(this.arrow.frame==0){
-        //         this.arrow.animations.play('out');
-        //     }
-        // }, this);
-    }
-    else if (type == 3) {
-        //Type changing arrow
-        if (rand == 0) {
-            this.arrow = game.add.sprite(x, y, 'up');
-            this.name = "up";
-            //this.up.name = index.toString();
-        } else if (rand == 1) {
-            this.arrow = game.add.sprite(x, y, 'down');
-            this.name = "down";
-            //this.down.name = index.toString();
-        } else if (rand == 2) {
-            this.arrow = game.add.sprite(x, y, 'right');
-            this.name = "right";
-            //this.right.name = index.toString();
-        } else {
-            this.arrow = game.add.sprite(x, y, 'left');
-            this.name = "left";
-            //this.left.name = index.toString();
-        }
-        this.arrow.anchor.set(0.5);
-        this.arrow.scale.setTo(1, 1);
-        this.arrow.animations.add('default', [0], 1, true);
         this.arrow.animations.add('correct', [1], 1, true);
         this.arrow.animations.play('default');
     }
