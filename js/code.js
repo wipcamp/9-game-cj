@@ -150,6 +150,7 @@ var buttonRestart;
 var smoke;
 var stopwatchIcon;
 var stopTimePointBg;
+var stopTimeGroup;
 /////////sound variable//////////
 var timeStopSound;
 var BGMStage1;
@@ -284,6 +285,10 @@ function createGameplay() {
     stopTimerDecimal.alpha = 0;
     stopTimerDecPoint.alpha = 0;
 
+    stopTimeGroup = game.add.group();
+    stopTimeGroup.enableBody = true;
+    stopTimeGroup.physicsBodyType = Phaser.Physics.ARCADE;
+
     //// material ///////////////////////////////////////////////////////////
     flatCloud = null;
     sharkM = null;
@@ -358,7 +363,7 @@ function createGameplay() {
     isSpacebarDown = false;
     maxGuage = 100;
     perfectStack = 0;
-    stopTimePoint = 1;
+    stopTimePoint = 3;
     //gamemode = "feverTime";
 
     ////sound////
@@ -764,11 +769,17 @@ function stoptime() {
     if(guageAliveTimer!=null){
         guageAliveTimer.repeatCount+=30;
     }
+    
+    stopTimeGroup.setAll('body.velocity.x',-210);
+    game.time.events.add(700, function () {
+        stopTimeGroup.setAll('body.velocity.x',63.9130434783);
+        game.time.events.add(2300, function () {
+            stopTimeGroup.setAll('body.velocity.x',0);
+        }, this); 
+    }, this); 
     checker.body.velocity.x = 0;
     tempBgSpeed = bgSpeed;
     bgSpeed = 0;
-    stopTimePointText.destroy();
-    stopTimePointText = game.add.sprite(game.world.width * (7 / 8), game.world.height * (1.5 / 5) - 100, 'numberText');
     stopTimePointText.frame = stopTimePoint;
     smoke.animations.paused = true;
     // wippo.animations.paused = true;
@@ -1205,7 +1216,6 @@ function summonWave() {
         y = game.world.height * 3.5 / 5;
     }
     clearWave();
-    console.log("length = "+length);
     for (var i = 0; i < length; i++) {
         ////create button line
         if (i > 0) {
@@ -1373,8 +1383,14 @@ gameBegin = function () {
     stopwatchIcon = this.add.sprite(game.world.width*(85/100), game.world.height*(20/100), 'stopwatch');
     stopwatchIcon.anchor.set(0.5);
     stopwatchIcon.scale.setTo(0.5,0.5);
-    stopTimePointText = game.add.sprite(game.world.width * (7 / 8), game.world.height * (1.5 / 5) - 100, 'numberText');
-    stopTimePointText.frame = 1;
+    stopTimePointText = game.add.sprite(game.world.width * (7 / 8), game.world.height*(20/100), 'numberText');
+    stopTimePointText.anchor.set(0,0.5);
+    stopTimePointText.frame = stopTimePoint;
+    stopTimeGroup.add(stopTimePointBg);
+    stopTimeGroup.add(stopwatchIcon);
+    stopTimeGroup.add(stopTimePointText);
+    game.world.bringToTop(stopTimeGroup);
+    
 }
 gameEnd = function () {
     //playDeathAnimation
