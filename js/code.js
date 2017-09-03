@@ -750,9 +750,15 @@ function stoptime() {
     
     stopTimeGroup.setAll('body.velocity.x',-200);
     game.time.events.add(700, function () {
-        stopTimeGroup.setAll('body.velocity.x',56);
+        stopTimeGroup.setAll('body.velocity.x',55);
         game.time.events.add(2500, function () {
             stopTimeGroup.setAll('body.velocity.x',0);
+            stopTimePointBg.x = game.world.width*(85/100);
+            stopTimePointBg.y = game.world.height*(20/100);
+            stopwatchIcon.x = game.world.width*(85/100);
+            stopwatchIcon.y = game.world.height*(20/100);
+            stopTimePointText.x = game.world.width * (7 / 8);
+            stopTimePointText.y = game.world.height*(20/100);
         }, this); 
     }, this); 
     checker.body.velocity.x = 0;
