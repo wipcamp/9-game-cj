@@ -133,9 +133,6 @@ var guageTimerDigit2;
 var guageTimerDigit1;
 var guageTimerDecimal;
 var guageTimerDecPoint;
-var stopTimerDigit1;
-var stopTimerDecimal;
-var stopTimerDecPoint;
 var stopTimeTimer;
 var stopTimeCounter;
 var stopTimePointText;
@@ -275,15 +272,6 @@ function createGameplay() {
     guageTimerDigit1.alpha = 0;
     guageTimerDecimal.alpha = 0;
     guageTimerDecPoint.alpha = 0;
-    stopTimerDigit1 = game.add.sprite(game.world.width * (1 / 2) - 40, game.world.height * (1 / 5) - 100, 'numberText');
-    stopTimerDecimal = game.add.sprite(stopTimerDigit1.x + stopTimerDigit1.width, stopTimerDigit1.y, 'numberText');
-    stopTimerDecPoint = game.add.sprite(
-        stopTimerDigit1.x + stopTimerDigit1.width, stopTimerDigit1.y, 'numberText');
-    stopTimerDecPoint.anchor.set(0.5,0);
-    stopTimerDecPoint.frame = 10;
-    stopTimerDigit1.alpha = 0;
-    stopTimerDecimal.alpha = 0;
-    stopTimerDecPoint.alpha = 0;
 
     stopTimeGroup = game.add.group();
     stopTimeGroup.enableBody = true;
@@ -742,16 +730,6 @@ function countdownTimer(timerName) {
             gameEnd();
         }
     } else if (timerName == "timeStopped") {
-        if (stopTimerDigit1.alpha == 0) {
-            stopTimerDigit1.alpha = 1;
-            stopTimerDecimal.alpha = 1;
-            stopTimerDecPoint.alpha = 1;
-            stopTimerDigit1.bringToTop();
-            stopTimerDecimal.bringToTop();
-            stopTimerDecPoint.bringToTop();
-        }
-        stopTimerDigit1.frame = Math.floor(stopTimeCounter % 10);
-        stopTimerDecimal.frame = Math.floor(stopTimeCounter * 10 % 10);
 
         stopTimeCounter -= 0.1;
         if (stopTimeCounter <= 0) {
@@ -770,10 +748,10 @@ function stoptime() {
         guageAliveTimer.repeatCount+=30;
     }
     
-    stopTimeGroup.setAll('body.velocity.x',-210);
+    stopTimeGroup.setAll('body.velocity.x',-200);
     game.time.events.add(700, function () {
-        stopTimeGroup.setAll('body.velocity.x',63.9130434783);
-        game.time.events.add(2300, function () {
+        stopTimeGroup.setAll('body.velocity.x',56);
+        game.time.events.add(2500, function () {
             stopTimeGroup.setAll('body.velocity.x',0);
         }, this); 
     }, this); 
@@ -826,11 +804,7 @@ function cancelCountdownTimer(timerName) {
             specialGuageSeal.destroy();
         }
     } else if (timerName == "timeStopped") {
-        if (stopTimerDigit1.alpha == 1) {
-            stopTimerDigit1.alpha = 0;
-            stopTimerDecimal.alpha = 0;
-            stopTimerDecPoint.alpha = 0;
-        }
+
         bgSpeed = tempBgSpeed;
 
         smoke.animations.paused = false;
