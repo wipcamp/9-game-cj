@@ -1,8 +1,10 @@
 var game = new Phaser.Game(800, 600, Phaser.AUTO, "game");
 var main = { preload: preload, create: createGameplay, update: update };
 var menu = { preload: preloadMenu, create: createMenu};
+var howToPlay = { preload: preloadHowToPlay, create: createHowToPlay}
 game.state.add('menu', menu);
 game.state.add('main', main);
+game.state.add('howtoplay', howToPlay);
 game.state.start('menu');
 function preloadMenu(){
     game.load.onLoadStart.add(loadStart, this);
@@ -21,6 +23,12 @@ function preloadMenu(){
 
     ////sound////
     game.load.audio('BGMMenu','sound/BGMMenu.mp3');
+}
+function preloadHowToPlay(){
+        
+    game.stage.backgroundColor = '#182d3b';
+    game.load.image('backgroundMenu', 'images/BGmenu.png');
+    game.load.spritesheet('mute', 'images/mute.png', 450, 447);
 }
 function preload() {
     game.load.image('bullet', 'images/bullet.png');
@@ -205,6 +213,23 @@ function createMenu() {
     mute.scale.setTo(0.08, 0.08);
     mute.anchor.set(0.5);
 }
+
+function createHowToPlay() {
+    game.stage.disableVisibilityChange = true;
+    
+    game.add.image(0, 0, 'backgroundMenu');
+    logoGame = game.add.image(game.world.width*(3.5/5), game.world.height*(1.4/5), 'logoGame');
+    logoGame.anchor.set(0.5);
+    startButton = game.add.button(game.world.width*(3.5/5), game.world.height*(2.5/5), 'startButton', toGameplay, this, 2, 1, 0);
+    startButton.anchor.set(0.5);
+    BGMMenu = game.add.audio('BGMMenu');
+    BGMMenu.volume = 0.4;
+    BGMMenu.loopFull();
+    mute = game.add.button(game.world.width*(97/100), game.world.height*(96/100), 'mute', muteSounds, this);
+    mute.scale.setTo(0.08, 0.08);
+    mute.anchor.set(0.5);
+}
+
 function loadStart() {  
     loadingText = game.add.text(game.world.width/2, game.world.height/2, 'Loading 0%', { fill: '#ffffff' });
     loadingText.anchor.set(0.5);
@@ -1404,6 +1429,9 @@ gameEnd = function () {
 }
 function toGameplay() {
     game.state.start('main');
+}
+function toHowToPlay() {
+    game.state.start('howtoplay');
 }
 
 
