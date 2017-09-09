@@ -3,6 +3,7 @@ var main = { preload: preloadGameplay, create: createGameplay, update: updateGam
 var menu = { preload: preloadMenu, create: createMenu};
 var howToPlay = { preload: preloadHowToPlay, create: createHowToPlay};
 var credit = { preload: preloadCredit, create: createCredit};
+var report = { preload: preloadReport, create: createReport};
 game.state.add('menu', menu);
 game.state.add('main', main);
 game.state.add('howtoplay', howToPlay);
@@ -28,6 +29,9 @@ function preloadHowToPlay(){
     game.load.spritesheet('mute', 'images/mute.png', 450, 447);
 }
 function preloadCredit(){
+
+}
+function preloadReport(){
 
 }
 function preloadGameplay() {
@@ -227,6 +231,10 @@ function createHowToPlay() {
 }
 
 function createCredit(){
+
+}
+
+function createReport(){
 
 }
 function loadStart() {  
