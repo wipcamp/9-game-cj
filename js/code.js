@@ -71,9 +71,6 @@ function preloadGameplay() {
     game.load.spritesheet('smoke', 'images/smoke.png',800,600,10);
 
     /////metarial/////
-    game.load.spritesheet('earth', 'images/earth.png');
-    game.load.spritesheet('sattellite', 'images/sattellite.png');
-    game.load.spritesheet('saturn', 'images/saturn.png');
     game.load.spritesheet('shark', 'images/shark2.png', 50, 50);
     game.load.spritesheet('shipAndCannon', 'images/cannon.png',800,240,2);
     game.load.spritesheet('clound1', 'images/clound.png');
@@ -182,13 +179,8 @@ var cannonShoot;
 var passStageSound;
 
 /////////material variable///////
-var flatCloud;
 var sharkGroup;
 var sharkM;
-var galaxy;
-var saturn;
-var earth;
-var sattellite;
 var clound1Group;
 var cloudStartStage2;
 var startButton;
@@ -317,12 +309,7 @@ function createGameplay() {
     timestopBG.alpha = 0;
 
     //// material ///////////////////////////////////////////////////////////
-    flatCloud = null;
     sharkM = null;
-    galaxy = null;
-    saturn = null;
-    earth = null;
-    sattellite = null;
     cloudStartStage2 = null;
 
     sharkGroup = game.add.group();
@@ -624,18 +611,6 @@ function updateGameplay() {
                     perSpawn[i]+=perSpawn[i-1];
                 bgChange = game.add.tileSprite(0, 0, this.game.world.width, this.game.world.height, 'background3');
                 bgChange.tilePosition.y += 600;
-                earth = game.add.sprite(game.world.width / 2, game.world.height / 1.5, 'earth');
-                earth.scale.setTo(0.5, 0.5);
-                earth.anchor.setTo(0.5);
-                game.physics.arcade.enable(earth);
-                earth.checkWorldBounds = true;
-                earth.events.onOutOfBounds.add(function () {
-                    earth.destroy();
-                    earth = null;
-                }, this);
-                earth.body.velocity.y = 3;
-                earth.sendToBack();
-                earth.alpha = 0;
                 BGMStage2.fadeOut(3000);
             }
             bgChange.alpha = 0;
@@ -643,8 +618,6 @@ function updateGameplay() {
             var loop = game.time.events.loop(Phaser.Timer.SECOND * 0.2, function () {
                 bg.alpha -= 0.05;
                 bgChange.alpha += 0.05;
-                if (earth != null)
-                    earth.alpha += 0.05;
                 if (bg.alpha < 0.0000001) {
                     isfirstChange = true;
                     gamemode = "ingame";
@@ -674,23 +647,6 @@ function updateGameplay() {
         //bg.fixedToCamera = true;
         //gamemode = "ingame";
         //stateHandle++;
-        ///////flatClound when start BG2-sky/////
-        // if(flatCloud==null){
-        //     flatCloud = game.add.sprite(game.world.width,0 ,'flatCloud');
-        //     flatCloud.scale.setTo(0.5,0.5);
-        //     game.physics.arcade.enable(flatCloud);
-        //     flatCloud.checkWorldBounds = true;
-        //     flatCloud.events.onOutOfBounds.add(function(){
-        //         flatCloud.destroy();
-        //         flatCloud=null;
-        //     }, this);
-        //     flatCloud.body.velocity.y = bgSpeed;
-        //     flatCloud.sendToBack();
-        // }else{
-        //     if(flatCloud.y>game.world.height-100){
-        //         flatCloud.body.velocity.y = 0.1;
-        //     }
-        // }
 
     } else if (gamemode == "gameover") {
         if (wippo.alive) {
@@ -824,18 +780,6 @@ function stoptime() {
     if(cloud1!=null){
         cloud1.body.velocity.y = 0;
     }
-    if (sattellite != null) {
-        // sattellite.body.velocity.y = bgSpeed*8;
-        // sattellite.body.velocity.x = game.rnd.integerInRange(-300,300);
-        sattellite.body.velocity.y = 0;
-        sattellite.body.velocity.x = 0;
-    }
-    if (saturn != null) {
-        // saturn.body.velocity.y = bgSpeed/2;
-        // saturn.body.velocity.x = game.rnd.integerInRange(3,7);
-        saturn.body.velocity.y = 0;
-        saturn.body.velocity.x = 0;
-    }
     sharkGroup.setAll('body.velocity.x', 0, false, false);
     sharkGroup.setAll('body.velocity.y', 0, false, false);
     sharkGroup.setAll('body.gravity.y', 0, false, false);
@@ -873,16 +817,6 @@ function cancelCountdownTimer(timerName) {
         var cloud1=clound1Group.getFirstExists(true);
         if(cloud1!=null){
             cloud1.body.velocity.y = 70;
-        }
-        if (sattellite != null) {
-            sattellite.body.velocity.y = bgSpeed * 8;
-            sattellite.body.velocity.x = game.rnd.integerInRange(-300, 300);
-
-        }
-        if (saturn != null) {
-            saturn.body.velocity.y = bgSpeed / 2;
-            saturn.body.velocity.x = game.rnd.integerInRange(3, 7);
-
         }
         sharkGroup.setAll('body.gravity.y', 380, false, false);
         sharkGroup.setAll('animations.paused', false, false);
@@ -960,40 +894,7 @@ function materialGenerator() {
         clound1Cooldown--;
 
     } else {
-
-        if (sattellite == null) {
-            sattellite = game.add.sprite(300, 0, 'sattellite');
-            sattellite.scale.setTo(0.1, 0.1);
-            game.physics.arcade.enable(sattellite);
-            sattellite.checkWorldBounds = true;
-            sattellite.events.onOutOfBounds.add(function () {
-                sattellite.destroy();
-                sattellite = null;
-            }, this);
-            sattellite.body.velocity.y = bgSpeed * 8;
-            sattellite.body.velocity.x = game.rnd.integerInRange(-300, 300);
-            sattellite.sendToBack();
-            generatorCooldown += 1 * 60;
-        } else {
-            sattellite.body.velocity.y = bgSpeed * 8;
-        }
-
-        if (saturn == null) {
-            saturn = game.add.sprite(300, 0, 'saturn');
-            saturn.scale.setTo(0.5, 0.5);
-            game.physics.arcade.enable(saturn);
-            saturn.checkWorldBounds = true;
-            saturn.events.onOutOfBounds.add(function () {
-                saturn.destroy();
-                saturn = null;
-            }, this);
-            saturn.body.velocity.y = bgSpeed / 2;
-            saturn.body.velocity.x = game.rnd.integerInRange(3, 7);
-            saturn.sendToBack();
-            generatorCooldown += 1 * 60;
-        } else {
-            saturn.body.velocity.y = bgSpeed / 2;
-        }
+        //BG3
 
     }
     if (bg != null)
