@@ -66,7 +66,7 @@ function preloadGameplay() {
     game.load.spritesheet('left', 'images/left2.png', 45, 45, 8);
     game.load.spritesheet('laser', 'images/biglaser.png');
     game.load.spritesheet('spacebarBlock', 'images/dontpush.png');
-    game.load.spritesheet('numberText', 'images/numberText.png', 495 / 11, 60, 11);
+    game.load.spritesheet('numberText', 'images/numberText.png', 540 / 12, 60, 12);
     game.load.spritesheet('restartBtn', 'images/restartBtn.png');
     game.load.spritesheet('smoke', 'images/smoke.png',800,600,10);
 
@@ -428,6 +428,12 @@ function createGameplay() {
     scoreDigit3 = game.add.sprite(scoreDigit4.x + scoreDigit4.width, 0, 'numberText');
     scoreDigit2 = game.add.sprite(scoreDigit3.x + scoreDigit3.width, 0, 'numberText');
     scoreDigit1 = game.add.sprite(scoreDigit2.x + scoreDigit2.width, 0, 'numberText');
+    scoreDigit1.frame = 11;
+    scoreDigit2.frame = 11;
+    scoreDigit3.frame = 11;
+    scoreDigit4.frame = 11;
+    scoreDigit5.frame = 11;
+    scoreDigit6.frame = 11;
     /*this.score = 0;
     this.scoreText;
     this.scoreText = game.add.text(perfect.x, perfect.y-400, 'Score : ' + this.score, {
@@ -1077,16 +1083,28 @@ function checkAccuracy() {
 }
 
 function updateScore(){
-    scoreDigit1.frame = scoreShow%10;
-    scoreDigit2.frame = Math.floor(scoreShow / 10)%10;
-    scoreDigit3.frame = Math.floor(scoreShow / 100)%10;
-    scoreDigit4.frame = Math.floor(scoreShow / 1000)%10;
-    scoreDigit5.frame = Math.floor(scoreShow / 10000)%10;
-    scoreDigit6.frame = Math.floor(scoreShow / 100000)%10;
-    if(score>scoreShow+2){
-        scoreShow+=2;
-    }else if(score>scoreShow){
-        scoreShow++;
+    if(score>scoreShow){
+        if(score>scoreShow+2){
+            scoreShow+=2;
+        }else{
+            scoreShow++;
+        }
+        scoreDigit1.frame = scoreShow%10;
+        if(score>9){
+            scoreDigit2.frame = Math.floor(scoreShow / 10)%10;
+            if(score>99){
+                scoreDigit3.frame = Math.floor(scoreShow / 100)%10;
+                if(score>999){
+                    scoreDigit4.frame = Math.floor(scoreShow / 1000)%10;
+                    if(score>9999){
+                        scoreDigit5.frame = Math.floor(scoreShow / 10000)%10;
+                        if(score>99999){
+                            scoreDigit6.frame = Math.floor(scoreShow / 100000)%10;
+                        }
+                    }
+                }
+            }
+        }
     }
 
 }
