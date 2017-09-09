@@ -1,8 +1,14 @@
 var game = new Phaser.Game(800, 600, Phaser.AUTO, "game");
-var main = { preload: preload, create: createGameplay, update: update };
+var main = { preload: preloadGameplay, create: createGameplay, update: updateGameplay };
 var menu = { preload: preloadMenu, create: createMenu};
+var howToPlay = { preload: preloadHowToPlay, create: createHowToPlay};
+var credit = { preload: preloadCredit, create: createCredit};
+var report = { preload: preloadReport, create: createReport};
 game.state.add('menu', menu);
 game.state.add('main', main);
+game.state.add('howtoplay', howToPlay);
+game.state.add('credit', credit);
+game.state.add('report', report);
 game.state.start('menu');
 function preloadMenu(){
     game.load.onLoadStart.add(loadStart, this);
@@ -11,18 +17,26 @@ function preloadMenu(){
     game.stage.backgroundColor = '#182d3b';
     game.load.image('backgroundMenu', 'images/BGmenu.png');
     game.load.spritesheet('startButton', 'images/startButton.png', 205, 48);
-    game.load.spritesheet('howtoplayButton', 'images/howtoplay.png', 206, 50);
     game.load.image('logoGame', 'images/logoGame.png');
     game.load.image('creditButton', 'images/creditButton.png');
     game.load.spritesheet('reportButton', 'images/reportButton.png', 207, 48);
-    game.load.spritesheet('scoreBoardButton', 'images/scoreBoardButton.png', 205, 49);
-
     game.load.spritesheet('mute', 'images/mute.png', 450, 447);
 
     ////sound////
     game.load.audio('BGMMenu','sound/BGMMenu.mp3');
 }
-function preload() {
+function preloadHowToPlay(){
+    game.stage.backgroundColor = '#182d3b';
+    game.load.image('backgroundMenu', 'images/BGmenu.png');
+    game.load.spritesheet('mute', 'images/mute.png', 450, 447);
+}
+function preloadCredit(){
+    game.load.spritesheet('mute', 'images/mute.png', 450, 447);
+}
+function preloadReport(){
+    game.load.spritesheet('mute', 'images/mute.png', 450, 447);
+}
+function preloadGameplay() {
     game.load.image('bullet', 'images/bullet.png');
     game.load.image('ship', 'images/wip.png');
     game.load.image('enemy_ship', 'images/enemyship.png');
@@ -190,19 +204,43 @@ function createMenu() {
     game.add.image(0, 0, 'backgroundMenu');
     logoGame = game.add.image(game.world.width*(3.5/5), game.world.height*(1.4/5), 'logoGame');
     logoGame.anchor.set(0.5);
-    startButton = game.add.button(game.world.width*(3.5/5), game.world.height*(2.5/5), 'startButton', toGameplay, this, 2, 1, 0);
+    startButton = game.add.button(game.world.width*(3.5/5), game.world.height*(2.5/5), 'startButton', toHowToPlay, this, 2, 1, 0);
     startButton.anchor.set(0.5);
-    howtoplayButton = game.add.button(game.world.width*(3.5/5), game.world.height*(3/5), 'howtoplayButton', toGameplay, this, 2, 1, 0);
-    howtoplayButton.anchor.set(0.5);
-    scoreBoardButton = game.add.button(game.world.width*(3.5/5), game.world.height*(3.5/5), 'scoreBoardButton', toGameplay, this, 2, 1, 0);
-    scoreBoardButton.anchor.set(0.5);
-    creditButton = game.add.button(game.world.width*(3.5/5), game.world.height*(4/5), 'creditButton', toGameplay, this, 2, 1, 0);
+    creditButton = game.add.button(game.world.width*(3.5/5), game.world.height*(4/5), 'creditButton', toCredit, this, 2, 1, 0);
     creditButton.anchor.set(0.5);
-    reportButton = game.add.button(game.world.width*(3.5/5), game.world.height*(4.5/5), 'reportButton', toGameplay, this, 2, 1, 0);
+    reportButton = game.add.button(game.world.width*(3.5/5), game.world.height*(4.5/5), 'reportButton', toReport, this, 2, 1, 0);
     reportButton.anchor.set(0.5);
     BGMMenu = game.add.audio('BGMMenu');
     BGMMenu.volume = 0.4;
     BGMMenu.loopFull();
+    mute = game.add.button(game.world.width*(97/100), game.world.height*(96/100), 'mute', muteSounds, this);
+    mute.scale.setTo(0.08, 0.08);
+    mute.anchor.set(0.5);
+}
+
+function createHowToPlay() {
+    game.stage.disableVisibilityChange = true;
+    
+    game.add.image(0, 0, 'backgroundMenu');
+    logoGame = game.add.image(game.world.width*(3.5/5), game.world.height*(1.4/5), 'logoGame');
+    logoGame.anchor.set(0.5);
+    startButton = game.add.button(game.world.width*(3.5/5), game.world.height*(2.5/5), 'startButton', toGameplay, this, 2, 1, 0);
+    startButton.anchor.set(0.5);
+    BGMMenu = game.add.audio('BGMMenu');
+    BGMMenu.volume = 0.4;
+    BGMMenu.loopFull();
+    mute = game.add.button(game.world.width*(97/100), game.world.height*(96/100), 'mute', muteSounds, this);
+    mute.scale.setTo(0.08, 0.08);
+    mute.anchor.set(0.5);
+}
+
+function createCredit(){
+    mute = game.add.button(game.world.width*(97/100), game.world.height*(96/100), 'mute', muteSounds, this);
+    mute.scale.setTo(0.08, 0.08);
+    mute.anchor.set(0.5);
+}
+
+function createReport(){
     mute = game.add.button(game.world.width*(97/100), game.world.height*(96/100), 'mute', muteSounds, this);
     mute.scale.setTo(0.08, 0.08);
     mute.anchor.set(0.5);
@@ -412,7 +450,7 @@ function createGameplay() {
 
 
 var summonCooldown = 0;
-function update() {
+function updateGameplay() {
 
     /*if(!this.game.world.bounds.intersects(wippo)){
         wippo.kill();
@@ -1411,8 +1449,15 @@ gameEnd = function () {
 function toGameplay() {
     game.state.start('main');
 }
-
-
+function toHowToPlay() {
+    game.state.start('howtoplay');
+}
+function toCredit() {
+    game.state.start('credit');
+}
+function toReport() {
+    game.state.start('report');
+}
 
 /*function setScore() {
     var highscore = 0;
