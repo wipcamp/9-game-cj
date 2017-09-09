@@ -204,9 +204,9 @@ function createMenu() {
     logoGame.anchor.set(0.5);
     startButton = game.add.button(game.world.width*(3.5/5), game.world.height*(2.5/5), 'startButton', toHowToPlay, this, 2, 1, 0);
     startButton.anchor.set(0.5);
-    creditButton = game.add.button(game.world.width*(3.5/5), game.world.height*(4/5), 'creditButton', toGameplay, this, 2, 1, 0);
+    creditButton = game.add.button(game.world.width*(3.5/5), game.world.height*(4/5), 'creditButton', toCredit, this, 2, 1, 0);
     creditButton.anchor.set(0.5);
-    reportButton = game.add.button(game.world.width*(3.5/5), game.world.height*(4.5/5), 'reportButton', toGameplay, this, 2, 1, 0);
+    reportButton = game.add.button(game.world.width*(3.5/5), game.world.height*(4.5/5), 'reportButton', toReport, this, 2, 1, 0);
     reportButton.anchor.set(0.5);
     BGMMenu = game.add.audio('BGMMenu');
     BGMMenu.volume = 0.4;
