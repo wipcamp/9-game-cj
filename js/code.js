@@ -1,5 +1,5 @@
 var game = new Phaser.Game(800, 600, Phaser.AUTO, "game");
-var main = { preload: preload, create: createGameplay, update: update };
+var main = { preload: preloadGameplay, create: createGameplay, update: updateGameplay };
 var menu = { preload: preloadMenu, create: createMenu};
 var howToPlay = { preload: preloadHowToPlay, create: createHowToPlay}
 game.state.add('menu', menu);
@@ -22,12 +22,11 @@ function preloadMenu(){
     game.load.audio('BGMMenu','sound/BGMMenu.mp3');
 }
 function preloadHowToPlay(){
-        
     game.stage.backgroundColor = '#182d3b';
     game.load.image('backgroundMenu', 'images/BGmenu.png');
     game.load.spritesheet('mute', 'images/mute.png', 450, 447);
 }
-function preload() {
+function preloadGameplay() {
     game.load.image('bullet', 'images/bullet.png');
     game.load.image('ship', 'images/wip.png');
     game.load.image('enemy_ship', 'images/enemyship.png');
@@ -426,7 +425,7 @@ function createGameplay() {
 
 
 var summonCooldown = 0;
-function update() {
+function updateGameplay() {
 
     /*if(!this.game.world.bounds.intersects(wippo)){
         wippo.kill();
