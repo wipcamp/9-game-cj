@@ -493,7 +493,7 @@ function updateGameplay() {
                     summonWave();
                     if (!isSpacebarPressed && !spacebarBlock.alive) {
                         // wippo.animations.play("death");
-                        //gameEnd();//====== comment ทิ้งเพื่อไม่ต้องกด spacebar
+                        gameEnd();//====== comment ทิ้งเพื่อไม่ต้องกด spacebar
                     }
 
                     isSpacebarPressed = false;
