@@ -502,6 +502,9 @@ function updateGameplay() {
                 }
             }
             if (!checkOverlap(checker, progressBar)/*checker.x > game.world.width * (5 / 7)*/) {
+                if (spacebarBlock.alive) {
+                    spacebarBlock.kill();
+                }
                 if (game.time.now > summonCooldown) {
                     summonWave();
                     if (!isSpacebarPressed && !spacebarBlock.alive) {
@@ -511,9 +514,7 @@ function updateGameplay() {
 
                     isSpacebarPressed = false;
                 }
-                if (spacebarBlock.alive) {
-                    spacebarBlock.kill();
-                }
+                
                 //checker.reset(game.world.width * (2.5 / 7), game.world.height * (3 / 5)+10);
                 checker.reset(progressBar.x, progressBar.y);
                 summonCooldown = game.time.now + 1500;
@@ -797,8 +798,6 @@ function stoptime() {
     if(guageAliveTimer!=null){
         guageAliveTimer.repeatCount+=30;
     }
-    timestopBG.bringToTop();
-    game.world.bringToTop(stopTimeGroup);
     stopTimeGroup.setAll('body.velocity.x',-200);
     game.time.events.add(700, function () {
         stopTimeGroup.setAll('body.velocity.x',55);
@@ -1239,10 +1238,9 @@ function summonWave() {
         length = 8;
     }
     // var l = wave.length;
-    var randObstacle = game.rnd.integerInRange(1, 6);
+    var randObstacle = game.rnd.integerInRange(1, 10);
     if (randObstacle == 2) {
         spacebarBlock.revive();
-        spacebarBlock.bringToTop();
     }
 
 
@@ -1410,6 +1408,8 @@ gameBegin = function () {
     checkbar = this.add.sprite(game.world.width * (3 / 5)+5, game.world.height * (3 / 5)+10, 'checkbar');
     checkbar.scale.setTo(0.035, 0.07);
     checkbar.anchor.setTo(0.5);
+    spacebarBlock.bringToTop();
+    timestopBG.bringToTop();
     summonWave();
     //checker.reset(game.world.width * (2.5 / 7), game.world.height * (3 / 5)+10);
     checker.reset(progressBar.x, progressBar.y);
