@@ -226,9 +226,6 @@ function createHowToPlay() {
     logoGame.anchor.set(0.5);
     startButton = game.add.button(game.world.width*(3.5/5), game.world.height*(2.5/5), 'startButton', toGameplay, this, 2, 1, 0);
     startButton.anchor.set(0.5);
-    BGMMenu = game.add.audio('BGMMenu');
-    BGMMenu.volume = 0.4;
-    BGMMenu.loopFull();
     mute = game.add.button(game.world.width*(97/100), game.world.height*(96/100), 'mute', muteSounds, this);
     mute.scale.setTo(0.08, 0.08);
     mute.anchor.set(0.5);
