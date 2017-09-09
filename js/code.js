@@ -1442,8 +1442,12 @@ function toGameplay() {
 function toHowToPlay() {
     game.state.start('howtoplay');
 }
-
-
+function toCredit() {
+    game.state.start('credit');
+}
+function toReport() {
+    game.state.start('report');
+}
 
 /*function setScore() {
     var highscore = 0;
