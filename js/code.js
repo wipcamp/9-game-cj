@@ -69,6 +69,7 @@ function preload() {
     game.load.audio('BGMStage2','sound/BGMStage2.mp3');
     game.load.audio('BGMStage3','sound/BGMStage3.mp3');
     game.load.audio('timestop','sound/timeStop.mp3');
+    game.load.audio('timestopBG','sound/timestopBG.mp3');
     game.load.audio('fall','sound/PlayerFall.mp3');
     game.load.audio('death','sound/Death.mp3');
     game.load.audio('wrongButton','sound/WrongButton.mp3');
@@ -137,6 +138,7 @@ var stopTimeTimer;
 var stopTimeCounter;
 var stopTimePointText;
 var isTimeStopped;
+var timestopBG;
 var perfectStack;
 var stopTimePoint;
 var stateHandle;
@@ -276,6 +278,8 @@ function createGameplay() {
     stopTimeGroup = game.add.group();
     stopTimeGroup.enableBody = true;
     stopTimeGroup.physicsBodyType = Phaser.Physics.ARCADE;
+    timestopBG = game.add.image(0 , 0 , 'timestopBG'); 
+    timestopBG.alpha = 0;
 
     //// material ///////////////////////////////////////////////////////////
     flatCloud = null;
@@ -735,7 +739,9 @@ function countdownTimer(timerName) {
         if (stopTimeCounter <= 0) {
             isTimeStopped = false;
             cancelCountdownTimer("timeStopped");
-
+        }
+        if (stopTimeCounter >= 2.3 && timestopBG.alpha<=0.5) {
+            timestopBG.alpha -= 0.05;
         }
     }
 }
