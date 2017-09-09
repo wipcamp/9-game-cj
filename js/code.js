@@ -31,10 +31,10 @@ function preloadHowToPlay(){
     game.load.spritesheet('mute', 'images/mute.png', 450, 447);
 }
 function preloadCredit(){
-
+    game.load.spritesheet('mute', 'images/mute.png', 450, 447);
 }
 function preloadReport(){
-
+    game.load.spritesheet('mute', 'images/mute.png', 450, 447);
 }
 function preloadGameplay() {
     game.load.image('bullet', 'images/bullet.png');
@@ -233,11 +233,15 @@ function createHowToPlay() {
 }
 
 function createCredit(){
-
+    mute = game.add.button(game.world.width*(97/100), game.world.height*(96/100), 'mute', muteSounds, this);
+    mute.scale.setTo(0.08, 0.08);
+    mute.anchor.set(0.5);
 }
 
 function createReport(){
-
+    mute = game.add.button(game.world.width*(97/100), game.world.height*(96/100), 'mute', muteSounds, this);
+    mute.scale.setTo(0.08, 0.08);
+    mute.anchor.set(0.5);
 }
 function loadStart() {  
     loadingText = game.add.text(game.world.width/2, game.world.height/2, 'Loading 0%', { fill: '#ffffff' });
