@@ -1,7 +1,8 @@
 var game = new Phaser.Game(800, 600, Phaser.AUTO, "game");
 var main = { preload: preloadGameplay, create: createGameplay, update: updateGameplay };
 var menu = { preload: preloadMenu, create: createMenu};
-var howToPlay = { preload: preloadHowToPlay, create: createHowToPlay}
+var howToPlay = { preload: preloadHowToPlay, create: createHowToPlay};
+var credit = { preload: preloadCredit, create: createCredit};
 game.state.add('menu', menu);
 game.state.add('main', main);
 game.state.add('howtoplay', howToPlay);
@@ -25,6 +26,9 @@ function preloadHowToPlay(){
     game.stage.backgroundColor = '#182d3b';
     game.load.image('backgroundMenu', 'images/BGmenu.png');
     game.load.spritesheet('mute', 'images/mute.png', 450, 447);
+}
+function preloadCredit(){
+
 }
 function preloadGameplay() {
     game.load.image('bullet', 'images/bullet.png');
@@ -222,6 +226,9 @@ function createHowToPlay() {
     mute.anchor.set(0.5);
 }
 
+function createCredit(){
+
+}
 function loadStart() {  
     loadingText = game.add.text(game.world.width/2, game.world.height/2, 'Loading 0%', { fill: '#ffffff' });
     loadingText.anchor.set(0.5);
