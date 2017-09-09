@@ -489,9 +489,6 @@ function updateGameplay() {
                 }
             }
             if (!checkOverlap(checker, progressBar)/*checker.x > game.world.width * (5 / 7)*/) {
-                if (spacebarBlock.alive) {
-                    spacebarBlock.kill();
-                }
                 if (game.time.now > summonCooldown) {
                     summonWave();
                     if (!isSpacebarPressed && !spacebarBlock.alive) {
@@ -1139,9 +1136,12 @@ function summonWave() {
         length = 8;
     }
     // var l = wave.length;
+    if (spacebarBlock.alive) {
+        spacebarBlock.kill();
+    }
     var randObstacle = game.rnd.integerInRange(1, 10);
     if (randObstacle == 2) {
-        spacebarBlock.revive();
+        // spacebarBlock.revive();
     }
 
 
