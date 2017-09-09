@@ -7,6 +7,8 @@ var report = { preload: preloadReport, create: createReport};
 game.state.add('menu', menu);
 game.state.add('main', main);
 game.state.add('howtoplay', howToPlay);
+game.state.add('credit', credit);
+game.state.add('report', report);
 game.state.start('menu');
 function preloadMenu(){
     game.load.onLoadStart.add(loadStart, this);
