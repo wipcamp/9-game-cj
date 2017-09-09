@@ -58,6 +58,7 @@ function preloadGameplay() {
     game.load.image('checkbar', 'images/checkbar.png');
     game.load.image('stopwatch', 'images/stopwatch.png');
     game.load.image('stopwatchBackground','images/stopwatchBackground.png');
+    game.load.image('timestopBG','images/timestopBG.png');
 
     game.load.spritesheet('up', 'images/up2.png', 45, 45, 8);
     game.load.spritesheet('down', 'images/down2.png', 45, 45, 8);
@@ -83,7 +84,6 @@ function preloadGameplay() {
     game.load.audio('BGMStage2','sound/BGMStage2.mp3');
     game.load.audio('BGMStage3','sound/BGMStage3.mp3');
     game.load.audio('timestop','sound/timeStop.mp3');
-    game.load.audio('timestopBG','sound/timestopBG.mp3');
     game.load.audio('fall','sound/PlayerFall.mp3');
     game.load.audio('death','sound/Death.mp3');
     game.load.audio('wrongButton','sound/WrongButton.mp3');
@@ -775,8 +775,11 @@ function countdownTimer(timerName) {
             isTimeStopped = false;
             cancelCountdownTimer("timeStopped");
         }
-        if (stopTimeCounter >= 2.3 && timestopBG.alpha<=0.5) {
-            timestopBG.alpha -= 0.05;
+        if (stopTimeCounter >= 2.3 && timestopBG.alpha<0.5) {
+            timestopBG.alpha += 0.075;
+        }
+        if (stopTimeCounter <= 0.5 && timestopBG.alpha>0) {
+            timestopBG.alpha -= 0.075;
         }
     }
 }
@@ -788,18 +791,21 @@ function stoptime() {
     if(guageAliveTimer!=null){
         guageAliveTimer.repeatCount+=30;
     }
-    
+    timestopBG.bringToTop();
+    game.world.bringToTop(stopTimeGroup);
     stopTimeGroup.setAll('body.velocity.x',-200);
     game.time.events.add(700, function () {
         stopTimeGroup.setAll('body.velocity.x',55);
         game.time.events.add(2500, function () {
-            stopTimeGroup.setAll('body.velocity.x',0);
-            stopTimePointBg.x = game.world.width*(85/100);
-            stopTimePointBg.y = game.world.height*(20/100);
-            stopwatchIcon.x = game.world.width*(85/100);
-            stopwatchIcon.y = game.world.height*(20/100);
-            stopTimePointText.x = game.world.width * (7 / 8);
-            stopTimePointText.y = game.world.height*(20/100);
+            if(stopTimeCounter<0.5){
+                stopTimeGroup.setAll('body.velocity.x',0);
+                stopTimePointBg.x = game.world.width*(85/100);
+                stopTimePointBg.y = game.world.height*(20/100);
+                stopwatchIcon.x = game.world.width*(85/100);
+                stopwatchIcon.y = game.world.height*(20/100);
+                stopTimePointText.x = game.world.width * (7 / 8);
+                stopTimePointText.y = game.world.height*(20/100);
+            }
         }, this); 
     }, this); 
     checker.body.velocity.x = 0;
