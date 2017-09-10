@@ -137,6 +137,7 @@ var specialGuage;
 var specialGuageSeal;
 var isSpacebarPressed;
 var spacebarBlock;
+var spacebarBlockSpawnedLastTime;
 var isSpacebarDown;
 var maxGuage;
 var guageAliveTimer;
@@ -295,6 +296,7 @@ function createGameplay() {
     spacebarBlock = this.add.sprite(game.world.width * (3 / 5) - 40, game.world.height * (3 / 5) - 20, 'spacebarBlock');
     spacebarBlock.scale.setTo(0.7, 0.7);
     spacebarBlock.kill();
+    spacebarBlockSpawnedLastTime = true;
     guageTimerDigit2 = game.add.sprite(game.world.width * (1 / 5) - 40 , game.world.height * (1 / 5) , 'numberText');
     guageTimerDigit1 = game.add.sprite(guageTimerDigit2.x + guageTimerDigit2.width, guageTimerDigit2.y, 'numberText');
     guageTimerDecPoint = game.add.sprite(
@@ -479,7 +481,7 @@ function updateGameplay() {
                 isSpacebarPressed = true;
                 checkAccuracy();
                 clearWave();
-
+                spacebarBlockSpawnedLastTime = false;
                 spaceKeyDownTimer = game.time.now + 1400;
                 if (bg.tilePosition.y >= 1400) {
                     bgSpeed=perfectSpeed*30/100;
@@ -1153,8 +1155,9 @@ function summonWave() {
     }
     // var l = wave.length;
     var randObstacle = game.rnd.integerInRange(1, 12);
-    if (randObstacle == 2) {
+    if (randObstacle == 2 && !spacebarBlockSpawnedLastTime) {
         spacebarBlock.revive();
+        spacebarBlockSpawnedLastTime = true;
     }
 
 
