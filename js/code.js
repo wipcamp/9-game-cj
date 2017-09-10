@@ -931,7 +931,7 @@ function checkAccuracy() {
             stopTimePointText.frame = stopTimePoint;
             getTimeStopPoint.play();
         }
-        game.time.events.add(Phaser.Timer.SECOND * 1.5, function () {
+        game.time.events.add(Phaser.Timer.SECOND * 1.35, function () {
             statusText.destroy();
         }, this);
         bgSpeed = perfectSpeed;
@@ -944,7 +944,7 @@ function checkAccuracy() {
     }
     else if (completeArrow && (checkOverlap(checker, greatR) || checkOverlap(checker, greatL))) {
         statusText = game.add.image(game.world.width * (1 / 2), game.world.height * (4 / 5), 'great');
-        game.time.events.add(Phaser.Timer.SECOND * 1.5, function () {
+        game.time.events.add(Phaser.Timer.SECOND * 1.35, function () {
             statusText.destroy();
         }, this);
         bgSpeed = perfectSpeed*90/100;
@@ -956,7 +956,7 @@ function checkAccuracy() {
     }
     else if (completeArrow && (checkOverlap(checker, coolR) || checkOverlap(checker, coolL))) {
         statusText = game.add.image(game.world.width * (1 / 2), game.world.height * (4 / 5), 'cool');
-        game.time.events.add(Phaser.Timer.SECOND * 1.5, function () {
+        game.time.events.add(Phaser.Timer.SECOND * 1.35, function () {
             statusText.destroy();
         }, this);
         bgSpeed = perfectSpeed*80/100;
@@ -969,7 +969,7 @@ function checkAccuracy() {
     }
     else if (completeArrow && (checkOverlap(checker, badR) || checkOverlap(checker, badL))) {
         statusText = game.add.image(game.world.width * (1 / 2), game.world.height * (4 / 5), 'bad');
-        game.time.events.add(Phaser.Timer.SECOND * 1.5, function () {
+        game.time.events.add(Phaser.Timer.SECOND * 1.35, function () {
             statusText.destroy();
         }, this);
         bgSpeed = perfectSpeed*70/100;
@@ -982,7 +982,7 @@ function checkAccuracy() {
     }
     else {
         statusText = game.add.image(game.world.width * (1 / 2), game.world.height * (4 / 5), 'miss');
-        game.time.events.add(Phaser.Timer.SECOND * 1.5, function () {
+        game.time.events.add(Phaser.Timer.SECOND * 1.35, function () {
             statusText.destroy();
         }, this);
         gameEnd();
