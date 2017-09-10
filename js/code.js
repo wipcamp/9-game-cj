@@ -59,6 +59,7 @@ function preloadGameplay() {
     game.load.image('stopwatch', 'images/stopwatch.png');
     game.load.image('stopwatchBackground','images/stopwatchBackground.png');
     game.load.image('timestopBG','images/timestopBG.png');
+    game.load.image('resultBG','images/resultBG.png');
 
     game.load.spritesheet('up', 'images/up2.png', 45, 45, 8);
     game.load.spritesheet('down', 'images/down2.png', 45, 45, 8);
@@ -69,6 +70,7 @@ function preloadGameplay() {
     game.load.spritesheet('numberText', 'images/numberText.png', 540 / 12, 60, 12);
     game.load.spritesheet('restartBtn', 'images/restartBtn.png');
     game.load.spritesheet('smoke', 'images/smoke.png',800,600,10);
+    game.load.spritesheet('grade', 'images/grade.png',1800/6,220,6);
 
     /////metarial/////
     game.load.spritesheet('shark', 'images/shark2.png', 50, 50);
@@ -162,6 +164,16 @@ var smoke;
 var stopwatchIcon;
 var stopTimePointBg;
 var stopTimeGroup;
+/////////result component////////
+var resultComponent;
+var resultBG;
+var resultGrade;
+var perfectText;
+var greatText;
+var coolText;
+var badText;
+var tipText;
+var tipsMessage;
 /////////sound variable//////////
 var timeStopSound;
 var BGMStage1;
@@ -427,14 +439,39 @@ function createGameplay() {
     scoreDigit4.frame = 11;
     scoreDigit5.frame = 11;
     scoreDigit6.frame = 11;
-    /*this.score = 0;
-    this.scoreText;
-    this.scoreText = game.add.text(perfect.x, perfect.y-400, 'Score : ' + this.score, {
-        fontSize: '20px',
-        fill: '#ed3465'
-    })*/
 
-    /////mute
+    ////result/////
+    resultComponent = game.add.group();
+    resultBG = game.add.sprite(game.world.width/2,game.world.height/2.1,'resultBG');
+    resultBG.anchor.set(0.5);
+    resultGrade = game.add.sprite(resultBG.x*0.8, resultBG.y,'grade');
+    resultGrade.anchor.set(0.5);
+    perfectText = game.add.text(resultBG.x*1.25, resultBG.y*0.7, "Perfect : ", { font: "18px Thaisans Neue for Web", fill: "#FFFFFF" });
+    greatText = game.add.text(resultBG.x*1.25, perfectText.y+perfectText.height*2, "Great   : ", { font: "18px Thaisans Neue for Web", fill: "#FFFFFF" });
+    coolText = game.add.text(resultBG.x*1.25, greatText.y+greatText.height*2, "Cool    : ", { font: "18px Thaisans Neue for Web", fill: "#FFFFFF" });
+    badText = game.add.text(resultBG.x*1.25, coolText.y+coolText.height*2, "Bad     : ", { font: "18px Thaisans Neue for Web", fill: "#FFFFFF" });
+    tipText = game.add.text(resultBG.x, resultBG.y*1.8, "Tips : You died. eiei", { font: "32px Thaisans Neue for Web", fill: "#FF0000" });
+    tipText.anchor.set(0.5);
+    tipsMessage = ['Tips : 1','Tips : 2','Tips : 3','Tips : 4','Tips : 5','Tips : 6'];
+    
+    resultComponent.add(resultBG);
+    resultComponent.add(resultGrade);
+    resultComponent.add(perfectText);
+    resultComponent.add(greatText);
+    resultComponent.add(coolText);
+    resultComponent.add(badText);
+    resultComponent.add(tipText);
+
+    resultComponent.setAll('alpha',0);
+    resultComponent.add(scoreDigit1);
+    resultComponent.add(scoreDigit2);
+    resultComponent.add(scoreDigit3);
+    resultComponent.add(scoreDigit4);
+    resultComponent.add(scoreDigit5);
+    resultComponent.add(scoreDigit6);
+
+
+
     mute = game.add.button(game.world.width*(97/100), game.world.height*(96/100), 'mute', muteSounds, this);
     mute.scale.setTo(0.08, 0.08);
     mute.anchor.set(0.5);
@@ -664,7 +701,13 @@ function updateGameplay() {
         }
         if(isfirstOver){
             isfirstOver = false;
-            buttonRestart = game.add.button(game.world.width * (1 / 2) - 40, game.world.height * (1 / 5) - 100, 'restartBtn', function(){
+            scoreDigit6.reset(resultBG.x/1.5,resultBG.y/2.8);
+            scoreDigit5.reset(scoreDigit6.x + scoreDigit6.width,scoreDigit6.y);
+            scoreDigit4.reset(scoreDigit5.x + scoreDigit5.width,scoreDigit6.y);
+            scoreDigit3.reset(scoreDigit4.x + scoreDigit4.width,scoreDigit6.y);
+            scoreDigit2.reset(scoreDigit3.x + scoreDigit3.width,scoreDigit6.y);
+            scoreDigit1.reset(scoreDigit2.x + scoreDigit2.width,scoreDigit6.y);
+            buttonRestart = game.add.button(resultBG.x, resultBG.y*1.55, 'restartBtn', function(){
                 game.state.restart(true,false);
                 BGMResult.stop();
                 BGMStage1.stop();
@@ -672,10 +715,26 @@ function updateGameplay() {
                 BGMStage3.stop();
             }, this);
             buttonRestart.scale.setTo(0.5, 0.5);
+            buttonRestart.anchor.set(0.5);
             buttonRestart.alpha = 0;
+            if(score >= 10000){
+                resultGrade.frame = 0;
+            }else if(score >= 8000){
+                resultGrade.frame = 1;
+            }else if(score >= 5000){
+                resultGrade.frame = 2;
+            }else if(score >= 1000){
+                resultGrade.frame = 3;
+            }else if(score >= 200){
+                resultGrade.frame = 4;
+            }else{
+                resultGrade.frame = 5;
+            }
+            
         }
         if(buttonRestart.alpha<1){
-            buttonRestart.alpha += 0.001;
+            buttonRestart.alpha += 0.01;
+            resultComponent.setAll('alpha',buttonRestart.alpha);
         }
 
     }
