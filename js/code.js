@@ -494,12 +494,16 @@ function updateGameplay() {
             }
             if (!checkOverlap(checker, progressBar)/*checker.x > game.world.width * (5 / 7)*/) {
                 if (game.time.now > summonCooldown) {
-                    summonWave();
-                    if (!isSpacebarPressed && !spacebarBlock.alive) {
-                        // wippo.animations.play("death");
-                        gameEnd();//====== comment ทิ้งเพื่อไม่ต้องกด spacebar
+                    if (!isSpacebarPressed) {
+                        if (spacebarBlock.alive) {
+                            spacebarBlock.kill();
+                        } else {
+                            // wippo.animations.play("death");
+                            gameEnd();//====== comment ทิ้งเพื่อไม่ต้องกด spacebar
+                        }
+                        
                     }
-
+                    summonWave();
                     isSpacebarPressed = false;
                 }
                 
@@ -1141,12 +1145,9 @@ function summonWave() {
         length = 8;
     }
     // var l = wave.length;
-    if (spacebarBlock.alive) {
-        spacebarBlock.kill();
-    }
-    var randObstacle = game.rnd.integerInRange(1, 10);
+    var randObstacle = game.rnd.integerInRange(1, 12);
     if (randObstacle == 2) {
-        // spacebarBlock.revive();
+        spacebarBlock.revive();
     }
 
 
