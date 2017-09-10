@@ -500,6 +500,7 @@ function updateGameplay() {
                         } else {
                             // wippo.animations.play("death");
                             gameEnd();//====== comment ทิ้งเพื่อไม่ต้องกด spacebar
+                            return;
                         }
                         
                     }
