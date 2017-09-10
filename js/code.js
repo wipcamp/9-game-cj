@@ -901,7 +901,8 @@ function materialGenerator() {
 }
 
 function checkAccuracy() {
-    var completeArrow = (waveCheckOrder == wave.length);
+    var numOfArrow = wave.length;
+    var completeArrow = (waveCheckOrder == numOfArrow);
     var result = false;
     if (completeArrow && checkOverlap(checker, perfect)) {
         statusText = game.add.image(game.world.width * (1 / 2), game.world.height * (4 / 5), 'perfect');
@@ -918,7 +919,7 @@ function checkAccuracy() {
         }, this);
         bgSpeed = perfectSpeed;
         difficulty+=2;
-        score += 200;
+        score += 30*numOfArrow;
         perfectSound.play();
         result = true;
         //////////animation wippo
@@ -931,7 +932,7 @@ function checkAccuracy() {
         }, this);
         bgSpeed = perfectSpeed*90/100;
         difficulty++;
-        score += 175;
+        score += 25*numOfArrow;
         perfectStack = 0;
         greatSound.play();
         result = true;
@@ -943,7 +944,7 @@ function checkAccuracy() {
             statusText.destroy();
         }, this);
         bgSpeed = perfectSpeed*80/100;
-        score += 150;
+        score += 20*numOfArrow;
         difficulty--;
         perfectStack = 0;
         coolSound.play();
@@ -956,7 +957,7 @@ function checkAccuracy() {
             statusText.destroy();
         }, this);
         bgSpeed = perfectSpeed*70/100;
-        score += 125;
+        score += 15*numOfArrow;
         difficulty = 1;
         perfectStack = 0;
         badSound.play();
