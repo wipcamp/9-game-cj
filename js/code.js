@@ -786,6 +786,9 @@ function stoptime() {
     if(cloud1!=null){
         cloud1.body.velocity.y = 0;
     }
+    if(cloudStartStage2!=null){
+        cloudStartStage2.body.velocity.y = 0;
+    }
     sharkGroup.setAll('body.velocity.x', 0, false, false);
     sharkGroup.setAll('body.velocity.y', 0, false, false);
     sharkGroup.setAll('body.gravity.y', 0, false, false);
@@ -823,6 +826,9 @@ function cancelCountdownTimer(timerName) {
         var cloud1=clound1Group.getFirstExists(true);
         if(cloud1!=null){
             cloud1.body.velocity.y = 70;
+        }
+        if(cloudStartStage2!=null && cloudStartStage2.y>500){
+            cloudStartStage2.body.velocity.y = 10;
         }
         sharkGroup.setAll('body.gravity.y', 380, false, false);
         sharkGroup.setAll('animations.paused', false, false);
