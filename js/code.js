@@ -221,6 +221,10 @@ function createHowToPlay() {
     mute = game.add.button(game.world.width*(97/100), game.world.height*(96/100), 'mute', muteSounds, this);
     mute.scale.setTo(0.08, 0.08);
     mute.anchor.set(0.5);
+    if (isSound)
+        mute.frame = 0;
+    else
+        mute.frame = 1;
 }
 
 function createCredit(){
