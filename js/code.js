@@ -935,7 +935,7 @@ function checkAccuracy() {
             statusText.destroy();
         }, this);
         bgSpeed = perfectSpeed;
-        difficulty+=2;
+        difficulty+=1;
         score += 30*numOfArrow;
         perfectSound.play();
         result = true;
@@ -948,7 +948,6 @@ function checkAccuracy() {
             statusText.destroy();
         }, this);
         bgSpeed = perfectSpeed*90/100;
-        difficulty++;
         score += 25*numOfArrow;
         perfectStack = 0;
         greatSound.play();
