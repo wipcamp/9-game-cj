@@ -1364,8 +1364,9 @@ gameEnd = function () {
         BGMStage3.fadeOut(1500);
     }
     BGMResult.loopFull();
-
+    clearWave();
     gamemode = "gameover";
+    stopTimeGroup.setAll('alpha',0);
     wippo.body.velocity.y = 200;
     perfect.alpha = 0;
     greatR.alpha = 0;
@@ -1379,8 +1380,7 @@ gameEnd = function () {
     checkbar.alpha = 0;
     spacebarBlock.alpha = 0;
     checkerPic.alpha = 0;
-    smoke.alpha = 0;
-    clearWave();
+    smoke.alpha = 0;   
     //game.time.events.add(Phaser.Timer.SECOND * 3, toResultPage = function(){game.state.start(createResult)}, this);
 }
 function toGameplay() {
