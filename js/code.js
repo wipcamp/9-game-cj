@@ -1014,7 +1014,9 @@ function checkAccuracy() {
             statusText.destroy();
         }, this);
         bgSpeed = perfectSpeed;
-        difficulty+=1;
+        if(difficulty < 8){
+            difficulty++;
+        }
         score += 30*numOfArrow;
         perfectSound.play();
         result = true;
@@ -1042,7 +1044,9 @@ function checkAccuracy() {
         countCool++;
         bgSpeed = perfectSpeed*80/100;
         score += 20*numOfArrow;
-        difficulty--;
+        if(difficulty > 3){
+            difficulty--;
+        }
         perfectStack = 0;
         coolSound.play();
         result = true;
