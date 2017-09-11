@@ -1300,6 +1300,11 @@ function summonWave() {
     }else{
         length = 8;
     }
+    
+    if(difficulty<2 && stateHandle==3){
+        length += 2;
+    }
+
     // var l = wave.length;
     var randObstacle = game.rnd.integerInRange(1, 12);
     if (randObstacle == 2 && !spacebarBlockSpawnedLastTime) {
