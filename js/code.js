@@ -719,12 +719,72 @@ function updateGameplay() {
         }
         if(isfirstOver){
             isfirstOver = false;
-            scoreDigit6.reset(resultBG.x/1.5,resultBG.y/2.8);
-            scoreDigit5.reset(scoreDigit6.x + scoreDigit6.width,scoreDigit6.y);
-            scoreDigit4.reset(scoreDigit5.x + scoreDigit5.width,scoreDigit6.y);
-            scoreDigit3.reset(scoreDigit4.x + scoreDigit4.width,scoreDigit6.y);
-            scoreDigit2.reset(scoreDigit3.x + scoreDigit3.width,scoreDigit6.y);
-            scoreDigit1.reset(scoreDigit2.x + scoreDigit2.width,scoreDigit6.y);
+            var digitLength = 6;
+            for(;digitLength>0;digitLength--){
+                if(Math.floor(score/(Math.pow(10,digitLength-1)))!=0){
+                    break;
+                }
+            }
+            console.log('digit length = '+digitLength);
+            switch (digitLength) {
+                case 6:
+                scoreDigit3.reset(resultBG.x,resultBG.y/2.8);
+                scoreDigit4.reset(resultBG.x - scoreDigit3.width,scoreDigit3.y);
+                scoreDigit5.reset(scoreDigit4.x - scoreDigit4.width,scoreDigit4.y);
+                scoreDigit6.reset(scoreDigit5.x - scoreDigit5.width,scoreDigit4.y);
+                scoreDigit2.reset(scoreDigit3.x + scoreDigit3.width,scoreDigit4.y);
+                scoreDigit1.reset(scoreDigit2.x + scoreDigit2.width,scoreDigit4.y);
+                
+                break;
+                case 5:
+                scoreDigit3.reset(resultBG.x - scoreDigit3.width/2,resultBG.y/2.8);
+                scoreDigit4.reset(scoreDigit3.x - scoreDigit3.width,scoreDigit3.y);
+                scoreDigit5.reset(scoreDigit4.x - scoreDigit4.width,scoreDigit4.y);
+                scoreDigit6.kill();
+                scoreDigit2.reset(scoreDigit3.x + scoreDigit3.width,scoreDigit4.y);
+                scoreDigit1.reset(scoreDigit2.x + scoreDigit2.width,scoreDigit4.y);
+                break;
+                case 4:
+                scoreDigit3.reset(resultBG.x - scoreDigit3.width,resultBG.y/2.8);
+                scoreDigit4.reset(scoreDigit3.x - scoreDigit3.width,scoreDigit3.y);
+                scoreDigit5.kill();
+                scoreDigit6.kill();
+                scoreDigit2.reset(scoreDigit3.x + scoreDigit3.width,scoreDigit4.y);
+                scoreDigit1.reset(scoreDigit2.x + scoreDigit2.width,scoreDigit4.y);
+                break;
+                case 3:
+                scoreDigit2.reset(resultBG.x - scoreDigit2.width/2,resultBG.y/2.8);
+                scoreDigit4.kill();
+                scoreDigit5.kill();
+                scoreDigit6.kill();
+                scoreDigit3.reset(scoreDigit2.x - scoreDigit2.width,scoreDigit2.y);
+                scoreDigit1.reset(scoreDigit2.x + scoreDigit2.width,scoreDigit2.y);
+                break;
+                case 2:
+                scoreDigit3.kill();
+                scoreDigit4.kill();
+                scoreDigit5.kill();
+                scoreDigit6.kill();
+                scoreDigit2.reset(resultBG.x - scoreDigit2.width,resultBG.y/2.8);
+                scoreDigit1.reset(scoreDigit2.x + scoreDigit2.width,scoreDigit2.y);
+                break;
+                case 1:
+                case 0:
+                scoreDigit6.kill();
+                scoreDigit5.kill();
+                scoreDigit4.kill();
+                scoreDigit3.kill();
+                scoreDigit2.kill();
+                scoreDigit1.reset(resultBG.x - scoreDigit1.width/2,resultBG.y/2.8);
+                break;
+            
+            }
+            // scoreDigit6.reset(resultBG.x/1.5,resultBG.y/2.8);
+            // scoreDigit5.reset(scoreDigit6.x + scoreDigit6.width,scoreDigit6.y);
+            // scoreDigit4.reset(scoreDigit5.x + scoreDigit5.width,scoreDigit6.y);
+            // scoreDigit3.reset(scoreDigit4.x + scoreDigit4.width,scoreDigit6.y);
+            // scoreDigit2.reset(scoreDigit3.x + scoreDigit3.width,scoreDigit6.y);
+            // scoreDigit1.reset(scoreDigit2.x + scoreDigit2.width,scoreDigit6.y);
             buttonRestart = game.add.button(resultBG.x, resultBG.y*1.55, 'restartBtn', function(){
                 game.state.restart(true,false);
                 BGMResult.stop();
