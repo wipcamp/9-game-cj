@@ -728,7 +728,6 @@ function updateGameplay() {
                     break;
                 }
             }
-            console.log('digit length = '+digitLength);
             switch (digitLength) {
                 case 6:
                 scoreDigit3.reset(resultBG.x,resultBG.y/2.8);
