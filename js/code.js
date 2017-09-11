@@ -175,6 +175,10 @@ var coolText;
 var badText;
 var tipText;
 var tipsMessage;
+var countPerfect;
+var countGreat;
+var countCool;
+var countBad;
 /////////sound variable//////////
 var timeStopSound;
 var BGMStage1;
@@ -457,6 +461,10 @@ function createGameplay() {
     tipText = game.add.text(resultBG.x, resultBG.y*1.8, "Tips : You died. eiei", { font: "32px Thaisans Neue for Web", fill: "#FF0000" });
     tipText.anchor.set(0.5);
     tipsMessage = ['Tips : 1','Tips : 2','Tips : 3','Tips : 4','Tips : 5','Tips : 6'];
+    countPerfect = 0;
+    countGreat = 0;
+    countCool = 0;
+    countBad = 0;
     
     resultComponent.add(resultBG);
     resultComponent.add(resultGrade);
@@ -722,6 +730,10 @@ function updateGameplay() {
                 BGMStage2.stop();
                 BGMStage3.stop();
             }, this);
+            perfectText.setText('Perfect : '+countPerfect);
+            greatText.setText('Great   : '+countGreat);
+            coolText.setText('Cool    : '+countCool);
+            badText.setText('Bad     : '+countBad);
             buttonRestart.scale.setTo(0.5, 0.5);
             buttonRestart.anchor.set(0.5);
             buttonRestart.alpha = 0;
@@ -990,8 +1002,8 @@ function checkAccuracy() {
     var result = false;
     if (completeArrow && checkOverlap(checker, perfect)) {
         statusText = game.add.image(game.world.width * (1 / 2), game.world.height * (4 / 5), 'perfect');
-
         perfectStack++;
+        countPerfect++;
         if (perfectStack >= 4 && stopTimePoint < 3) {
             stopTimePoint++;
             perfectStack = 0;
@@ -1014,6 +1026,7 @@ function checkAccuracy() {
         game.time.events.add(Phaser.Timer.SECOND * 1.35, function () {
             statusText.destroy();
         }, this);
+        countGreat++;
         bgSpeed = perfectSpeed*90/100;
         score += 25*numOfArrow;
         perfectStack = 0;
@@ -1026,6 +1039,7 @@ function checkAccuracy() {
         game.time.events.add(Phaser.Timer.SECOND * 1.35, function () {
             statusText.destroy();
         }, this);
+        countCool++;
         bgSpeed = perfectSpeed*80/100;
         score += 20*numOfArrow;
         difficulty--;
@@ -1039,6 +1053,7 @@ function checkAccuracy() {
         game.time.events.add(Phaser.Timer.SECOND * 1.35, function () {
             statusText.destroy();
         }, this);
+        countBad++;
         bgSpeed = perfectSpeed*70/100;
         score += 15*numOfArrow;
         difficulty = 1;
