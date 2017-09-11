@@ -29,6 +29,7 @@ function preloadHowToPlay(){
     game.stage.backgroundColor = '#182d3b';
     game.load.image('backgroundMenu', 'images/BGmenu.png');
     game.load.spritesheet('mute', 'images/mute.png', 450, 447);
+    game.load.audio('startSound','sound/Start.mp3');
 }
 function preloadCredit(){
     game.load.spritesheet('mute', 'images/mute.png', 450, 447);
@@ -174,6 +175,10 @@ var coolText;
 var badText;
 var tipText;
 var tipsMessage;
+var countPerfect;
+var countGreat;
+var countCool;
+var countBad;
 /////////sound variable//////////
 var timeStopSound;
 var BGMStage1;
@@ -190,6 +195,7 @@ var badSound;
 var getTimeStopPoint;
 var cannonShoot;
 var passStageSound;
+var startBtnSound;
 
 /////////material variable///////
 var sharkGroup;
@@ -231,6 +237,8 @@ function createHowToPlay() {
     logoGame.anchor.set(0.5);
     startButton = game.add.button(game.world.width*(3.5/5), game.world.height*(2.5/5), 'startButton', toGameplay, this, 2, 1, 0);
     startButton.anchor.set(0.5);
+    startBtnSound = game.add.audio('startSound');
+    startBtnSound.volume = 0.6;
     mute = game.add.button(game.world.width*(97/100), game.world.height*(96/100), 'mute', muteSounds, this);
     mute.scale.setTo(0.08, 0.08);
     mute.anchor.set(0.5);
@@ -453,7 +461,11 @@ function createGameplay() {
     tipText = game.add.text(resultBG.x, resultBG.y*1.8, "Tips : You died. eiei", { font: "32px Thaisans Neue for Web", fill: "#FF0000" });
     tipText.anchor.set(0.5);
     tipsMessage = ['Tips : 1','Tips : 2','Tips : 3','Tips : 4','Tips : 5','Tips : 6'];
-
+    countPerfect = 0;
+    countGreat = 0;
+    countCool = 0;
+    countBad = 0;
+    
     resultComponent.add(resultBG);
     resultComponent.add(resultGrade);
     resultComponent.add(perfectText);
@@ -567,29 +579,35 @@ function updateGameplay() {
         }
         if (!specialGuageIsSpawned) {
             specialGuage = this.add.sprite(game.world.width * (1 / 5), game.world.height * (1.5 / 5), 'guage');
-            specialGuageSeal = this.add.sprite(game.world.width * (1 / 5) + 6, game.world.height * (1.5 / 5) + 6, 'guageSeal');
+            specialGuage.anchor.set(0.5,0);
+            specialGuageSeal = this.add.sprite(game.world.width * (1 / 5) ,specialGuage.y+specialGuage.height*0.9, 'guageSeal');
+            specialGuageSeal.anchor.set(0.5,0.5);
+            specialGuageSeal.scale.setTo(1,0.2);
             specialGuageIsSpawned = true;
             checker.alpha = 0;
         }
         if (!isSpacebarDown) {
             if (spaceButton.isDown) {
-                maxGuage -= 5;
+                if(specialGuageSeal.y > specialGuage.y*1.0){
+                    specialGuageSeal.y -= 10 ;
+                }
                 isSpacebarDown = true;
-                specialGuageSeal.scale.setTo(1, maxGuage / 100);
             }
         }
-        if (!spaceButton.isDown)
+        if (!spaceButton.isDown) {
             isSpacebarDown = false;
+        }
         if (!isTimeStopped) {
-            if (maxGuage < 100) {
-                maxGuage += 0.35;
-                specialGuageSeal.scale.setTo(1, maxGuage / 100);
+            if (specialGuageSeal.y < specialGuage.y+specialGuage.height*0.9) {
+                specialGuageSeal.y+=0.8;
             }
 
-            if (maxGuage <= 0 && specialGuage != null) {
+            if (specialGuageSeal.y < specialGuage.y*1.1 && specialGuage != null) {
                 score += 500;
                 specialGuage.destroy();
                 specialGuageSeal.destroy();
+                specialGuage=null;
+                specialGuageSeal=null;
                 gamemode = "changingState";
                 game.time.events.remove(guageAliveTimer);
                 game.time.events.add(Phaser.Timer.SECOND * 1, function () {
@@ -701,12 +719,72 @@ function updateGameplay() {
         }
         if(isfirstOver){
             isfirstOver = false;
-            scoreDigit6.reset(resultBG.x/1.5,resultBG.y/2.8);
-            scoreDigit5.reset(scoreDigit6.x + scoreDigit6.width,scoreDigit6.y);
-            scoreDigit4.reset(scoreDigit5.x + scoreDigit5.width,scoreDigit6.y);
-            scoreDigit3.reset(scoreDigit4.x + scoreDigit4.width,scoreDigit6.y);
-            scoreDigit2.reset(scoreDigit3.x + scoreDigit3.width,scoreDigit6.y);
-            scoreDigit1.reset(scoreDigit2.x + scoreDigit2.width,scoreDigit6.y);
+            var digitLength = 6;
+            for(;digitLength>0;digitLength--){
+                if(Math.floor(score/(Math.pow(10,digitLength-1)))!=0){
+                    break;
+                }
+            }
+            console.log('digit length = '+digitLength);
+            switch (digitLength) {
+                case 6:
+                scoreDigit3.reset(resultBG.x,resultBG.y/2.8);
+                scoreDigit4.reset(resultBG.x - scoreDigit3.width,scoreDigit3.y);
+                scoreDigit5.reset(scoreDigit4.x - scoreDigit4.width,scoreDigit4.y);
+                scoreDigit6.reset(scoreDigit5.x - scoreDigit5.width,scoreDigit4.y);
+                scoreDigit2.reset(scoreDigit3.x + scoreDigit3.width,scoreDigit4.y);
+                scoreDigit1.reset(scoreDigit2.x + scoreDigit2.width,scoreDigit4.y);
+                
+                break;
+                case 5:
+                scoreDigit3.reset(resultBG.x - scoreDigit3.width/2,resultBG.y/2.8);
+                scoreDigit4.reset(scoreDigit3.x - scoreDigit3.width,scoreDigit3.y);
+                scoreDigit5.reset(scoreDigit4.x - scoreDigit4.width,scoreDigit4.y);
+                scoreDigit6.kill();
+                scoreDigit2.reset(scoreDigit3.x + scoreDigit3.width,scoreDigit4.y);
+                scoreDigit1.reset(scoreDigit2.x + scoreDigit2.width,scoreDigit4.y);
+                break;
+                case 4:
+                scoreDigit3.reset(resultBG.x - scoreDigit3.width,resultBG.y/2.8);
+                scoreDigit4.reset(scoreDigit3.x - scoreDigit3.width,scoreDigit3.y);
+                scoreDigit5.kill();
+                scoreDigit6.kill();
+                scoreDigit2.reset(scoreDigit3.x + scoreDigit3.width,scoreDigit4.y);
+                scoreDigit1.reset(scoreDigit2.x + scoreDigit2.width,scoreDigit4.y);
+                break;
+                case 3:
+                scoreDigit2.reset(resultBG.x - scoreDigit2.width/2,resultBG.y/2.8);
+                scoreDigit4.kill();
+                scoreDigit5.kill();
+                scoreDigit6.kill();
+                scoreDigit3.reset(scoreDigit2.x - scoreDigit2.width,scoreDigit2.y);
+                scoreDigit1.reset(scoreDigit2.x + scoreDigit2.width,scoreDigit2.y);
+                break;
+                case 2:
+                scoreDigit3.kill();
+                scoreDigit4.kill();
+                scoreDigit5.kill();
+                scoreDigit6.kill();
+                scoreDigit2.reset(resultBG.x - scoreDigit2.width,resultBG.y/2.8);
+                scoreDigit1.reset(scoreDigit2.x + scoreDigit2.width,scoreDigit2.y);
+                break;
+                case 1:
+                case 0:
+                scoreDigit6.kill();
+                scoreDigit5.kill();
+                scoreDigit4.kill();
+                scoreDigit3.kill();
+                scoreDigit2.kill();
+                scoreDigit1.reset(resultBG.x - scoreDigit1.width/2,resultBG.y/2.8);
+                break;
+            
+            }
+            // scoreDigit6.reset(resultBG.x/1.5,resultBG.y/2.8);
+            // scoreDigit5.reset(scoreDigit6.x + scoreDigit6.width,scoreDigit6.y);
+            // scoreDigit4.reset(scoreDigit5.x + scoreDigit5.width,scoreDigit6.y);
+            // scoreDigit3.reset(scoreDigit4.x + scoreDigit4.width,scoreDigit6.y);
+            // scoreDigit2.reset(scoreDigit3.x + scoreDigit3.width,scoreDigit6.y);
+            // scoreDigit1.reset(scoreDigit2.x + scoreDigit2.width,scoreDigit6.y);
             buttonRestart = game.add.button(resultBG.x, resultBG.y*1.55, 'restartBtn', function(){
                 game.state.restart(true,false);
                 BGMResult.stop();
@@ -714,6 +792,10 @@ function updateGameplay() {
                 BGMStage2.stop();
                 BGMStage3.stop();
             }, this);
+            perfectText.setText('Perfect : '+countPerfect);
+            greatText.setText('Great   : '+countGreat);
+            coolText.setText('Cool    : '+countCool);
+            badText.setText('Bad     : '+countBad);
             buttonRestart.scale.setTo(0.5, 0.5);
             buttonRestart.anchor.set(0.5);
             buttonRestart.alpha = 0;
@@ -982,8 +1064,8 @@ function checkAccuracy() {
     var result = false;
     if (completeArrow && checkOverlap(checker, perfect)) {
         statusText = game.add.image(game.world.width * (1 / 2), game.world.height * (4 / 5), 'perfect');
-
         perfectStack++;
+        countPerfect++;
         if (perfectStack >= 4 && stopTimePoint < 3) {
             stopTimePoint++;
             perfectStack = 0;
@@ -994,7 +1076,9 @@ function checkAccuracy() {
             statusText.destroy();
         }, this);
         bgSpeed = perfectSpeed;
-        difficulty+=1;
+        if(difficulty < 8){
+            difficulty++;
+        }
         score += 30*numOfArrow;
         perfectSound.play();
         result = true;
@@ -1006,6 +1090,7 @@ function checkAccuracy() {
         game.time.events.add(Phaser.Timer.SECOND * 1.35, function () {
             statusText.destroy();
         }, this);
+        countGreat++;
         bgSpeed = perfectSpeed*90/100;
         score += 25*numOfArrow;
         perfectStack = 0;
@@ -1018,9 +1103,12 @@ function checkAccuracy() {
         game.time.events.add(Phaser.Timer.SECOND * 1.35, function () {
             statusText.destroy();
         }, this);
+        countCool++;
         bgSpeed = perfectSpeed*80/100;
         score += 20*numOfArrow;
-        difficulty--;
+        if(difficulty > 3){
+            difficulty--;
+        }
         perfectStack = 0;
         coolSound.play();
         result = true;
@@ -1031,6 +1119,7 @@ function checkAccuracy() {
         game.time.events.add(Phaser.Timer.SECOND * 1.35, function () {
             statusText.destroy();
         }, this);
+        countBad++;
         bgSpeed = perfectSpeed*70/100;
         score += 15*numOfArrow;
         difficulty = 1;
@@ -1211,6 +1300,11 @@ function summonWave() {
     }else{
         length = 8;
     }
+    
+    if(difficulty<2 && stateHandle==3){
+        length += 2;
+    }
+
     // var l = wave.length;
     var randObstacle = game.rnd.integerInRange(1, 12);
     if (randObstacle == 2 && !spacebarBlockSpawnedLastTime) {
@@ -1443,6 +1537,7 @@ gameEnd = function () {
     //game.time.events.add(Phaser.Timer.SECOND * 3, toResultPage = function(){game.state.start(createResult)}, this);
 }
 function toGameplay() {
+    startBtnSound.play();
     game.state.start('main');
 }
 function toHowToPlay() {
