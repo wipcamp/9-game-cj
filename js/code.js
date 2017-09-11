@@ -68,7 +68,7 @@ function preloadGameplay() {
     game.load.spritesheet('left', 'images/left2.png', 45, 45, 8);
     game.load.spritesheet('laser', 'images/biglaser.png');
     game.load.spritesheet('spacebarBlock', 'images/dontpush.png');
-    game.load.spritesheet('numberText', 'images/numberText.png', 540 / 12, 60, 12);
+    game.load.spritesheet('numberText', 'images/numberText.png', 450 / 12, 50, 12);
     game.load.spritesheet('restartBtn', 'images/restartBtn.png');
     game.load.spritesheet('smoke', 'images/smoke.png',200,450,5);
     game.load.spritesheet('grade', 'images/grade.png',1800/6,220,6);
@@ -1343,7 +1343,7 @@ function summonWave() {
             buttonLine[i] = game.add.sprite(x, y, 'buttonLineHead');
         }
         buttonLine[i].anchor.set(0.5);
-        buttonLine[i].scale.setTo(0.4, 0.6);
+        buttonLine[i].scale.setTo(1, 1);
         //////
 
         var rand = game.rnd.integerInRange(0, 3/*difficulty*/);
