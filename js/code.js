@@ -520,7 +520,7 @@ function updateGameplay() {
                 clearWave();
                 spacebarBlockSpawnedLastTime = false;
                 spaceKeyDownTimer = game.time.now + 1400;
-                if (bg.tilePosition.y >= 1400 && gamemode=="ingame") {
+                if (bg.tilePosition.y >= 1400 && stateHandle<3 && gamemode=="ingame") {
                     bgSpeed=perfectSpeed*30/100;
                     gamemode = "feverTime";
                     checker.alpha = 0;
