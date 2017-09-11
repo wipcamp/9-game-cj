@@ -588,7 +588,9 @@ function updateGameplay() {
         }
         if (!isSpacebarDown) {
             if (spaceButton.isDown) {
-                specialGuageSeal.y -= 10 ;
+                if(specialGuageSeal.y > specialGuage.y*1.0){
+                    specialGuageSeal.y -= 10 ;
+                }
                 isSpacebarDown = true;
             }
         }
