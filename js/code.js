@@ -16,10 +16,10 @@ function preloadMenu(){
     game.load.onLoadComplete.add(loadComplete, this);
     game.stage.backgroundColor = '#182d3b';
     game.load.image('backgroundMenu', 'images/BGmenu.png');
-    game.load.spritesheet('startButton', 'images/startButton.png', 205, 48);
+    game.load.spritesheet('startButton', 'images/startButton.png', 796/2, 92);
     game.load.image('logoGame', 'images/logoGame.png');
-    game.load.image('creditButton', 'images/creditButton.png');
-    game.load.spritesheet('reportButton', 'images/reportButton.png', 207, 48);
+    game.load.spritesheet('creditButton', 'images/creditButton.png',796/2,92);
+    game.load.spritesheet('reportButton', 'images/reportButton.png', 796/2, 92);
     game.load.spritesheet('mute', 'images/mute.png', 450, 447);
 
     ////sound////
@@ -215,12 +215,15 @@ function createMenu() {
     game.add.image(0, 0, 'backgroundMenu');
     logoGame = game.add.image(game.world.width*(3.5/5), game.world.height*(1.4/5), 'logoGame');
     logoGame.anchor.set(0.5);
-    startButton = game.add.button(game.world.width*(3.5/5), game.world.height*(2.5/5), 'startButton', toHowToPlay, this, 2, 1, 0);
+    startButton = game.add.button(game.world.width*(3.5/5), game.world.height*(2.5/5), 'startButton', toHowToPlay, this, 0, 1, 0);
     startButton.anchor.set(0.5);
-    creditButton = game.add.button(game.world.width*(3.5/5), game.world.height*(4/5), 'creditButton', toCredit, this, 2, 1, 0);
+    startButton.scale.setTo(0.5);
+    creditButton = game.add.button(game.world.width*(3.5/5), game.world.height*(4/5), 'creditButton', toCredit, this, 0, 1, 0);
     creditButton.anchor.set(0.5);
-    reportButton = game.add.button(game.world.width*(3.5/5), game.world.height*(4.5/5), 'reportButton', toReport, this, 2, 1, 0);
+    creditButton.scale.setTo(0.5);
+    reportButton = game.add.button(game.world.width*(3.5/5), game.world.height*(4.5/5), 'reportButton', toReport, this, 0, 1, 0);
     reportButton.anchor.set(0.5);
+    reportButton.scale.setTo(0.5);
     BGMMenu = game.add.audio('BGMMenu');
     BGMMenu.volume = 0.4;
     BGMMenu.loopFull();
