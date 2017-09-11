@@ -1340,7 +1340,7 @@ function summonWave() {
             buttonLine[i] = game.add.sprite(x, y, 'buttonLineHead');
         }
         buttonLine[i].anchor.set(0.5);
-        buttonLine[i].scale.setTo(0.4, 0.6);
+        buttonLine[i].scale.setTo(1, 1);
         //////
 
         var rand = game.rnd.integerInRange(0, 3/*difficulty*/);
