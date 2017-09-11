@@ -29,6 +29,7 @@ function preloadHowToPlay(){
     game.stage.backgroundColor = '#182d3b';
     game.load.image('backgroundMenu', 'images/BGmenu.png');
     game.load.spritesheet('mute', 'images/mute.png', 450, 447);
+    game.load.audio('startSound','sound/Start.mp3');
 }
 function preloadCredit(){
     game.load.spritesheet('mute', 'images/mute.png', 450, 447);
@@ -190,6 +191,7 @@ var badSound;
 var getTimeStopPoint;
 var cannonShoot;
 var passStageSound;
+var startBtnSound;
 
 /////////material variable///////
 var sharkGroup;
@@ -231,6 +233,8 @@ function createHowToPlay() {
     logoGame.anchor.set(0.5);
     startButton = game.add.button(game.world.width*(3.5/5), game.world.height*(2.5/5), 'startButton', toGameplay, this, 2, 1, 0);
     startButton.anchor.set(0.5);
+    startBtnSound = game.add.audio('startSound');
+    startBtnSound.volume = 0.6;
     mute = game.add.button(game.world.width*(97/100), game.world.height*(96/100), 'mute', muteSounds, this);
     mute.scale.setTo(0.08, 0.08);
     mute.anchor.set(0.5);
@@ -1443,6 +1447,7 @@ gameEnd = function () {
     //game.time.events.add(Phaser.Timer.SECOND * 3, toResultPage = function(){game.state.start(createResult)}, this);
 }
 function toGameplay() {
+    startBtnSound.play();
     game.state.start('main');
 }
 function toHowToPlay() {
