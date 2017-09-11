@@ -72,6 +72,7 @@ function preloadGameplay() {
     game.load.spritesheet('restartBtn', 'images/restartBtn.png', 796/2, 92);
     game.load.spritesheet('smoke', 'images/smoke.png',200,450,5);
     game.load.spritesheet('grade', 'images/grade.png',1800/6,220,6);
+    game.load.spritesheet('AttentionSpacebar', 'images/spacebar.png',796/2, 92);
 
     /////metarial/////
     game.load.spritesheet('shark', 'images/shark2.png', 50, 50);
@@ -138,6 +139,7 @@ var gamemode;
 var specialGuageIsSpawned;
 var specialGuage;
 var specialGuageSeal;
+var AttentionSpacebar;
 var isSpacebarPressed;
 var spacebarBlock;
 var spacebarBlockSpawnedLastTime;
@@ -337,6 +339,12 @@ function createGameplay() {
     stopTimeGroup.physicsBodyType = Phaser.Physics.ARCADE;
     timestopBG = game.add.image(0 , 0 , 'timestopBG');
     timestopBG.alpha = 0;
+
+    /*AttentionSpacebar = game.add.sprite(game.world.width * (1 / 10) , game.world.height * (9 / 10) , 'AttentionSpacebar');
+    AttentionSpacebar.anchor.set(0.5);
+    AttentionSpacebar.scale.setTo(0.35);
+    AttentionSpacebar.animations.add('active',[0,1],15,true);
+    AttentionSpacebar.play('active');*/
 
     //// material ///////////////////////////////////////////////////////////
     sharkM = null;
