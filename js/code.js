@@ -441,7 +441,7 @@ function createGameplay() {
     scoreDigit3 = game.add.sprite(scoreDigit4.x + scoreDigit4.width, 0, 'numberText');
     scoreDigit2 = game.add.sprite(scoreDigit3.x + scoreDigit3.width, 0, 'numberText');
     scoreDigit1 = game.add.sprite(scoreDigit2.x + scoreDigit2.width, 0, 'numberText');
-    scoreDigit1.frame = 11;
+    scoreDigit1.frame = 0;
     scoreDigit2.frame = 11;
     scoreDigit3.frame = 11;
     scoreDigit4.frame = 11;
