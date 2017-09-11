@@ -571,29 +571,33 @@ function updateGameplay() {
         }
         if (!specialGuageIsSpawned) {
             specialGuage = this.add.sprite(game.world.width * (1 / 5), game.world.height * (1.5 / 5), 'guage');
-            specialGuageSeal = this.add.sprite(game.world.width * (1 / 5) + 6, game.world.height * (1.5 / 5) + 6, 'guageSeal');
+            specialGuage.anchor.set(0.5,0);
+            specialGuageSeal = this.add.sprite(game.world.width * (1 / 5) ,specialGuage.y+specialGuage.height*0.9, 'guageSeal');
+            specialGuageSeal.anchor.set(0.5,0.5);
+            specialGuageSeal.scale.setTo(1,0.2);
             specialGuageIsSpawned = true;
             checker.alpha = 0;
         }
         if (!isSpacebarDown) {
             if (spaceButton.isDown) {
-                maxGuage -= 5;
+                specialGuageSeal.y -= 10 ;
                 isSpacebarDown = true;
-                specialGuageSeal.scale.setTo(1, maxGuage / 100);
             }
         }
-        if (!spaceButton.isDown)
+        if (!spaceButton.isDown) {
             isSpacebarDown = false;
+        }
         if (!isTimeStopped) {
-            if (maxGuage < 100) {
-                maxGuage += 0.35;
-                specialGuageSeal.scale.setTo(1, maxGuage / 100);
+            if (specialGuageSeal.y < specialGuage.y+specialGuage.height*0.9) {
+                specialGuageSeal.y+=0.8;
             }
 
-            if (maxGuage <= 0 && specialGuage != null) {
+            if (specialGuageSeal.y < specialGuage.y*1.1 && specialGuage != null) {
                 score += 500;
                 specialGuage.destroy();
                 specialGuageSeal.destroy();
+                specialGuage=null;
+                specialGuageSeal=null;
                 gamemode = "changingState";
                 game.time.events.remove(guageAliveTimer);
                 game.time.events.add(Phaser.Timer.SECOND * 1, function () {
