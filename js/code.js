@@ -592,16 +592,16 @@ function updateGameplay() {
         if (!specialGuageIsSpawned) {
             specialGuage = this.add.sprite(game.world.width * (1 / 5), game.world.height * (1.5 / 5), 'guage');
             specialGuage.anchor.set(0.5,0);
-            specialGuageSeal = this.add.sprite(game.world.width * (1 / 5) ,specialGuage.y+specialGuage.height*0.9, 'guageSeal');
+            specialGuageSeal = this.add.sprite(game.world.width * (1 / 5)-10 ,specialGuage.y+specialGuage.height*0.72, 'guageSeal');
             specialGuageSeal.anchor.set(0.5,0.5);
-            specialGuageSeal.scale.setTo(1,0.2);
+            specialGuageSeal.scale.setTo(1,1);
             specialGuageIsSpawned = true;
             checker.alpha = 0;
         }
         if (!isSpacebarDown) {
             if (spaceButton.isDown) {
                 if(specialGuageSeal.y > specialGuage.y*1.0){
-                    specialGuageSeal.y -= 10 ;
+                    specialGuageSeal.y -= 12 ;
                 }
                 isSpacebarDown = true;
             }
@@ -610,11 +610,11 @@ function updateGameplay() {
             isSpacebarDown = false;
         }
         if (!isTimeStopped) {
-            if (specialGuageSeal.y < specialGuage.y+specialGuage.height*0.9) {
+            if (specialGuageSeal.y < specialGuage.y+specialGuage.height*0.72) {
                 specialGuageSeal.y+=0.8;
             }
 
-            if (specialGuageSeal.y < specialGuage.y*1.1 && specialGuage != null) {
+            if (specialGuageSeal.y < specialGuage.y*1.2 && specialGuage != null) {
                 score += 500;
                 specialGuage.destroy();
                 specialGuageSeal.destroy();
@@ -1348,10 +1348,12 @@ function summonWave() {
             } else {
                 buttonLine[i] = game.add.sprite(x, y, 'buttonLineTail');
                 buttonLine[i].x += 45/2;
+                buttonLine[i].scale.setTo(0.951, 1);
             }
         } else {
             buttonLine[i] = game.add.sprite(x, y, 'buttonLineHead');
             buttonLine[i].x -= 45/2;
+            buttonLine[i].scale.setTo(0.951, 1);
         }
         buttonLine[i].anchor.set(0.5);
         buttonLine[i].scale.setTo(1, 1);
