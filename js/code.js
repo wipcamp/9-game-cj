@@ -69,7 +69,7 @@ function preloadGameplay() {
     game.load.spritesheet('spacebarBlock', 'images/dontpush.png');
     game.load.spritesheet('numberText', 'images/numberText.png', 540 / 12, 60, 12);
     game.load.spritesheet('restartBtn', 'images/restartBtn.png');
-    game.load.spritesheet('smoke', 'images/smoke.png',800,600,10);
+    game.load.spritesheet('smoke', 'images/smoke.png',200,450,5);
     game.load.spritesheet('grade', 'images/grade.png',1800/6,220,6);
 
     /////metarial/////
@@ -205,7 +205,7 @@ var logoGame;
 
 function createMenu() {
     game.stage.disableVisibilityChange = true;
-    
+
     game.add.image(0, 0, 'backgroundMenu');
     logoGame = game.add.image(game.world.width*(3.5/5), game.world.height*(1.4/5), 'logoGame');
     logoGame.anchor.set(0.5);
@@ -225,7 +225,7 @@ function createMenu() {
 
 function createHowToPlay() {
     game.stage.disableVisibilityChange = true;
-    
+
     game.add.image(0, 0, 'backgroundMenu');
     logoGame = game.add.image(game.world.width*(3.5/5), game.world.height*(1.4/5), 'logoGame');
     logoGame.anchor.set(0.5);
@@ -251,14 +251,14 @@ function createReport(){
     mute.scale.setTo(0.08, 0.08);
     mute.anchor.set(0.5);
 }
-function loadStart() {  
+function loadStart() {
     loadingText = game.add.text(game.world.width/2, game.world.height/2, 'Loading 0%', { fill: '#ffffff' });
     loadingText.anchor.set(0.5);
 }
 function fileComplete(progress, cacheKey, success, totalLoaded, totalFiles) {
     loadingText.setText("Loading " + progress + "%");
 }
-function loadComplete() {  
+function loadComplete() {
     loadingText.destroy();
 }
 
@@ -323,7 +323,7 @@ function createGameplay() {
     stopTimeGroup = game.add.group();
     stopTimeGroup.enableBody = true;
     stopTimeGroup.physicsBodyType = Phaser.Physics.ARCADE;
-    timestopBG = game.add.image(0 , 0 , 'timestopBG'); 
+    timestopBG = game.add.image(0 , 0 , 'timestopBG');
     timestopBG.alpha = 0;
 
     //// material ///////////////////////////////////////////////////////////
@@ -359,10 +359,10 @@ function createGameplay() {
         clound.checkWorldBounds = true;
         clound.events.onOutOfBounds.add(killObj, this);
     }
-    
+
     smoke = this.add.sprite(0,0, 'smoke');
     game.physics.arcade.enable(smoke);
-    smoke.anchor.set(0.5);
+    smoke.anchor.set(0.5,0);
     smoke.animations.add('great',[0,1,2,3,4,5,6,7,8,9],40,true);
     smoke.kill();
     smoke.animations.play('great');
@@ -453,7 +453,7 @@ function createGameplay() {
     tipText = game.add.text(resultBG.x, resultBG.y*1.8, "Tips : You died. eiei", { font: "32px Thaisans Neue for Web", fill: "#FF0000" });
     tipText.anchor.set(0.5);
     tipsMessage = ['Tips : 1','Tips : 2','Tips : 3','Tips : 4','Tips : 5','Tips : 6'];
-    
+
     resultComponent.add(resultBG);
     resultComponent.add(resultGrade);
     resultComponent.add(perfectText);
@@ -541,12 +541,12 @@ function updateGameplay() {
                             gameEnd();//====== comment ทิ้งเพื่อไม่ต้องกด spacebar
                             return;
                         }
-                        
+
                     }
                     summonWave();
                     isSpacebarPressed = false;
                 }
-                
+
                 //checker.reset(game.world.width * (2.5 / 7), game.world.height * (3 / 5)+10);
                 checker.reset(progressBar.x, progressBar.y);
                 summonCooldown = game.time.now + 1500;
@@ -730,7 +730,7 @@ function updateGameplay() {
             }else{
                 resultGrade.frame = 5;
             }
-            
+
         }
         if(buttonRestart.alpha<1){
             buttonRestart.alpha += 0.01;
@@ -789,7 +789,7 @@ function countdownTimer(timerName) {
         guageTimerDigit2.frame = Math.floor(guageTimeCounter / 10);
         guageTimerDigit1.frame = Math.floor(guageTimeCounter % 10);
         guageTimerDecimal.frame = Math.floor(guageTimeCounter * 10 % 10);
-        
+
         if (!isTimeStopped)
             guageTimeCounter -= 0.1;
 
@@ -834,8 +834,8 @@ function stoptime() {
                 stopTimePointText.x = game.world.width * (7 / 8);
                 stopTimePointText.y = game.world.height*(20/100);
             }
-        }, this); 
-    }, this); 
+        }, this);
+    }, this);
     checker.body.velocity.x = 0;
     tempBgSpeed = bgSpeed;
     bgSpeed = 0;
@@ -1269,14 +1269,14 @@ arrowCreate = function (x, y, rand, type) {
         1 down
         2 left
         3 right
-    */ 
+    */
     this.x = x;
     this.y = y;
     this.type = type;
     this.game = game;
     this.alive = true;
     this.arrow = null;
-    
+
     if (rand == 0) {
         this.arrow = game.add.sprite(x, y, 'up');
         this.name = "up";
@@ -1345,7 +1345,7 @@ wippoLaunch = function () {
     floorFront.body.velocity.y = 400;
     floorBack.body.velocity.y = 400;
     wippo.body.velocity.y = -150;
-    smoke.reset(wippo.x+20, wippo.y+110);
+    smoke.reset(wippo.x, wippo.y);
     smoke.body.velocity.y = -150;
     bgSpeed = perfectSpeed;
     cannonShoot.play()
@@ -1354,7 +1354,7 @@ wippoLaunch = function () {
 gameBegin = function () {
     wippo.body.velocity.y = 0;
     bgSpeed = perfectSpeed*80/100;
-    smoke.reset(wippo.x+20, wippo.y+110);
+    smoke.reset(wippo.x, wippo.y);
     smoke.animations.play('great');
     progressBar = this.add.sprite(game.world.width * (35 / 100), game.world.height * (3 / 5)+10, 'beam');
     progressBar.scale.setTo(0.09, 0.07);
@@ -1410,7 +1410,7 @@ gameBegin = function () {
     stopTimeGroup.add(stopwatchIcon);
     stopTimeGroup.add(stopTimePointText);
     game.world.bringToTop(stopTimeGroup);
-    
+
 }
 gameEnd = function () {
     //playDeathAnimation
@@ -1439,7 +1439,7 @@ gameEnd = function () {
     checkbar.alpha = 0;
     spacebarBlock.alpha = 0;
     checkerPic.alpha = 0;
-    smoke.alpha = 0;   
+    smoke.alpha = 0;
     //game.time.events.add(Phaser.Timer.SECOND * 3, toResultPage = function(){game.state.start(createResult)}, this);
 }
 function toGameplay() {
