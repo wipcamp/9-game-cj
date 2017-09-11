@@ -69,7 +69,7 @@ function preloadGameplay() {
     game.load.spritesheet('laser', 'images/biglaser.png');
     game.load.spritesheet('spacebarBlock', 'images/dontpush.png');
     game.load.spritesheet('numberText', 'images/numberText.png', 450 / 12, 50, 12);
-    game.load.spritesheet('restartBtn', 'images/restartBtn.png');
+    game.load.spritesheet('restartBtn', 'images/restartBtn.png', 796/2, 92);
     game.load.spritesheet('smoke', 'images/smoke.png',200,450,5);
     game.load.spritesheet('grade', 'images/grade.png',1800/6,220,6);
 
@@ -238,8 +238,9 @@ function createHowToPlay() {
     game.add.image(0, 0, 'backgroundMenu');
     logoGame = game.add.image(game.world.width*(3.5/5), game.world.height*(1.4/5), 'logoGame');
     logoGame.anchor.set(0.5);
-    startButton = game.add.button(game.world.width*(3.5/5), game.world.height*(2.5/5), 'startButton', toGameplay, this, 2, 1, 0);
+    startButton = game.add.button(game.world.width*(3.5/5), game.world.height*(2.5/5), 'startButton', toGameplay, this, 0, 1, 0);
     startButton.anchor.set(0.5);
+    startButton.scale.setTo(0.5);
     startBtnSound = game.add.audio('startSound');
     startBtnSound.volume = 0.6;
     mute = game.add.button(game.world.width*(97/100), game.world.height*(96/100), 'mute', muteSounds, this);
@@ -793,7 +794,8 @@ function updateGameplay() {
                 BGMStage1.stop();
                 BGMStage2.stop();
                 BGMStage3.stop();
-            }, this);
+            }, this, 0, 1, 0);
+            buttonRestart.scale.setTo(0.5);
             perfectText.setText('Perfect : '+countPerfect);
             greatText.setText('Great   : '+countGreat);
             coolText.setText('Cool    : '+countCool);
