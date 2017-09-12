@@ -379,22 +379,26 @@ function createGameplay() {
     spacebarBlockSpawnedLastTime = true;
     specialGuage = this.add.sprite(game.world.width * (1 / 5), game.world.height * (0.9 / 5), 'guage');
     specialGuage.anchor.set(0.5,0);
-    specialGuageSeal = this.add.sprite(game.world.width * (1 / 5)-10 ,specialGuage.y+specialGuage.height*0.72, 'guageSeal');
+    specialGuageSeal = this.add.sprite(game.world.width * (1 / 5)-7  ,specialGuage.y+specialGuage.height*0.72, 'guageSeal');
     specialGuageSeal.anchor.set(0.5,0.5);
     specialGuageSeal.scale.setTo(1,1);
     specialGuage.kill();
     specialGuageSeal.kill();
-    guageTimerDigit2 = game.add.sprite(game.world.width * (1 / 10) ,game.world.height*(8/10), 'numberText');
+    guageTimerDigit2 = game.add.sprite(specialGuage.x-specialGuage.width*(3/10) ,specialGuage.y+specialGuage.height*(82/100), 'numberText');
+    guageTimerDigit2.scale.setTo(0.75,0.75);
     guageTimerDigit1 = game.add.sprite(guageTimerDigit2.x + guageTimerDigit2.width, guageTimerDigit2.y, 'numberText');
+    guageTimerDigit1.scale.setTo(0.75,0.75);
     guageTimerDecPoint = game.add.sprite(
         (guageTimerDigit2.x + guageTimerDigit2.width + guageTimerDigit1.x + guageTimerDigit1.width)/2,  guageTimerDigit2.y, 'numberText');
+    guageTimerDecPoint.scale.setTo(0.75,0.75);
     guageTimerDecimal = game.add.sprite(guageTimerDigit1.x + guageTimerDigit1.width,  guageTimerDigit2.y, 'numberText');
+    guageTimerDecimal.scale.setTo(0.75,0.75);
     guageTimerDecPoint.frame = 10;
     guageTimerDigit2.alpha = 0;
     guageTimerDigit1.alpha = 0;
     guageTimerDecimal.alpha = 0;
     guageTimerDecPoint.alpha = 0;
-    AttentionSpacebar = game.add.sprite(specialGuage.x , game.world.height * (8 / 10) , 'AttentionSpacebar');
+    AttentionSpacebar = game.add.sprite(specialGuage.x-3 , game.world.height * (72 / 100) , 'AttentionSpacebar');
     AttentionSpacebar.anchor.set(0.5);
     AttentionSpacebar.scale.setTo(0.35);
     AttentionSpacebar.animations.add('active',[0,1],15,true);
@@ -589,8 +593,9 @@ function updateGameplay() {
             materialGenerator();
         }
         if (!specialGuageIsSpawned) {
-            specialGuage.revive();
-            specialGuageSeal.revive();
+            console.log("spawn gauge");
+            specialGuage.reset(game.world.width * (1 / 5), game.world.height * (0.9 / 5));
+            specialGuageSeal.reset(game.world.width * (1 / 5)-7  ,specialGuage.y+specialGuage.height*0.72);
             specialGuageIsSpawned = true;
             checker.alpha = 0;
             AttentionSpacebar.revive();
@@ -598,7 +603,7 @@ function updateGameplay() {
         }
         if (!isSpacebarDown) {
             if (spaceButton.isDown) {
-                if(specialGuageSeal.y > specialGuage.y*1.0){
+                if(specialGuageSeal.y >= specialGuage.y*1.3){
                     specialGuageSeal.y -= 12 ;
                 }
                 isSpacebarDown = true;
@@ -619,8 +624,8 @@ function updateGameplay() {
                 gamemode = "changingState";
                 AttentionSpacebar.kill();
                 game.time.events.remove(guageAliveTimer);
+                cancelCountdownTimer("feverTime");
                 game.time.events.add(Phaser.Timer.SECOND * 1, function () {
-                    cancelCountdownTimer("feverTime");
                     maxGuage = 100;
                     isSpacebarDown = false;
                     specialGuageIsSpawned = false;
