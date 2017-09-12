@@ -1183,11 +1183,14 @@ function updateScore(){
 
 }
 
-var isHoldDown = false;
+var isUpHoldDown = false;
+var isDownHoldDown = false;
+var isRightHoldDown = false;
+var isLeftHoldDown = false;
 function collectArrow() {
-    if (waveCheckOrder < wave.length && !isHoldDown) {
-        if (cursors.up.isDown) {
-            isHoldDown = true;
+    if (waveCheckOrder < wave.length) {
+        if (cursors.up.isDown && !isUpHoldDown) {
+            isUpHoldDown = true;
             if (wave[waveCheckOrder].name == "up") {
                 wave[waveCheckOrder].arrow.animations.play('correct');
                 if (wave[waveCheckOrder].type == 3) {
@@ -1205,8 +1208,8 @@ function collectArrow() {
                 refreshWave();
                 wrongButtonSound.play();
             }
-        } else if (cursors.down.isDown) {
-            isHoldDown = true;
+        } else if (cursors.down.isDown && !isDownHoldDown) {
+            isDownHoldDown = true;
             if (wave[waveCheckOrder].name == "down") {
                 wave[waveCheckOrder].arrow.animations.play('correct');
                 if (wave[waveCheckOrder].type == 3) {
@@ -1225,8 +1228,8 @@ function collectArrow() {
                 wrongButtonSound.play();
             }
         }
-        else if (cursors.right.isDown) {
-            isHoldDown = true;
+        else if (cursors.right.isDown && !isRightHoldDown) {
+            isRightHoldDown = true;
             if (wave[waveCheckOrder].name == "right") {
                 wave[waveCheckOrder].arrow.animations.play('correct');
                 if (wave[waveCheckOrder].type == 3) {
@@ -1244,8 +1247,8 @@ function collectArrow() {
                 refreshWave();
                 wrongButtonSound.play();
             }
-        } else if (cursors.left.isDown) {
-            isHoldDown = true;
+        } else if (cursors.left.isDown && !isLeftHoldDown) {
+            isLeftHoldDown = true;
             if (wave[waveCheckOrder].name == "left") {
                 wave[waveCheckOrder].arrow.animations.play('correct');
                 if (wave[waveCheckOrder].type == 3) {
@@ -1264,8 +1267,14 @@ function collectArrow() {
                 wrongButtonSound.play();
             }
         }
-    } else if (cursors.down.isUp && cursors.up.isUp && cursors.left.isUp && cursors.right.isUp) {
-        isHoldDown = false;
+        if(cursors.up.isUp)
+            isUpHoldDown = false;
+        if(cursors.down.isUp)
+            isDownHoldDown = false;
+        if(cursors.right.isUp)
+            isRightHoldDown = false;
+        if(cursors.left.isUp)
+            isLeftHoldDown = false;
     }
 }
 
