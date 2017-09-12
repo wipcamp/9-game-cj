@@ -806,11 +806,11 @@ function updateGameplay() {
             buttonRestart.scale.setTo(0.5, 0.5);
             buttonRestart.anchor.set(0.5);
             buttonRestart.alpha = 0;
-            if(score >= 10000){
+            if(score >= 8000){
                 resultGrade.frame = 0;
-            }else if(score >= 8000){
-                resultGrade.frame = 1;
             }else if(score >= 5000){
+                resultGrade.frame = 1;
+            }else if(score >= 2500){
                 resultGrade.frame = 2;
             }else if(score >= 1000){
                 resultGrade.frame = 3;
@@ -1092,7 +1092,7 @@ function checkAccuracy() {
         if(difficulty < 8){
             difficulty++;
         }
-        score += 30*numOfArrow*(1+(perfectStack/10));
+        score += 30*(numOfArrow*2)*(1+(perfectStack/10));
         perfectSound.play();
         result = true;
         //////////animation wippo
@@ -1105,7 +1105,7 @@ function checkAccuracy() {
         }, this);
         countGreat++;
         bgSpeed = perfectSpeed*90/100;
-        score += 25*numOfArrow;
+        score += 25*(numOfArrow*2);
         perfectStack = 0;
         greatSound.play();
         result = true;
@@ -1118,8 +1118,8 @@ function checkAccuracy() {
         }, this);
         countCool++;
         bgSpeed = perfectSpeed*80/100;
-        score += 20*numOfArrow;
-        if(difficulty > 3){
+        score += 20*(numOfArrow*2);
+        if(difficulty > 1){
             difficulty--;
         }
         perfectStack = 0;
@@ -1134,8 +1134,10 @@ function checkAccuracy() {
         }, this);
         countBad++;
         bgSpeed = perfectSpeed*70/100;
-        score += 15*numOfArrow;
-        difficulty = 1;
+        score += 15*(numOfArrow*2);
+        if(difficulty > 3){
+            difficulty -= 3;
+        }
         perfectStack = 0;
         badSound.play();
         result = true;
