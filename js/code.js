@@ -296,7 +296,6 @@ function createGameplay() {
     spaceButton = this.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
     stopTimeButton = this.input.keyboard.addKey(Phaser.KeyCode.ENTER);
     cursors = this.input.keyboard.createCursorKeys();
-    //////////////////////////////////////////////////////////////
 
     ////////////////////////////////////////////////////////////
     checker = this.add.sprite(0, game.world.height * (4 / 5) + 120, 'laser');
@@ -308,15 +307,11 @@ function createGameplay() {
     checkerSpeed = 60;
     wave = [];
     buttonLine = [];
-    difficulty = 1;
-
-    //////////animation wippo
-    // wippo.animations.add('perfectRush',[0],1,true);
-    // wippo.animations.add('rush',[0],1,true);
-    // wippo.animations.add('death',[0],1,true);
-
+    difficulty = 1; 
     gamemode = "prepare";
-    // gamemode="changingState";
+    // gamemode = "feverTime";
+
+    
     specialGuageIsSpawned = false;
     isSpacebarPressed = false;
     spacebarBlock = this.add.sprite(game.world.width * (3 / 5) - 40, game.world.height * (3 / 5) - 20, 'spacebarBlock');
@@ -416,7 +411,6 @@ function createGameplay() {
     maxGuage = 100;
     perfectStack = 0;
     stopTimePoint = 3;
-    //gamemode = "feverTime";
 
     ////sound////
     BGMMenu.stop();
@@ -493,8 +487,6 @@ function createGameplay() {
     resultComponent.add(scoreDigit4);
     resultComponent.add(scoreDigit5);
     resultComponent.add(scoreDigit6);
-
-
 
     mute = game.add.button(game.world.width*(97/100), game.world.height*(96/100), 'mute', muteSounds, this);
     mute.scale.setTo(0.08, 0.08);
