@@ -17,7 +17,6 @@ function preloadMenu(){
     game.stage.backgroundColor = '#182d3b';
     game.load.image('backgroundMenu', 'images/BGmenu.png');
     game.load.spritesheet('startButton', 'images/startButton.png', 796/2, 92);
-    game.load.image('logoGame', 'images/logoGame.png');
     game.load.spritesheet('creditButton', 'images/creditButton.png',796/2,92);
     game.load.spritesheet('reportButton', 'images/reportButton.png', 796/2, 92);
     game.load.spritesheet('mute', 'images/mute.png', 450, 447);
@@ -209,14 +208,11 @@ var howtoplayButton;
 var creditButton;
 var scoreBoardButton;
 var reportButton;
-var logoGame;
 
 function createMenu() {
     game.stage.disableVisibilityChange = true;
 
     game.add.image(0, 0, 'backgroundMenu');
-    logoGame = game.add.image(game.world.width*(3.5/5), game.world.height*(1.4/5), 'logoGame');
-    logoGame.anchor.set(0.5);
     startButton = game.add.button(game.world.width*(3.5/5), game.world.height*(2.5/5), 'startButton', toHowToPlay, this, 0, 1, 0);
     startButton.anchor.set(0.5);
     startButton.scale.setTo(0.5);
@@ -238,8 +234,6 @@ function createHowToPlay() {
     game.stage.disableVisibilityChange = true;
 
     game.add.image(0, 0, 'backgroundMenu');
-    logoGame = game.add.image(game.world.width*(3.5/5), game.world.height*(1.4/5), 'logoGame');
-    logoGame.anchor.set(0.5);
     startButton = game.add.button(game.world.width*(3.5/5), game.world.height*(2.5/5), 'startButton', toGameplay, this, 0, 1, 0);
     startButton.anchor.set(0.5);
     startButton.scale.setTo(0.5);
@@ -477,7 +471,9 @@ function createGameplay() {
     badText = game.add.text(resultBG.x*1.25, coolText.y+coolText.height*2, "Bad     : ", { font: "18px Thaisans Neue for Web", fill: "#FFFFFF" });
     tipText = game.add.text(resultBG.x, resultBG.y*1.8, "Tips : You died. eiei", { font: "32px Thaisans Neue for Web", fill: "#FF0000" });
     tipText.anchor.set(0.5);
-    tipsMessage = ['Tips : 1','Tips : 2','Tips : 3','Tips : 4','Tips : 5','Tips : 6'];
+    tipsMessage = ['Tips : เค้าเป็นอัลปาก้านะ ไม่ใช่แกะ :3','Tips : พยายามเข้านะ!','Tips : ระวังนะ! ปุ่มสีม่วงอาจเปลี่ยนปุ่มด้านหลังได้'
+    ,'Tips : อย่าลืมนะ ถ้าเจอปุ่มสีแดงให้กดด้านตรงข้าม','Tips : อย่ากระพริบตาหล่ะ อัลปาก้าจะมาแทนปุ่มสีน้ำเงิน','Tips : อย่ายอมแพ้นะ ปุ่ม Enter ช่วยหยุดเวลาได้'
+    ,'ระวังปุ่มพังซะก่อนนะ :)','มีความพยายาม... แต่ก็ยังอ่อนหัด','แ บ ะ ะ ะ ะ ~','แ ม๊ ะ ะ ะ ~'];
     countPerfect = 0;
     countGreat = 0;
     countCool = 0;
@@ -809,14 +805,15 @@ function updateGameplay() {
             greatText.setText('Great   : '+countGreat);
             coolText.setText('Cool    : '+countCool);
             badText.setText('Bad     : '+countBad);
+            tipText.setText(tipsMessage[game.rnd.integerInRange(0, 9)]);
             buttonRestart.scale.setTo(0.5, 0.5);
             buttonRestart.anchor.set(0.5);
             buttonRestart.alpha = 0;
-            if(score >= 10000){
+            if(score >= 8000){
                 resultGrade.frame = 0;
-            }else if(score >= 8000){
-                resultGrade.frame = 1;
             }else if(score >= 5000){
+                resultGrade.frame = 1;
+            }else if(score >= 2500){
                 resultGrade.frame = 2;
             }else if(score >= 1000){
                 resultGrade.frame = 3;
@@ -1098,7 +1095,7 @@ function checkAccuracy() {
         if(difficulty < 8){
             difficulty++;
         }
-        score += 30*numOfArrow*(1+(perfectStack/10));
+        score += 30*(numOfArrow*2)*(1+(perfectStack/10));
         perfectSound.play();
         result = true;
         //////////animation wippo
@@ -1111,7 +1108,7 @@ function checkAccuracy() {
         }, this);
         countGreat++;
         bgSpeed = perfectSpeed*90/100;
-        score += 25*numOfArrow;
+        score += 25*(numOfArrow*2);
         perfectStack = 0;
         greatSound.play();
         result = true;
@@ -1124,8 +1121,8 @@ function checkAccuracy() {
         }, this);
         countCool++;
         bgSpeed = perfectSpeed*80/100;
-        score += 20*numOfArrow;
-        if(difficulty > 3){
+        score += 20*(numOfArrow*2);
+        if(difficulty > 1){
             difficulty--;
         }
         perfectStack = 0;
@@ -1140,8 +1137,10 @@ function checkAccuracy() {
         }, this);
         countBad++;
         bgSpeed = perfectSpeed*70/100;
-        score += 15*numOfArrow;
-        difficulty = 1;
+        score += 15*(numOfArrow*2);
+        if(difficulty > 3){
+            difficulty -= 3;
+        }
         perfectStack = 0;
         badSound.play();
         result = true;
