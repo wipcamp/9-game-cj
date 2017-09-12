@@ -421,7 +421,7 @@ function createGameplay() {
     isSpacebarDown = false;
     maxGuage = 100;
     perfectStack = 0;
-    stopTimePoint = 3;
+    stopTimePoint = 1;
 
     ////sound////
     BGMMenu.stop();
