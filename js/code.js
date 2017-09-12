@@ -38,7 +38,6 @@ function preloadCredit(){
 
 function preloadGameplay() {
     game.load.image('bullet', 'images/bullet.png');
-    game.load.image('ship', 'images/wip.png');
     game.load.image('enemy_ship', 'images/enemyship.png');
     game.load.image('background3', 'images/BgState3.png');
     game.load.image('background1', 'images/BgState1.png');
@@ -61,6 +60,7 @@ function preloadGameplay() {
     game.load.image('timestopBG','images/timestopBG.png');
     game.load.image('resultBG','images/resultBG.png');
 
+    game.load.spritesheet('ship', 'images/wip.png',3600/3,2010,3);
     game.load.spritesheet('up', 'images/up2.png', 45, 45, 8);
     game.load.spritesheet('down', 'images/down2.png', 45, 45, 8);
     game.load.spritesheet('right', 'images/right2.png', 45, 45, 8);
@@ -397,7 +397,11 @@ function createGameplay() {
     wippo = this.add.sprite(game.world.width / 2, game.world.height * (4 / 5) + 15, 'ship');
     game.physics.arcade.enable(wippo);
     wippo.anchor.set(0.5);
+    wippo.scale.setTo(0.1,0.1);
     wippo.checkWorldBounds = true;
+    wippo.animations.add('rush',[1,0],1,false);
+    wippo.animations.add('death',[2],1,false);
+    
     wippo.events.onOutOfBounds.add(killObj, this);
 
     floorFront = this.add.sprite(game.world.width/2, game.world.height * (4.7 / 5), 'shipAndCannon');
@@ -591,7 +595,7 @@ function updateGameplay() {
             checkerPic.y = checker.y;
             if (spacebarBlock.alive) {
                 if (spaceButton.isDown && game.time.now > spaceKeyDownTimer) {
-                    // wippo.animations.play("death");
+                    wippo.animations.play("death");
                     gameEnd();
                 }
             } else if (spaceButton.isDown && game.time.now > spaceKeyDownTimer) {
@@ -617,7 +621,7 @@ function updateGameplay() {
                         if (spacebarBlock.alive) {
                             spacebarBlock.kill();
                         } else {
-                            // wippo.animations.play("death");
+                            wippo.animations.play("death");
                             gameEnd();//====== comment ทิ้งเพื่อไม่ต้องกด spacebar
                             return;
                         }
@@ -944,7 +948,7 @@ function countdownTimer(timerName) {
             guageTimeCounter -= 0.1;
 
         if (guageTimeCounter <= 0) {
-            // wippo.animations.play("death");
+            wippo.animations.play("death");
             cancelCountdownTimer("feverTime");
             gameEnd();
         }
@@ -1157,7 +1161,7 @@ function checkAccuracy() {
         perfectSound.play();
         result = true;
         //////////animation wippo
-        // wippo.animations.play("perfectRush");
+        wippo.animations.play("rush");
     }
     else if (completeArrow && (checkOverlap(checker, greatR) || checkOverlap(checker, greatL))) {
         statusText = game.add.image(game.world.width * (1 / 2), game.world.height * (4 / 5), 'great');
@@ -1170,7 +1174,7 @@ function checkAccuracy() {
         perfectStack = 0;
         greatSound.play();
         result = true;
-        // wippo.animations.play("rush");
+        wippo.animations.play("rush");
     }
     else if (completeArrow && (checkOverlap(checker, coolR) || checkOverlap(checker, coolL))) {
         statusText = game.add.image(game.world.width * (1 / 2), game.world.height * (4 / 5), 'cool');
@@ -1186,7 +1190,7 @@ function checkAccuracy() {
         perfectStack = 0;
         coolSound.play();
         result = true;
-        // wippo.animations.play("rush");
+        wippo.animations.play("rush");
     }
     else if (completeArrow && (checkOverlap(checker, badR) || checkOverlap(checker, badL))) {
         statusText = game.add.image(game.world.width * (1 / 2), game.world.height * (4 / 5), 'bad');
@@ -1202,7 +1206,7 @@ function checkAccuracy() {
         perfectStack = 0;
         badSound.play();
         result = true;
-        // wippo.animations.play("rush");
+        wippo.animations.play("rush");
     }
     else {
         statusText = game.add.image(game.world.width * (1 / 2), game.world.height * (4 / 5), 'miss');
@@ -1212,7 +1216,7 @@ function checkAccuracy() {
         gameEnd();
         perfectStack = 0;
         result = false;
-        // wippo.animations.play("death");
+        wippo.animations.play("death");
     }
     statusText.anchor.set(0.5);
     statusText.scale.setTo(0.1, 0.1);
