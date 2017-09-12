@@ -1361,13 +1361,11 @@ function summonWave() {
                 buttonLine[i] = game.add.sprite(x, y, 'buttonLineBody');
             } else {
                 buttonLine[i] = game.add.sprite(x, y, 'buttonLineTail');
-                buttonLine[i].x += 45/2;
-                buttonLine[i].scale.setTo(0.951, 1);
+                buttonLine[i].x += 25;
             }
         } else {
             buttonLine[i] = game.add.sprite(x, y, 'buttonLineHead');
-            buttonLine[i].x -= 45/2;
-            buttonLine[i].scale.setTo(0.951, 1);
+            buttonLine[i].x -= 25;
         }
         buttonLine[i].anchor.set(0.5);
         buttonLine[i].scale.setTo(1, 1);
