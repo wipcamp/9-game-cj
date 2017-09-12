@@ -805,6 +805,7 @@ function updateGameplay() {
             greatText.setText('Great   : '+countGreat);
             coolText.setText('Cool    : '+countCool);
             badText.setText('Bad     : '+countBad);
+            tipText.setText(tipsMessage[game.rnd.integerInRange(0, 9)]);
             buttonRestart.scale.setTo(0.5, 0.5);
             buttonRestart.anchor.set(0.5);
             buttonRestart.alpha = 0;
