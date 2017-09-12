@@ -944,7 +944,7 @@ function stoptime() {
         cloudStartStage2.body.velocity.y = 0;
     }
     if(AttentionSpacebar.alive){
-        AttentionSpacebar.stop();
+        AttentionSpacebar.animations.stop();
     }
     sharkGroup.setAll('body.velocity.x', 0, false, false);
     sharkGroup.setAll('body.velocity.y', 0, false, false);
