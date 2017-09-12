@@ -335,6 +335,12 @@ function createGameplay() {
     guageTimerDigit1.alpha = 0;
     guageTimerDecimal.alpha = 0;
     guageTimerDecPoint.alpha = 0;
+    AttentionSpacebar = game.add.sprite(specialGuage.x , game.world.height * (8 / 10) , 'AttentionSpacebar');
+    AttentionSpacebar.anchor.set(0.5);
+    AttentionSpacebar.scale.setTo(0.35);
+    AttentionSpacebar.animations.add('active',[0,1],15,true);
+    AttentionSpacebar.kill();
+    AttentionSpacebar.bringToTop();
 
     stopTimeGroup = game.add.group();
     stopTimeGroup.enableBody = true;
@@ -342,11 +348,7 @@ function createGameplay() {
     timestopBG = game.add.image(0 , 0 , 'timestopBG');
     timestopBG.alpha = 0;
 
-    /*AttentionSpacebar = game.add.sprite(game.world.width * (1 / 10) , game.world.height * (9 / 10) , 'AttentionSpacebar');
-    AttentionSpacebar.anchor.set(0.5);
-    AttentionSpacebar.scale.setTo(0.35);
-    AttentionSpacebar.animations.add('active',[0,1],15,true);
-    AttentionSpacebar.play('active');*/
+
 
     //// material ///////////////////////////////////////////////////////////
     sharkM = null;
@@ -593,6 +595,8 @@ function updateGameplay() {
             specialGuageSeal.revive();
             specialGuageIsSpawned = true;
             checker.alpha = 0;
+            AttentionSpacebar.revive();
+            AttentionSpacebar.play('active');
         }
         if (!isSpacebarDown) {
             if (spaceButton.isDown) {
@@ -939,6 +943,9 @@ function stoptime() {
     if(cloudStartStage2!=null){
         cloudStartStage2.body.velocity.y = 0;
     }
+    if(AttentionSpacebar.alive){
+        AttentionSpacebar.stop();
+    }
     sharkGroup.setAll('body.velocity.x', 0, false, false);
     sharkGroup.setAll('body.velocity.y', 0, false, false);
     sharkGroup.setAll('body.gravity.y', 0, false, false);
@@ -979,6 +986,9 @@ function cancelCountdownTimer(timerName) {
         }
         if(cloudStartStage2!=null && cloudStartStage2.y>500){
             cloudStartStage2.body.velocity.y = 10;
+        }
+        if(AttentionSpacebar.alive){
+            AttentionSpacebar.play('active');
         }
         sharkGroup.setAll('body.gravity.y', 380, false, false);
         sharkGroup.setAll('animations.paused', false, false);
