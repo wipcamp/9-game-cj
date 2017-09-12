@@ -297,59 +297,6 @@ function createGameplay() {
     stopTimeButton = this.input.keyboard.addKey(Phaser.KeyCode.ENTER);
     cursors = this.input.keyboard.createCursorKeys();
 
-    ////////////////////////////////////////////////////////////
-    checker = this.add.sprite(0, game.world.height * (4 / 5) + 120, 'laser');
-    game.physics.arcade.enable(checker);
-    checker.anchor.set(0.5);
-    checker.scale.setTo(0.05, 0.3);
-    checker.body.maxVelocity.set(1500);
-    checker.body.collideWorldBounds = false;
-    checkerSpeed = 60;
-    wave = [];
-    buttonLine = [];
-    difficulty = 1; 
-    gamemode = "prepare";
-    // gamemode = "feverTime";
-
-    
-    specialGuageIsSpawned = false;
-    isSpacebarPressed = false;
-    spacebarBlock = this.add.sprite(game.world.width * (3 / 5) - 40, game.world.height * (3 / 5) - 20, 'spacebarBlock');
-    spacebarBlock.scale.setTo(0.7, 0.7);
-    spacebarBlock.kill();
-    spacebarBlockSpawnedLastTime = true;
-    specialGuage = this.add.sprite(game.world.width * (1 / 5), game.world.height * (0.9 / 5), 'guage');
-    specialGuage.anchor.set(0.5,0);
-    specialGuageSeal = this.add.sprite(game.world.width * (1 / 5)-10 ,specialGuage.y+specialGuage.height*0.72, 'guageSeal');
-    specialGuageSeal.anchor.set(0.5,0.5);
-    specialGuageSeal.scale.setTo(1,1);
-    specialGuage.kill();
-    specialGuageSeal.kill();
-    guageTimerDigit2 = game.add.sprite(game.world.width * (1 / 10) ,game.world.height*(8/10), 'numberText');
-    guageTimerDigit1 = game.add.sprite(guageTimerDigit2.x + guageTimerDigit2.width, guageTimerDigit2.y, 'numberText');
-    guageTimerDecPoint = game.add.sprite(
-        (guageTimerDigit2.x + guageTimerDigit2.width + guageTimerDigit1.x + guageTimerDigit1.width)/2,  guageTimerDigit2.y, 'numberText');
-    guageTimerDecimal = game.add.sprite(guageTimerDigit1.x + guageTimerDigit1.width,  guageTimerDigit2.y, 'numberText');
-    guageTimerDecPoint.frame = 10;
-    guageTimerDigit2.alpha = 0;
-    guageTimerDigit1.alpha = 0;
-    guageTimerDecimal.alpha = 0;
-    guageTimerDecPoint.alpha = 0;
-    AttentionSpacebar = game.add.sprite(specialGuage.x , game.world.height * (8 / 10) , 'AttentionSpacebar');
-    AttentionSpacebar.anchor.set(0.5);
-    AttentionSpacebar.scale.setTo(0.35);
-    AttentionSpacebar.animations.add('active',[0,1],15,true);
-    AttentionSpacebar.kill();
-    AttentionSpacebar.bringToTop();
-
-    stopTimeGroup = game.add.group();
-    stopTimeGroup.enableBody = true;
-    stopTimeGroup.physicsBodyType = Phaser.Physics.ARCADE;
-    timestopBG = game.add.image(0 , 0 , 'timestopBG');
-    timestopBG.alpha = 0;
-
-
-
     //// material ///////////////////////////////////////////////////////////
     sharkM = null;
     cloudStartStage2 = null;
@@ -415,11 +362,66 @@ function createGameplay() {
     floorFront.animations.add('front',[1],1,false);
     floorFront.play('front');
 
+    ////////////////////////////////////////////////////////////
+    checker = this.add.sprite(0, game.world.height * (4 / 5) + 120, 'laser');
+    game.physics.arcade.enable(checker);
+    checker.anchor.set(0.5);
+    checker.scale.setTo(0.05, 0.3);
+    checker.body.maxVelocity.set(1500);
+    checker.body.collideWorldBounds = false;
+    checkerSpeed = 60;
+    wave = [];
+    buttonLine = [];
+    difficulty = 1; 
+    gamemode = "prepare";
+    // gamemode = "feverTime";
+
+    
+    specialGuageIsSpawned = false;
+    isSpacebarPressed = false;
+    spacebarBlock = this.add.sprite(game.world.width * (3 / 5) - 40, game.world.height * (3 / 5) - 20, 'spacebarBlock');
+    spacebarBlock.scale.setTo(0.7, 0.7);
+    spacebarBlock.kill();
+    spacebarBlockSpawnedLastTime = true;
+    specialGuage = this.add.sprite(game.world.width * (1 / 5), game.world.height * (0.9 / 5), 'guage');
+    specialGuage.anchor.set(0.5,0);
+    specialGuageSeal = this.add.sprite(game.world.width * (1 / 5)-10 ,specialGuage.y+specialGuage.height*0.72, 'guageSeal');
+    specialGuageSeal.anchor.set(0.5,0.5);
+    specialGuageSeal.scale.setTo(1,1);
+    specialGuage.kill();
+    specialGuageSeal.kill();
+    guageTimerDigit2 = game.add.sprite(game.world.width * (1 / 10) ,game.world.height*(8/10), 'numberText');
+    guageTimerDigit1 = game.add.sprite(guageTimerDigit2.x + guageTimerDigit2.width, guageTimerDigit2.y, 'numberText');
+    guageTimerDecPoint = game.add.sprite(
+        (guageTimerDigit2.x + guageTimerDigit2.width + guageTimerDigit1.x + guageTimerDigit1.width)/2,  guageTimerDigit2.y, 'numberText');
+    guageTimerDecimal = game.add.sprite(guageTimerDigit1.x + guageTimerDigit1.width,  guageTimerDigit2.y, 'numberText');
+    guageTimerDecPoint.frame = 10;
+    guageTimerDigit2.alpha = 0;
+    guageTimerDigit1.alpha = 0;
+    guageTimerDecimal.alpha = 0;
+    guageTimerDecPoint.alpha = 0;
+    AttentionSpacebar = game.add.sprite(specialGuage.x , game.world.height * (8 / 10) , 'AttentionSpacebar');
+    AttentionSpacebar.anchor.set(0.5);
+    AttentionSpacebar.scale.setTo(0.35);
+    AttentionSpacebar.animations.add('active',[0,1],15,true);
+    AttentionSpacebar.kill();
+    AttentionSpacebar.bringToTop();
+
+    stopTimeGroup = game.add.group();
+    stopTimeGroup.enableBody = true;
+    stopTimeGroup.physicsBodyType = Phaser.Physics.ARCADE;
+    timestopBG = game.add.image(0 , 0 , 'timestopBG');
+    timestopBG.alpha = 0;
+
+
+
+    
+
     game.time.events.add(Phaser.Timer.SECOND * 2, wippoLaunch, this);
     isSpacebarDown = false;
     maxGuage = 100;
     perfectStack = 0;
-    stopTimePoint = 3;
+    stopTimePoint = 1;
 
     ////sound////
     BGMMenu.stop();
@@ -1083,7 +1085,7 @@ function checkAccuracy() {
         statusText = game.add.image(game.world.width * (1 / 2), game.world.height * (4 / 5), 'perfect');
         perfectStack++;
         countPerfect++;
-        if (perfectStack >= 4 && stopTimePoint < 3) {
+        if (perfectStack%3==0 && perfectStack!=0 && stopTimePoint < 3) {
             stopTimePoint++;
             perfectStack = 0;
             stopTimePointText.frame = stopTimePoint;
@@ -1096,7 +1098,7 @@ function checkAccuracy() {
         if(difficulty < 8){
             difficulty++;
         }
-        score += 30*numOfArrow;
+        score += 30*numOfArrow*(1+(perfectStack/10));
         perfectSound.play();
         result = true;
         //////////animation wippo
