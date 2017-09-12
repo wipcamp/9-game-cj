@@ -17,7 +17,6 @@ function preloadMenu(){
     game.stage.backgroundColor = '#182d3b';
     game.load.image('backgroundMenu', 'images/BGmenu.png');
     game.load.spritesheet('startButton', 'images/startButton.png', 796/2, 92);
-    game.load.image('logoGame', 'images/logoGame.png');
     game.load.spritesheet('creditButton', 'images/creditButton.png',796/2,92);
     game.load.spritesheet('reportButton', 'images/reportButton.png', 796/2, 92);
     game.load.spritesheet('mute', 'images/mute.png', 450, 447);
@@ -209,14 +208,11 @@ var howtoplayButton;
 var creditButton;
 var scoreBoardButton;
 var reportButton;
-var logoGame;
 
 function createMenu() {
     game.stage.disableVisibilityChange = true;
 
     game.add.image(0, 0, 'backgroundMenu');
-    logoGame = game.add.image(game.world.width*(3.5/5), game.world.height*(1.4/5), 'logoGame');
-    logoGame.anchor.set(0.5);
     startButton = game.add.button(game.world.width*(3.5/5), game.world.height*(2.5/5), 'startButton', toHowToPlay, this, 0, 1, 0);
     startButton.anchor.set(0.5);
     startButton.scale.setTo(0.5);
@@ -238,8 +234,6 @@ function createHowToPlay() {
     game.stage.disableVisibilityChange = true;
 
     game.add.image(0, 0, 'backgroundMenu');
-    logoGame = game.add.image(game.world.width*(3.5/5), game.world.height*(1.4/5), 'logoGame');
-    logoGame.anchor.set(0.5);
     startButton = game.add.button(game.world.width*(3.5/5), game.world.height*(2.5/5), 'startButton', toGameplay, this, 0, 1, 0);
     startButton.anchor.set(0.5);
     startButton.scale.setTo(0.5);
