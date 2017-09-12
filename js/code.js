@@ -638,7 +638,7 @@ function updateGameplay() {
         } else {
             if (maxGuage < 0) {
                 maxGuage = -1;
-                specialGuageSeal.scale.setTo(1, maxGuage / 100);
+                // specialGuageSeal.scale.setTo(1, maxGuage / 100);
             }
         }
 
@@ -970,10 +970,10 @@ function cancelCountdownTimer(timerName) {
             guageTimerDecPoint.alpha = 0;
         }
         if (specialGuage != null) {
-            specialGuage.destroy();
+            specialGuage.kill();
         }
         if (specialGuageSeal != null) {
-            specialGuageSeal.destroy();
+            specialGuageSeal.kill();
         }
     } else if (timerName == "timeStopped") {
 
