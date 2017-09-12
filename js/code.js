@@ -318,7 +318,14 @@ function createGameplay() {
     spacebarBlock.scale.setTo(0.7, 0.7);
     spacebarBlock.kill();
     spacebarBlockSpawnedLastTime = true;
-    guageTimerDigit2 = game.add.sprite(game.world.width * (1 / 5) - 40 , game.world.height * (1 / 5) , 'numberText');
+    specialGuage = this.add.sprite(game.world.width * (1 / 5), game.world.height * (0.9 / 5), 'guage');
+    specialGuage.anchor.set(0.5,0);
+    specialGuageSeal = this.add.sprite(game.world.width * (1 / 5)-10 ,specialGuage.y+specialGuage.height*0.72, 'guageSeal');
+    specialGuageSeal.anchor.set(0.5,0.5);
+    specialGuageSeal.scale.setTo(1,1);
+    specialGuage.kill();
+    specialGuageSeal.kill();
+    guageTimerDigit2 = game.add.sprite(game.world.width * (1 / 10) ,game.world.height*(8/10), 'numberText');
     guageTimerDigit1 = game.add.sprite(guageTimerDigit2.x + guageTimerDigit2.width, guageTimerDigit2.y, 'numberText');
     guageTimerDecPoint = game.add.sprite(
         (guageTimerDigit2.x + guageTimerDigit2.width + guageTimerDigit1.x + guageTimerDigit1.width)/2,  guageTimerDigit2.y, 'numberText');
@@ -582,11 +589,8 @@ function updateGameplay() {
             materialGenerator();
         }
         if (!specialGuageIsSpawned) {
-            specialGuage = this.add.sprite(game.world.width * (1 / 5), game.world.height * (1.5 / 5), 'guage');
-            specialGuage.anchor.set(0.5,0);
-            specialGuageSeal = this.add.sprite(game.world.width * (1 / 5)-10 ,specialGuage.y+specialGuage.height*0.72, 'guageSeal');
-            specialGuageSeal.anchor.set(0.5,0.5);
-            specialGuageSeal.scale.setTo(1,1);
+            specialGuage.revive();
+            specialGuageSeal.revive();
             specialGuageIsSpawned = true;
             checker.alpha = 0;
         }
@@ -606,13 +610,12 @@ function updateGameplay() {
                 specialGuageSeal.y+=0.8;
             }
 
-            if (specialGuageSeal.y < specialGuage.y*1.2 && specialGuage != null) {
+            if (specialGuageSeal.y < specialGuage.y*1.3 && specialGuage != null) {
                 score += 500;
-                specialGuage.destroy();
-                specialGuageSeal.destroy();
-                specialGuage=null;
-                specialGuageSeal=null;
+                specialGuage.kill();
+                specialGuageSeal.kill();
                 gamemode = "changingState";
+                AttentionSpacebar.kill();
                 game.time.events.remove(guageAliveTimer);
                 game.time.events.add(Phaser.Timer.SECOND * 1, function () {
                     cancelCountdownTimer("feverTime");
