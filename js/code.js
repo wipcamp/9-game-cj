@@ -3,12 +3,10 @@ var main = { preload: preloadGameplay, create: createGameplay, update: updateGam
 var menu = { preload: preloadMenu, create: createMenu};
 var howToPlay = { preload: preloadHowToPlay, create: createHowToPlay};
 var credit = { preload: preloadCredit, create: createCredit};
-var report = { preload: preloadReport, create: createReport};
 game.state.add('menu', menu);
 game.state.add('main', main);
 game.state.add('howtoplay', howToPlay);
 game.state.add('credit', credit);
-game.state.add('report', report);
 game.state.start('menu');
 function preloadMenu(){
     game.load.onLoadStart.add(loadStart, this);
@@ -33,12 +31,11 @@ function preloadHowToPlay(){
     game.load.spritesheet('mute', 'images/mute.png', 450, 447);
     game.load.audio('startSound','sound/Start.mp3');
 }
+
 function preloadCredit(){
     game.load.spritesheet('mute', 'images/mute.png', 450, 447);
 }
-function preloadReport(){
-    game.load.spritesheet('mute', 'images/mute.png', 450, 447);
-}
+
 function preloadGameplay() {
     game.load.image('bullet', 'images/bullet.png');
     game.load.image('ship', 'images/wip.png');
@@ -222,9 +219,6 @@ function createMenu() {
     creditButton = game.add.button(game.world.width*(3.5/5), game.world.height*(4/5), 'creditButton', toCredit, this, 0, 1, 0);
     creditButton.anchor.set(0.5);
     creditButton.scale.setTo(0.5);
-    reportButton = game.add.button(game.world.width*(3.5/5), game.world.height*(4.5/5), 'reportButton', toReport, this, 0, 1, 0);
-    reportButton.anchor.set(0.5);
-    reportButton.scale.setTo(0.5);
     BGMMenu = game.add.audio('BGMMenu');
     BGMMenu.volume = 0.4;
     BGMMenu.loopFull();
@@ -318,11 +312,6 @@ function createCredit(){
     mute.anchor.set(0.5);
 }
 
-function createReport(){
-    mute = game.add.button(game.world.width*(97/100), game.world.height*(96/100), 'mute', muteSounds, this);
-    mute.scale.setTo(0.08, 0.08);
-    mute.anchor.set(0.5);
-}
 function loadStart() {
     loadingText = game.add.text(game.world.width/2, game.world.height/2, 'Loading 0%', { fill: '#ffffff' });
     loadingText.anchor.set(0.5);
@@ -1639,9 +1628,7 @@ function toHowToPlay() {
 function toCredit() {
     game.state.start('credit');
 }
-function toReport() {
-    game.state.start('report');
-}
+
 
 /*function setScore() {
     var highscore = 0;
