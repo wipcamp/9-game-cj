@@ -471,7 +471,9 @@ function createGameplay() {
     badText = game.add.text(resultBG.x*1.25, coolText.y+coolText.height*2, "Bad     : ", { font: "18px Thaisans Neue for Web", fill: "#FFFFFF" });
     tipText = game.add.text(resultBG.x, resultBG.y*1.8, "Tips : You died. eiei", { font: "32px Thaisans Neue for Web", fill: "#FF0000" });
     tipText.anchor.set(0.5);
-    tipsMessage = ['Tips : 1','Tips : 2','Tips : 3','Tips : 4','Tips : 5','Tips : 6'];
+    tipsMessage = ['Tips : เค้าเป็นอัลปาก้านะ ไม่ใช่แกะ :3','Tips : พยายามเข้านะ!','Tips : ระวังนะ! ปุ่มสีม่วงอาจเปลี่ยนปุ่มด้านหลังได้'
+    ,'Tips : อย่าลืมนะ ถ้าเจอปุ่มสีแดงให้กดด้านตรงข้าม','Tips : อย่ากระพริบตาหล่ะ อัลปาก้าจะมาแทนปุ่มสีน้ำเงิน','Tips : อย่ายอมแพ้นะ ปุ่ม Enter ช่วยหยุดเวลาได้'
+    ,'ระวังปุ่มพังซะก่อนนะ :)','มีความพยายาม... แต่ก็ยังอ่อนหัด','แ บ ะ ะ ะ ะ ~','แ ม๊ ะ ะ ะ ~'];
     countPerfect = 0;
     countGreat = 0;
     countCool = 0;
