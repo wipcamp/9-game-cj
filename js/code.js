@@ -127,7 +127,7 @@ var floorBack;
 var bg;
 var bgSpeed;
 var perfectSpeed = 0.5;
-var score;
+var pic;
 var scoreShow;
 var scoreDigit1;
 var scoreDigit2;
@@ -577,7 +577,7 @@ function createGameplay() {
     BGMStage1.play();
     //wippo.events.onOutOfBounds.add(gameEnd(), this);
 
-    scoreShow = score = 0;
+    scoreShow = pic = 0;
     scoreDigit6 = game.add.sprite(0, 0, 'numberText');
     scoreDigit5 = game.add.sprite(scoreDigit6.x + scoreDigit6.width, 0, 'numberText');
     scoreDigit4 = game.add.sprite(scoreDigit5.x + scoreDigit5.width, 0, 'numberText');
@@ -738,7 +738,7 @@ function updateGameplay() {
             }
 
             if (specialGuageSeal.y < specialGuage.y*1.3 && specialGuage != null) {
-                score += 500;
+                pic += 500;
                 specialGuage.kill();
                 specialGuageSeal.kill();
                 gamemode = "changingState";
@@ -849,7 +849,7 @@ function updateGameplay() {
             isfirstOver = false;
             var digitLength = 6;
             for(;digitLength>0;digitLength--){
-                if(Math.floor(score/(Math.pow(10,digitLength-1)))!=0){
+                if(Math.floor(pic/(Math.pow(10,digitLength-1)))!=0){
                     break;
                 }
             }
@@ -903,7 +903,7 @@ function updateGameplay() {
                 scoreDigit3.kill();
                 scoreDigit2.kill();
                 scoreDigit1.reset(resultBG.x - scoreDigit1.width/2 - resultBG.width/6-9,resultBG.y/2.8);
-                if(score==0){
+                if(pic==0){
                   scoreDigit1.frame = 0;
                 }
                 break;
@@ -937,15 +937,15 @@ function updateGameplay() {
             buttonRestart.scale.setTo(0.40);
             buttonRestart.anchor.set(0.5);
             buttonRestart.alpha = 0;
-            if(score >= 10000){
+            if(pic >= 10000){
                 resultGrade.frame = 5;
-            }else if(score >= 7000){
+            }else if(pic >= 7000){
                 resultGrade.frame = 4;
-            }else if(score >= 4500){
+            }else if(pic >= 4500){
                 resultGrade.frame = 3;
-            }else if(score >= 2000){
+            }else if(pic >= 2000){
                 resultGrade.frame = 2;
-            }else if(score >= 500){
+            }else if(pic >= 500){
                 resultGrade.frame = 1;
             }else{
                 resultGrade.frame = 0;
@@ -1210,7 +1210,7 @@ function checkAccuracy() {
         if(difficulty < 8){
             difficulty++;
         }
-        score += 25*(numOfArrow*1.5)*(1+(perfectStack/10));
+        pic += 25*(numOfArrow*1.5)*(1+(perfectStack/10));
         perfectSound.play();
         result = true;
         //////////animation wippo
@@ -1223,7 +1223,7 @@ function checkAccuracy() {
         }, this);
         countGreat++;
         bgSpeed = perfectSpeed*90/100;
-        score += 20*(numOfArrow*1.5);
+        pic += 20*(numOfArrow*1.5);
         perfectStack = 0;
         greatSound.play();
         result = true;
@@ -1236,7 +1236,7 @@ function checkAccuracy() {
         }, this);
         countCool++;
         bgSpeed = perfectSpeed*80/100;
-        score += 15*(numOfArrow*1.5);
+        pic += 15*(numOfArrow*1.5);
         if(difficulty > 1){
             difficulty--;
         }
@@ -1252,7 +1252,7 @@ function checkAccuracy() {
         }, this);
         countBad++;
         bgSpeed = perfectSpeed*70/100;
-        score += 10*(numOfArrow*1.5);
+        pic += 10*(numOfArrow*1.5);
         if(difficulty > 3){
             difficulty -= 3;
         }
@@ -1278,22 +1278,22 @@ function checkAccuracy() {
 }
 
 function updateScore(){
-    if(score>scoreShow){
-        if(score>scoreShow+2){
+    if(pic>scoreShow){
+        if(pic>scoreShow+2){
             scoreShow+=2;
         }else{
             scoreShow++;
         }
         scoreDigit1.frame = scoreShow%10;
-        if(score>9){
+        if(pic>9){
             scoreDigit2.frame = Math.floor(scoreShow / 10)%10;
-            if(score>99){
+            if(pic>99){
                 scoreDigit3.frame = Math.floor(scoreShow / 100)%10;
-                if(score>999){
+                if(pic>999){
                     scoreDigit4.frame = Math.floor(scoreShow / 1000)%10;
-                    if(score>9999){
+                    if(pic>9999){
                         scoreDigit5.frame = Math.floor(scoreShow / 10000)%10;
-                        if(score>99999){
+                        if(pic>99999){
                             scoreDigit6.frame = Math.floor(scoreShow / 100000)%10;
                         }
                     }
