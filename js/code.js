@@ -226,7 +226,7 @@ function createMenu() {
         BGMMenu.volume = 0.4;
         BGMMenu.loopFull();
     }
-    mute = game.add.button(game.world.width*(97/100), game.world.height*(96/100), 'mute', muteSounds, this);
+    mute = game.add.button(game.world.width*(97/100), game.world.height*(4/100), 'mute', muteSounds, this);
     mute.scale.setTo(0.08, 0.08);
     mute.anchor.set(0.5);
     if (isSound)
@@ -241,9 +241,10 @@ function createHowToPlay() {
     createPage1();
     startBtnSound = game.add.audio('startSound');
     startBtnSound.volume = 0.6;
-    mute = game.add.button(game.world.width*(97/100), game.world.height*(96/100), 'mute', muteSounds, this);
+    mute = game.add.button(game.world.width*(97/100), game.world.height*(4/100), 'mute', muteSounds, this);
     mute.scale.setTo(0.08, 0.08);
     mute.anchor.set(0.5);
+    mute.bringToTop();
     if (isSound)
         mute.frame = 0;
     else
@@ -253,7 +254,7 @@ function createHowToPlay() {
 function createPage1(){
     state = game.add.image(0, 0, 'how1');
     state.scale.setTo(0.24);
-    textNext = game.add.text(game.world.width*(0.85), game.world.height*(0.98), 'Next', { font: '20px'});
+    textNext = game.add.text(game.world.width*(0.95), game.world.height*(0.98), 'Next', { font: '25px'});
     textNext.anchor.set(0.5);
     textNext.inputEnabled = true;
     textNext.input.enableDrag();
@@ -261,13 +262,22 @@ function createPage1(){
         state.destroy();
         textNext.destroy();
         createPage2();
+        mute.bringToTop();
+    }, this);
+    textNext.events.onInputOver.add(function(){
+        textNext.addColor('#FDC66D',0);
+        textNext.fontSize = 30;
+    }, this);
+    textNext.events.onInputOut.add(function(){
+        textNext.addColor('#000',0);
+        textNext.fontSize = 25;
     }, this);
 }
 
 function createPage2(){
     state = game.add.image(0, 0, 'how2');
     state.scale.setTo(0.24);
-    textPre = game.add.text(game.world.width*(0.15), game.world.height*(0.98), 'Pre', { font: '20px'});
+    textPre = game.add.text(game.world.width*(0.05), game.world.height*(0.98), 'Pre', { font: '25px'});
     textPre.inputEnabled = true;
     textPre.anchor.set(0.5);
     textPre.input.enableDrag();
@@ -276,8 +286,18 @@ function createPage2(){
         textPre.destroy();
         textNext.destroy();
         createPage1();
+        mute.bringToTop();
     }, this);
-    textNext = game.add.text(game.world.width*(0.85), game.world.height*(0.98), 'Next', { font: '20px'});
+    textPre.events.onInputOver.add(function(){
+        textPre.addColor('#FDC66D',0);
+        textPre.fontSize = 30;
+    }, this);
+    textPre.events.onInputOut.add(function(){
+        textPre.addColor('#000',0);
+        textPre.fontSize = 25;
+    }, this);
+
+    textNext = game.add.text(game.world.width*(0.95), game.world.height*(0.98), 'Next', { font: '25px'});
     textNext.inputEnabled = true;
     textNext.anchor.set(0.5);
     textNext.input.enableDrag();
@@ -285,13 +305,22 @@ function createPage2(){
         state.destroy();
         textNext.destroy();
         createPage3();
+        mute.bringToTop();
+    }, this);
+    textNext.events.onInputOver.add(function(){
+        textNext.addColor('#FDC66D',0);
+        textNext.fontSize = 30;
+    }, this);
+    textNext.events.onInputOut.add(function(){
+        textNext.addColor('#000',0);
+        textNext.fontSize = 25;
     }, this);
 }
 
 function createPage3(){
     state = game.add.image(0, 0, 'how3');
     state.scale.setTo(0.24);
-    textPre = game.add.text(game.world.width*(0.15), game.world.height*(0.98), 'Pre', { font: '20px'});
+    textPre = game.add.text(game.world.width*(0.05), game.world.height*(0.98), 'Pre', { font: '25px'});
     textPre.anchor.set(0.5);
     textPre.inputEnabled = true;
     textPre.input.enableDrag();
@@ -300,8 +329,17 @@ function createPage3(){
         textPre.destroy();
         textNext.destroy();
         createPage2();
+        mute.bringToTop();
     }, this);
-    textNext = game.add.text(game.world.width*(0.85), game.world.height*(0.98), 'Start!!', { font: '20px'});
+    textPre.events.onInputOver.add(function(){
+        textPre.addColor('#FDC66D',0);
+        textPre.fontSize = 30;
+    }, this);
+    textPre.events.onInputOut.add(function(){
+        textPre.addColor('#000',0);
+        textPre.fontSize = 25;
+    }, this);
+    textNext = game.add.text(game.world.width*(0.95), game.world.height*(0.98), 'Start!!', { font: '25px'});
     textNext.inputEnabled = true;
     textNext.anchor.set(0.5);
     textNext.input.enableDrag();
@@ -309,23 +347,38 @@ function createPage3(){
         state.destroy();
         textNext.destroy();
         toGameplay();
+        mute.bringToTop();
+    }, this);
+    textNext.events.onInputOver.add(function(){
+        textNext.addColor('#FDC66D',0);
+        textNext.fontSize = 30;
+    }, this);
+    textNext.events.onInputOut.add(function(){
+        textNext.addColor('#000',0);
+        textNext.fontSize = 25;
     }, this);
 }
 function createCredit(){
     game.add.image(0, 0, 'backgroundMenu');
     resultBG = game.add.sprite(game.world.width/2,game.world.height/2.1,'resultBG');
     resultBG.anchor.set(0.5);
-    resultBG.scale.setTo(1.3);
-    game.add.text(game.world.width*0.5, game.world.height*0.2, 'Credit\n'+
-    "", {font: '20px super', fill: '#EEE'});
+    resultBG.scale.setTo(1);
+    game.add.text(game.world.width*0.2, game.world.height*0.2, 'Credit\n', {font: '30px super', fill: '#EEE'});
+    game.add.text(game.world.width*0.25, game.world.height*0.2+40, "Sounds\n", {font: '25px super', fill: '#EEE'});
+    game.add.text(game.world.width*0.30, game.world.height*0.2+75, 'Audio Library - No Copyright Music\n'+
+    'WoWMusicGuru\n'+
+    'Theapplegeek\n', {font: '20px super', fill: '#EEE'});
+    game.add.text(game.world.width*0.25, game.world.height*0.2+165,'Images\n', {font: '25px super', fill: '#EEE'});
+    game.add.text(game.world.width*0.30, game.world.height*0.2+195,'www.freepik.com', {font: '20px super', fill: '#EEE'});
     menuButton = game.add.button(game.world.width*0.15, game.world.height*0.95,'menuButton', function(){
         game.state.start('menu');
     }, this, 0, 1, 0);
     menuButton.scale.setTo(0.5);
     menuButton.anchor.set(0.5);
-    mute = game.add.button(game.world.width*(97/100), game.world.height*(96/100), 'mute', muteSounds, this);
+    mute = game.add.button(game.world.width*(97/100), game.world.height*(4/100), 'mute', muteSounds, this);
     mute.scale.setTo(0.08, 0.08);
     mute.anchor.set(0.5);
+    mute.bringToTop();
     if (isSound)
         mute.frame = 0;
     else
@@ -573,7 +626,7 @@ function createGameplay() {
     resultComponent.add(scoreDigit5);
     resultComponent.add(scoreDigit6);
 
-    mute = game.add.button(game.world.width*(97/100), game.world.height*(96/100), 'mute', muteSounds, this);
+    mute = game.add.button(game.world.width*(97/100), game.world.height*(4/100), 'mute', muteSounds, this);
     mute.scale.setTo(0.08, 0.08);
     mute.anchor.set(0.5);
     if (isSound)
