@@ -254,7 +254,7 @@ function createHowToPlay() {
 function createPage1(){
     state = game.add.image(0, 0, 'how1');
     state.scale.setTo(0.24);
-    textNext = game.add.text(game.world.width*(0.95), game.world.height*(0.98), 'Next', { font: '25px'});
+    textNext = game.add.text(game.world.width*(0.91), game.world.height*(0.918), 'Next', { font: '25px'});
     textNext.anchor.set(0.5);
     textNext.inputEnabled = true;
     textNext.input.enableDrag();
@@ -277,7 +277,7 @@ function createPage1(){
 function createPage2(){
     state = game.add.image(0, 0, 'how2');
     state.scale.setTo(0.24);
-    textPre = game.add.text(game.world.width*(0.05), game.world.height*(0.98), 'Pre', { font: '25px'});
+    textPre = game.add.text(game.world.width*(0.09), game.world.height*(0.918), 'Pre', { font: '25px'});
     textPre.inputEnabled = true;
     textPre.anchor.set(0.5);
     textPre.input.enableDrag();
@@ -297,7 +297,7 @@ function createPage2(){
         textPre.fontSize = 25;
     }, this);
 
-    textNext = game.add.text(game.world.width*(0.95), game.world.height*(0.98), 'Next', { font: '25px'});
+    textNext = game.add.text(game.world.width*(0.91), game.world.height*(0.918), 'Next', { font: '25px'});
     textNext.inputEnabled = true;
     textNext.anchor.set(0.5);
     textNext.input.enableDrag();
@@ -320,7 +320,7 @@ function createPage2(){
 function createPage3(){
     state = game.add.image(0, 0, 'how3');
     state.scale.setTo(0.24);
-    textPre = game.add.text(game.world.width*(0.05), game.world.height*(0.98), 'Pre', { font: '25px'});
+    textPre = game.add.text(game.world.width*(0.09), game.world.height*(0.918), 'Pre', { font: '25px'});
     textPre.anchor.set(0.5);
     textPre.inputEnabled = true;
     textPre.input.enableDrag();
@@ -339,7 +339,7 @@ function createPage3(){
         textPre.addColor('#000',0);
         textPre.fontSize = 25;
     }, this);
-    textNext = game.add.text(game.world.width*(0.95), game.world.height*(0.98), 'Start!!', { font: '25px'});
+    textNext = game.add.text(game.world.width*(0.91), game.world.height*(0.918), 'Start!!', { font: '25px'});
     textNext.inputEnabled = true;
     textNext.anchor.set(0.5);
     textNext.input.enableDrag();
