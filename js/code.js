@@ -950,7 +950,7 @@ function updateGameplay() {
             }else{
                 resultGrade.frame = 0;
             }
-
+            
         }
         if(buttonRestart.alpha<1){
             buttonRestart.alpha += 0.01;
