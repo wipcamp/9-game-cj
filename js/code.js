@@ -67,7 +67,7 @@ function preloadGameplay() {
     game.load.spritesheet('right', 'images/right2.png', 45, 45, 8);
     game.load.spritesheet('left', 'images/left2.png', 45, 45, 8);
     game.load.spritesheet('laser', 'images/biglaser.png');
-    game.load.spritesheet('spacebarBlock', 'images/dontpush.png',117,100,1);
+    game.load.spritesheet('spacebarBlock', 'images/dontpush.png', 234/2 , 120 , 2);
     game.load.spritesheet('numberText', 'images/numberText.png', 450 / 12, 50, 12);
     game.load.spritesheet('restartBtn', 'images/restartBtn.png', 796/2, 92);
     game.load.spritesheet('smoke', 'images/smoke.png',200,450,5);
@@ -500,11 +500,11 @@ function createGameplay() {
     
     specialGuageIsSpawned = false;
     isSpacebarPressed = false;
-    spacebarBlock = this.add.sprite(game.world.width * (3 / 5) - 40, game.world.height * (3 / 5) - 20, 'spacebarBlock');
-    spacebarBlock.scale.setTo(0.7, 0.7);
+    spacebarBlock = this.add.sprite(game.world.width * (3 / 5) - 25, game.world.height * (3 / 5) - 25, 'spacebarBlock');
+    spacebarBlock.scale.setTo(0.5, 0.5);
     spacebarBlock.kill();
     spacebarBlockSpawnedLastTime = true;
-    spacebarBlock.animations.add('')
+    spacebarBlock.animations.add('active',[0,1],10,true);
     specialGuage = this.add.sprite(game.world.width * (1 / 5), game.world.height * (0.9 / 5), 'guage');
     specialGuage.anchor.set(0.5,0);
     specialGuageSeal = this.add.sprite(game.world.width * (1 / 5)-7  ,specialGuage.y+specialGuage.height*0.72, 'guageSeal');
@@ -601,7 +601,7 @@ function createGameplay() {
     greatText = game.add.text(resultBG.x*0.45, perfectText.y+perfectText.height*1.2, "Great   : ", { font: "24px Merriweather", fill: "#FFFFFF" });
     coolText = game.add.text(resultBG.x*0.45, greatText.y+greatText.height*1.2, "Cool    : ", { font: "24px Merriweather", fill: "#FFFFFF" });
     badText = game.add.text(resultBG.x*0.45, coolText.y+coolText.height*1.2, "Bad     : ", { font: "24px Merriweather", fill: "#FFFFFF" });
-    tipText = game.add.text(resultBG.x, resultBG.y*1.8, "Tips : You died. eiei", { font: "32px super", fill: "#FF6633" });
+    tipText = game.add.text(resultBG.x, resultBG.y*1.8-70, "Tips : You died. eiei", { font: "32px super", fill: "#FF6633" });
     tipText.anchor.set(0.5);
     tipsMessage = ['Tips : เค้าเป็นอัลปาก้านะ ไม่ใช่แกะ :3','Tips : พยายามเข้านะ!','Tips : ระวังนะ! ปุ่มสีม่วงอาจเปลี่ยนปุ่มด้านหลังได้'
     ,'Tips : อย่าลืมนะ ถ้าเจอปุ่มสีแดงให้กดด้านตรงข้าม','Tips : อย่ากระพริบตาหล่ะ อัลปาก้าจะมาแทนปุ่มสีน้ำเงิน','Tips : อย่ายอมแพ้นะ ปุ่ม Enter ช่วยหยุดเวลาได้'
@@ -692,6 +692,7 @@ function updateGameplay() {
 
                     }
                     summonWave();
+                    spacebarBlock.bringToTop();
                     isSpacebarPressed = false;
                 }
                 checker.reset(progressBar.x, progressBar.y);
@@ -916,7 +917,7 @@ function updateGameplay() {
                 BGMStage3.stop();
             }, this, 0, 1, 0);
 
-            shareBtn = game.add.button(resultBG.x-190, resultBG.y*1.55-75, 'shareBtn', function() {
+            shareBtn = game.add.button(resultBG.x-202, resultBG.y*1.55-77, 'shareBtn', function() {
                 FB.ui({
                     method: 'share',
                     display: 'popup',
@@ -931,6 +932,8 @@ function updateGameplay() {
             coolText.setText('Cool        :     '+countCool);
             badText.setText('Bad         :     '+countBad);
             tipText.setText(tipsMessage[game.rnd.integerInRange(0, 9)]);
+            tipText.stroke = '#222';
+            tipText.strokeThickness = 2;
             buttonRestart.scale.setTo(0.40);
             buttonRestart.anchor.set(0.5);
             buttonRestart.alpha = 0;
@@ -1053,6 +1056,9 @@ function stoptime() {
     if(AttentionSpacebar.alive){
         AttentionSpacebar.animations.stop();
     }
+    if(spacebarBlock.alive){
+        spacebarBlock.animations.stop();
+    }
     sharkGroup.setAll('body.velocity.x', 0, false, false);
     sharkGroup.setAll('body.velocity.y', 0, false, false);
     sharkGroup.setAll('body.gravity.y', 0, false, false);
@@ -1095,6 +1101,9 @@ function cancelCountdownTimer(timerName) {
         }
         if(AttentionSpacebar.alive){
             AttentionSpacebar.play('active');
+        }
+        if(spacebarBlock.alive){
+            spacebarBlock.animations.play('active');
         }
         sharkGroup.setAll('body.gravity.y', 380, false, false);
         sharkGroup.setAll('animations.paused', false, false);
@@ -1422,6 +1431,7 @@ function summonWave() {
     if (randObstacle == 2 && !spacebarBlockSpawnedLastTime) {
         spacebarBlock.revive();
         spacebarBlockSpawnedLastTime = true;
+        spacebarBlock.animations.play('active');
     }
     if (length % 2 == 0) {
         x = length / 2;
