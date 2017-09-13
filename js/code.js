@@ -35,6 +35,7 @@ function preloadHowToPlay(){
 function preloadCredit(){
     game.load.spritesheet('menuButton', 'images/menuBtu.png', 796/2 , 92);
     game.load.spritesheet('mute', 'images/mute.png', 450, 447);
+    game.load.image('resultBG','images/resultBG.png');
 }
 
 function preloadGameplay() {
@@ -220,9 +221,11 @@ function createMenu() {
     creditButton = game.add.button(game.world.width*(3.5/5), game.world.height*(4/5), 'creditButton', toCredit, this, 0, 1, 0);
     creditButton.anchor.set(0.5);
     creditButton.scale.setTo(0.5);
-    BGMMenu = game.add.audio('BGMMenu');
-    BGMMenu.volume = 0.4;
-    BGMMenu.loopFull();
+    if(BGMMenu == null){
+        BGMMenu = game.add.audio('BGMMenu');
+        BGMMenu.volume = 0.4;
+        BGMMenu.loopFull();
+    }
     mute = game.add.button(game.world.width*(97/100), game.world.height*(96/100), 'mute', muteSounds, this);
     mute.scale.setTo(0.08, 0.08);
     mute.anchor.set(0.5);
@@ -310,7 +313,12 @@ function createPage3(){
 }
 function createCredit(){
     game.add.image(0, 0, 'backgroundMenu');
-    menuButton = game.add.button(0,0,'menuButton', function(){
+    resultBG = game.add.sprite(game.world.width/2,game.world.height/2.1,'resultBG');
+    resultBG.anchor.set(0.5);
+    resultBG.scale.setTo(1.3);
+    game.add.text(game.world.width*0.5, game.world.height*0.2, 'Credit\n'+
+    "", {font: '20px super', fill: '#EEE'});
+    menuButton = game.add.button(game.world.width*0.15, game.world.height*0.95,'menuButton', function(){
         game.state.start('menu');
     }, this, 0, 1, 0);
     menuButton.scale.setTo(0.5);
