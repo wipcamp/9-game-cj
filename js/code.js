@@ -39,8 +39,6 @@ function preloadCredit(){
 }
 
 function preloadGameplay() {
-    game.load.image('bullet', 'images/bullet.png');
-    game.load.image('enemy_ship', 'images/enemyship.png');
     game.load.image('background3', 'images/BgState3.png');
     game.load.image('background1', 'images/BgState1.png');
     game.load.image('background2', 'images/BgState2.png');
