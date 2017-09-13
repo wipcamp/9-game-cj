@@ -664,10 +664,10 @@ function updateGameplay() {
                 }
             } else if (spaceButton.isDown && game.time.now > spaceKeyDownTimer) {
                 isSpacebarPressed = true;
+                spaceKeyDownTimer = game.time.now + 1400;
                 checkAccuracy();
                 clearWave();
                 spacebarBlockSpawnedLastTime = false;
-                spaceKeyDownTimer = game.time.now + 1400;
                 if (bg.tilePosition.y >= 1400 && stateHandle<3 && gamemode=="ingame") {
                     bgSpeed=perfectSpeed*30/100;
                     gamemode = "feverTime";
@@ -953,6 +953,10 @@ function updateGameplay() {
             buttonRestart.alpha += 0.01;
             resultComponent.setAll('alpha',buttonRestart.alpha);
         }
+        if (spaceButton.isDown && game.time.now > spaceKeyDownTimer){
+            game.state.restart(true,false);
+        }
+        
 
     }
 
