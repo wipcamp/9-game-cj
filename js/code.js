@@ -61,6 +61,7 @@ function preloadGameplay() {
     game.load.image('stopwatchBackground','images/stopwatchBackground.png');
     game.load.image('timestopBG','images/timestopBG.png');
     game.load.image('resultBG','images/resultBG.png');
+    game.load.image('shareBtn','images/share.png');
 
     game.load.spritesheet('ship', 'images/wip.png',3600/3,2010,3);
     game.load.spritesheet('up', 'images/up2.png', 45, 45, 8);
@@ -68,7 +69,7 @@ function preloadGameplay() {
     game.load.spritesheet('right', 'images/right2.png', 45, 45, 8);
     game.load.spritesheet('left', 'images/left2.png', 45, 45, 8);
     game.load.spritesheet('laser', 'images/biglaser.png');
-    game.load.spritesheet('spacebarBlock', 'images/dontpush.png');
+    game.load.spritesheet('spacebarBlock', 'images/dontpush.png',117,100,1);
     game.load.spritesheet('numberText', 'images/numberText.png', 450 / 12, 50, 12);
     game.load.spritesheet('restartBtn', 'images/restartBtn.png', 796/2, 92);
     game.load.spritesheet('smoke', 'images/smoke.png',200,450,5);
@@ -182,6 +183,7 @@ var countPerfect;
 var countGreat;
 var countCool;
 var countBad;
+var shareBtn;
 /////////sound variable//////////
 var timeStopSound;
 var BGMStage1;
@@ -504,6 +506,7 @@ function createGameplay() {
     spacebarBlock.scale.setTo(0.7, 0.7);
     spacebarBlock.kill();
     spacebarBlockSpawnedLastTime = true;
+    spacebarBlock.animations.add('')
     specialGuage = this.add.sprite(game.world.width * (1 / 5), game.world.height * (0.9 / 5), 'guage');
     specialGuage.anchor.set(0.5,0);
     specialGuageSeal = this.add.sprite(game.world.width * (1 / 5)-7  ,specialGuage.y+specialGuage.height*0.72, 'guageSeal');
@@ -537,7 +540,7 @@ function createGameplay() {
     stopTimeGroup.physicsBodyType = Phaser.Physics.ARCADE;
     timestopBG = game.add.image(0 , 0 , 'timestopBG');
     timestopBG.alpha = 0;
-
+    
 
 
     
@@ -907,21 +910,30 @@ function updateGameplay() {
                 break;
 
             }
-            buttonRestart = game.add.button(resultBG.x, resultBG.y*1.55, 'restartBtn', function(){
+            buttonRestart = game.add.button(resultBG.x-60, resultBG.y*1.55-75, 'restartBtn', function(){
                 game.state.restart(true,false);
                 BGMResult.stop();
                 BGMStage1.stop();
                 BGMStage2.stop();
                 BGMStage3.stop();
             }, this, 0, 1, 0);
-            buttonRestart.scale.setTo(0.5);
+
+            shareBtn = game.add.button(resultBG.x-190, resultBG.y*1.55-75, 'shareBtn', function() {
+                FB.ui({
+                    method: 'share',
+                    display: 'popup',
+                    href: 'https://game.helloworld.itbangmod.in.th/',
+                }, function(response){});
+            }, this, 0, 0, 0);
+            shareBtn.scale.setTo(0.25);
+            shareBtn.anchor.set(0.5);
 
             perfectText.setText('Perfect   \u2006:     '+countPerfect);
             greatText.setText('Great      :     '+countGreat);
             coolText.setText('Cool        :     '+countCool);
             badText.setText('Bad         :     '+countBad);
             tipText.setText(tipsMessage[game.rnd.integerInRange(0, 9)]);
-            buttonRestart.scale.setTo(0.5, 0.5);
+            buttonRestart.scale.setTo(0.40);
             buttonRestart.anchor.set(0.5);
             buttonRestart.alpha = 0;
             if(score >= 10000){
