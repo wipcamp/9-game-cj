@@ -70,7 +70,7 @@ function preloadGameplay() {
     game.load.spritesheet('numberText', 'images/numberText.png', 450 / 12, 50, 12);
     game.load.spritesheet('restartBtn', 'images/restartBtn.png', 796/2, 92);
     game.load.spritesheet('smoke', 'images/smoke.png',200,450,5);
-    game.load.spritesheet('grade', 'images/grade.png',1800/6,220,6);
+    game.load.spritesheet('grade', 'images/grade.png',2142/6,446,6);
     game.load.spritesheet('AttentionSpacebar', 'images/spacebar.png',796/2, 92);
 
     /////metarial/////
@@ -836,26 +836,26 @@ function updateGameplay() {
                 BGMStage3.stop();
             }, this, 0, 1, 0);
             buttonRestart.scale.setTo(0.5);
-            perfectText.setText('Perfect : '+countPerfect);
-            greatText.setText('Great   : '+countGreat);
-            coolText.setText('Cool    : '+countCool);
-            badText.setText('Bad     : '+countBad);
+            perfectText.setText('Perfect\t: '+countPerfect);
+            greatText.setText('Great   \t: '+countGreat);
+            coolText.setText('Cool    \t: '+countCool);
+            badText.setText('Bad     \t: '+countBad);
             tipText.setText(tipsMessage[game.rnd.integerInRange(0, 9)]);
             buttonRestart.scale.setTo(0.5, 0.5);
             buttonRestart.anchor.set(0.5);
             buttonRestart.alpha = 0;
             if(score >= 10000){
-                resultGrade.frame = 0;
-            }else if(score >= 7000){
-                resultGrade.frame = 1;
-            }else if(score >= 4500){
-                resultGrade.frame = 2;
-            }else if(score >= 2000){
-                resultGrade.frame = 3;
-            }else if(score >= 500){
-                resultGrade.frame = 4;
-            }else{
                 resultGrade.frame = 5;
+            }else if(score >= 7000){
+                resultGrade.frame = 4;
+            }else if(score >= 4500){
+                resultGrade.frame = 3;
+            }else if(score >= 2000){
+                resultGrade.frame = 2;
+            }else if(score >= 500){
+                resultGrade.frame = 1;
+            }else{
+                resultGrade.frame = 0;
             }
 
         }
