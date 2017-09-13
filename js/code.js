@@ -66,7 +66,7 @@ function preloadGameplay() {
     game.load.spritesheet('right', 'images/right2.png', 45, 45, 8);
     game.load.spritesheet('left', 'images/left2.png', 45, 45, 8);
     game.load.spritesheet('laser', 'images/biglaser.png');
-    game.load.spritesheet('spacebarBlock', 'images/dontpush.png');
+    game.load.spritesheet('spacebarBlock', 'images/dontpush.png', 234/2 , 120 , 2);
     game.load.spritesheet('numberText', 'images/numberText.png', 450 / 12, 50, 12);
     game.load.spritesheet('restartBtn', 'images/restartBtn.png', 796/2, 92);
     game.load.spritesheet('smoke', 'images/smoke.png',200,450,5);
@@ -498,10 +498,11 @@ function createGameplay() {
     
     specialGuageIsSpawned = false;
     isSpacebarPressed = false;
-    spacebarBlock = this.add.sprite(game.world.width * (3 / 5) - 40, game.world.height * (3 / 5) - 20, 'spacebarBlock');
-    spacebarBlock.scale.setTo(0.7, 0.7);
+    spacebarBlock = this.add.sprite(game.world.width * (3 / 5) - 25, game.world.height * (3 / 5) - 25, 'spacebarBlock');
+    spacebarBlock.scale.setTo(0.5, 0.5);
     spacebarBlock.kill();
     spacebarBlockSpawnedLastTime = true;
+    spacebarBlock.animations.add('active',[0,1],10,true);
     specialGuage = this.add.sprite(game.world.width * (1 / 5), game.world.height * (0.9 / 5), 'guage');
     specialGuage.anchor.set(0.5,0);
     specialGuageSeal = this.add.sprite(game.world.width * (1 / 5)-7  ,specialGuage.y+specialGuage.height*0.72, 'guageSeal');
@@ -689,6 +690,7 @@ function updateGameplay() {
 
                     }
                     summonWave();
+                    spacebarBlock.bringToTop();
                     isSpacebarPressed = false;
                 }
                 checker.reset(progressBar.x, progressBar.y);
@@ -1037,6 +1039,9 @@ function stoptime() {
     if(AttentionSpacebar.alive){
         AttentionSpacebar.animations.stop();
     }
+    if(spacebarBlock.alive){
+        spacebarBlock.animations.stop();
+    }
     sharkGroup.setAll('body.velocity.x', 0, false, false);
     sharkGroup.setAll('body.velocity.y', 0, false, false);
     sharkGroup.setAll('body.gravity.y', 0, false, false);
@@ -1079,6 +1084,9 @@ function cancelCountdownTimer(timerName) {
         }
         if(AttentionSpacebar.alive){
             AttentionSpacebar.play('active');
+        }
+        if(spacebarBlock.alive){
+            spacebarBlock.animations.play('active');
         }
         sharkGroup.setAll('body.gravity.y', 380, false, false);
         sharkGroup.setAll('animations.paused', false, false);
@@ -1406,6 +1414,7 @@ function summonWave() {
     if (randObstacle == 2 && !spacebarBlockSpawnedLastTime) {
         spacebarBlock.revive();
         spacebarBlockSpawnedLastTime = true;
+        spacebarBlock.animations.play('active');
     }
     if (length % 2 == 0) {
         x = length / 2;
