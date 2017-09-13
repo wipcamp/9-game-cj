@@ -215,12 +215,12 @@ function createMenu() {
     game.stage.disableVisibilityChange = true;
 
     game.add.image(0, 0, 'backgroundMenu');
-    startButton = game.add.button(game.world.width*(3.5/5), game.world.height*(2.5/5), 'startButton', toHowToPlay, this, 0, 1, 0);
+    startButton = game.add.button(game.world.width*(3.5/5)+30, game.world.height*(4/5), 'startButton', toHowToPlay, this, 0, 1, 0);
     startButton.anchor.set(0.5);
-    startButton.scale.setTo(0.5);
-    creditButton = game.add.button(game.world.width*(3.5/5), game.world.height*(4/5), 'creditButton', toCredit, this, 0, 1, 0);
+    startButton.scale.setTo(0.7);
+    creditButton = game.add.button(game.world.width*(3.5/5)+30, game.world.height*(4.5/5), 'creditButton', toCredit, this, 0, 1, 0);
     creditButton.anchor.set(0.5);
-    creditButton.scale.setTo(0.5);
+    creditButton.scale.setTo(0.37);
     if(BGMMenu == null){
         BGMMenu = game.add.audio('BGMMenu');
         BGMMenu.volume = 0.4;
