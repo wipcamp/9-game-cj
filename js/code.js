@@ -33,6 +33,7 @@ function preloadHowToPlay(){
 }
 
 function preloadCredit(){
+    game.load.spritesheet('menuButton', 'images/menuBtu.png', 796/2 , 92);
     game.load.spritesheet('mute', 'images/mute.png', 450, 447);
 }
 
@@ -225,6 +226,10 @@ function createMenu() {
     mute = game.add.button(game.world.width*(97/100), game.world.height*(96/100), 'mute', muteSounds, this);
     mute.scale.setTo(0.08, 0.08);
     mute.anchor.set(0.5);
+    if (isSound)
+        mute.frame = 0;
+    else
+        mute.frame = 1;
 }
 
 function createHowToPlay() {
@@ -304,9 +309,19 @@ function createPage3(){
     }, this);
 }
 function createCredit(){
+    game.add.image(0, 0, 'backgroundMenu');
+    menuButton = game.add.button(0,0,'menuButton', function(){
+        game.state.start('menu');
+    }, this, 0, 1, 0);
+    menuButton.scale.setTo(0.5);
+    menuButton.anchor.set(0.5);
     mute = game.add.button(game.world.width*(97/100), game.world.height*(96/100), 'mute', muteSounds, this);
     mute.scale.setTo(0.08, 0.08);
     mute.anchor.set(0.5);
+    if (isSound)
+        mute.frame = 0;
+    else
+        mute.frame = 1;
 }
 
 function loadStart() {
