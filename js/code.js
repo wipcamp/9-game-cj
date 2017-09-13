@@ -601,7 +601,7 @@ function createGameplay() {
     greatText = game.add.text(resultBG.x*0.45, perfectText.y+perfectText.height*1.2, "Great   : ", { font: "24px Merriweather", fill: "#FFFFFF" });
     coolText = game.add.text(resultBG.x*0.45, greatText.y+greatText.height*1.2, "Cool    : ", { font: "24px Merriweather", fill: "#FFFFFF" });
     badText = game.add.text(resultBG.x*0.45, coolText.y+coolText.height*1.2, "Bad     : ", { font: "24px Merriweather", fill: "#FFFFFF" });
-    tipText = game.add.text(resultBG.x, resultBG.y*1.8, "Tips : You died. eiei", { font: "32px super", fill: "#FF6633" });
+    tipText = game.add.text(resultBG.x, resultBG.y*1.8-70, "Tips : You died. eiei", { font: "32px super", fill: "#FF6633" });
     tipText.anchor.set(0.5);
     tipsMessage = ['Tips : เค้าเป็นอัลปาก้านะ ไม่ใช่แกะ :3','Tips : พยายามเข้านะ!','Tips : ระวังนะ! ปุ่มสีม่วงอาจเปลี่ยนปุ่มด้านหลังได้'
     ,'Tips : อย่าลืมนะ ถ้าเจอปุ่มสีแดงให้กดด้านตรงข้าม','Tips : อย่ากระพริบตาหล่ะ อัลปาก้าจะมาแทนปุ่มสีน้ำเงิน','Tips : อย่ายอมแพ้นะ ปุ่ม Enter ช่วยหยุดเวลาได้'
@@ -932,6 +932,8 @@ function updateGameplay() {
             coolText.setText('Cool        :     '+countCool);
             badText.setText('Bad         :     '+countBad);
             tipText.setText(tipsMessage[game.rnd.integerInRange(0, 9)]);
+            tipText.stroke = '#222';
+            tipText.strokeThickness = 2;
             buttonRestart.scale.setTo(0.40);
             buttonRestart.anchor.set(0.5);
             buttonRestart.alpha = 0;
