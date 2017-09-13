@@ -231,9 +231,6 @@ function createHowToPlay() {
     game.stage.disableVisibilityChange = true;
 
     createPage1();
-    /*startButton = game.add.button(game.world.width*(3.5/5), game.world.height*(2.5/5), 'startButton', toGameplay, this, 0, 1, 0);
-    startButton.anchor.set(0.5);
-    startButton.scale.setTo(0.5);*/
     startBtnSound = game.add.audio('startSound');
     startBtnSound.volume = 0.6;
     mute = game.add.button(game.world.width*(97/100), game.world.height*(96/100), 'mute', muteSounds, this);
@@ -336,7 +333,6 @@ function createGameplay() {
     this.myWorld = game.add.group();
     this.myWorld.enableBody = true;
     bg = this.add.tileSprite(0, 0, 800, 600, 'background1');
-    // bg.autoScroll(this.levelSpeed, 0);
     bg.fixedToCamera = true;
     bg.tilePosition.y += 600;
     bgSpeed = 0;
@@ -372,7 +368,6 @@ function createGameplay() {
         var clound = clound1Group.create(0, 0, 'clound1');
         clound.exists = false;
         clound.visible = false;
-        //clound.scale.setTo(0.5, 0.5);
         clound.anchor.set(0.5,0.6);
         clound.checkWorldBounds = true;
         clound.events.onOutOfBounds.add(killObj, this);
@@ -425,7 +420,6 @@ function createGameplay() {
     buttonLine = [];
     difficulty = 1; 
     gamemode = "prepare";
-    // gamemode = "feverTime";
 
     
     specialGuageIsSpawned = false;
@@ -569,16 +563,10 @@ function createGameplay() {
 var summonCooldown = 0;
 function updateGameplay() {
 
-    /*if(!this.game.world.bounds.intersects(wippo)){
-        wippo.kill();
-        checker.body.velocity.x = 0;
-    }*/
     bg.tilePosition.y += bgSpeed;
     updateScore();
     if (gamemode == "prepare") {
-        // materialGenerator();
         if(wippo.y <= 200){
-            // gameBegin(); << error with this , don't know WHYYYYY!?
             game.time.events.add(Phaser.Timer.SECOND * 0, gameBegin, this); //and it's work with this.
         }
 
@@ -587,7 +575,6 @@ function updateGameplay() {
         if (!isTimeStopped) {
             materialGenerator();
         }
-        //this.scoreText.setText('Score : ' + this.score);
         collectArrow();
         if (!isTimeStopped) {
             checker.body.velocity.x = checkerSpeed;
@@ -630,8 +617,6 @@ function updateGameplay() {
                     summonWave();
                     isSpacebarPressed = false;
                 }
-
-                //checker.reset(game.world.width * (2.5 / 7), game.world.height * (3 / 5)+10);
                 checker.reset(progressBar.x, progressBar.y);
                 summonCooldown = game.time.now + 1500;
             }
@@ -695,7 +680,6 @@ function updateGameplay() {
         } else {
             if (maxGuage < 0) {
                 maxGuage = -1;
-                // specialGuageSeal.scale.setTo(1, maxGuage / 100);
             }
         }
 
@@ -777,11 +761,6 @@ function updateGameplay() {
             }, this);
             passStageSound.play();
         }
-        //bg.autoScroll(this.levelSpeed, 0);
-        //bg.fixedToCamera = true;
-        //gamemode = "ingame";
-        //stateHandle++;
-
     } else if (gamemode == "gameover") {
         if (wippo.alive) {
             bgSpeed = -perfectSpeed*90/100;
@@ -849,12 +828,6 @@ function updateGameplay() {
                 break;
             
             }
-            // scoreDigit6.reset(resultBG.x/1.5,resultBG.y/2.8);
-            // scoreDigit5.reset(scoreDigit6.x + scoreDigit6.width,scoreDigit6.y);
-            // scoreDigit4.reset(scoreDigit5.x + scoreDigit5.width,scoreDigit6.y);
-            // scoreDigit3.reset(scoreDigit4.x + scoreDigit4.width,scoreDigit6.y);
-            // scoreDigit2.reset(scoreDigit3.x + scoreDigit3.width,scoreDigit6.y);
-            // scoreDigit1.reset(scoreDigit2.x + scoreDigit2.width,scoreDigit6.y);
             buttonRestart = game.add.button(resultBG.x, resultBG.y*1.55, 'restartBtn', function(){
                 game.state.restart(true,false);
                 BGMResult.stop();
@@ -893,27 +866,7 @@ function updateGameplay() {
 
     }
 
-    //game.physics.arcade.collide(wippo,floor);
-
 }
-/*function changeFocus(){
-    switch (gamemode) {
-        case "prepare":
-            checker.alpha=0.5;
-            perfect.alpha=0.5;
-            greatL.alpha=0.5;
-            greatR.alpha=0.5;
-            coolL.alpha=0.5;
-            coolR.alpha=0.5;
-            badR.alpha=0.5;
-            badL.alpha=0.5;
-            break;
-
-        case "ingame":
-
-            break;
-    }
-}*/
 ////mute
 function muteSounds() {
     isSound = !isSound;
@@ -995,7 +948,6 @@ function stoptime() {
     bgSpeed = 0;
     stopTimePointText.frame = stopTimePoint;
     smoke.animations.paused = true;
-    // wippo.animations.paused = true;
 
     var cloud1=clound1Group.getFirstExists(true);
     if(cloud1!=null){
@@ -1037,7 +989,6 @@ function cancelCountdownTimer(timerName) {
         bgSpeed = tempBgSpeed;
 
         smoke.animations.paused = false;
-        // wippo.animations.paused = false;
 
         ///material
 
@@ -1118,7 +1069,6 @@ function materialGenerator() {
             clound1Cooldown = game.rnd.integerInRange(660,720);
             var clound = clound1Group.getFirstExists(false);
             var cloundLaunchAt = game.rnd.integerInRange(20, game.world.width-20);
-            // var cloundSpeed = game.rnd.integerInRange(1200, 1400);
             clound.reset(cloundLaunchAt,0);
             clound.body.velocity.y = 70;
 
@@ -1348,15 +1298,6 @@ function collectArrow() {
 
 function refreshWave() {
     for (; waveCheckOrder >= 0; waveCheckOrder--) {
-        /*if(wave[waveCheckOrder].name=="up"){
-          wave[waveCheckOrder].up.animations.play('default');
-        }else if(wave[waveCheckOrder].name=="down"){
-          wave[waveCheckOrder].down.animations.play('default');
-        }else if(wave[waveCheckOrder].name=="right"){
-          wave[waveCheckOrder].right.animations.play('default');
-        }else if(wave[waveCheckOrder].name=="left"){
-          wave[waveCheckOrder].left.animations.play('default');
-        }*/
         wave[waveCheckOrder].arrow.animations.play('default');
     }
     waveCheckOrder = 0;
@@ -1365,22 +1306,11 @@ function refreshWave() {
 function clearWave() {
     var waveLength = wave.length;
     for (var i = 0; i < waveLength; i++) {
-        /*if(wave[wave.length-1].name=="up"){
-          wave[wave.length-1].up.kill();
-        }else if(wave[wave.length-1].name=="down"){
-          wave[wave.length-1].down.kill();
-        }else if(wave[wave.length-1].name=="right"){
-          wave[wave.length-1].right.kill();
-        }else if(wave[wave.length-1].name=="left"){
-          wave[wave.length-1].left.kill();
-        }*/
         buttonLine[i].destroy();
         wave[wave.length - 1].arrow.destroy();
         wave.pop();
         waveCheckOrder = 0;
-        //waveCheck.pop();
     }
-    //wave = [];
 }
 function summonWave() {
     var length;
@@ -1394,19 +1324,11 @@ function summonWave() {
         length += 2;
     }
 
-    // var l = wave.length;
     var randObstacle = game.rnd.integerInRange(1, 12);
     if (randObstacle == 2 && !spacebarBlockSpawnedLastTime) {
         spacebarBlock.revive();
         spacebarBlockSpawnedLastTime = true;
     }
-
-
-    //var startPositon;
-    /*if(length==3){
-        x=game.world.width/2-50;
-        y=game.world.height*3/5;
-    }*/
     if (length % 2 == 0) {
         x = length / 2;
         x = game.world.width / 2 - (50 * x - 25);
@@ -1443,18 +1365,10 @@ function summonWave() {
             }
         }
         wave.push(new arrowCreate(x, y, rand, randType));
-        //waveCheck.push(false);
-        //wave[i]=new arrowCreate(x,y,rand);
         x += 50;
     }
 }
 arrowCreate = function (x, y, rand, type) {
-    /*
-        0 up
-        1 down
-        2 left
-        3 right
-    */
     this.x = x;
     this.y = y;
     this.type = type;
@@ -1534,7 +1448,6 @@ wippoLaunch = function () {
     smoke.body.velocity.y = -150;
     bgSpeed = perfectSpeed;
     cannonShoot.play()
-    // game.time.events.add(Phaser.Timer.SECOND * 2, gameBegin, this);
 }
 gameBegin = function () {
     wippo.body.velocity.y = 0;
@@ -1571,7 +1484,6 @@ gameBegin = function () {
     spacebarBlock.bringToTop();
     timestopBG.bringToTop();
     summonWave();
-    //checker.reset(game.world.width * (2.5 / 7), game.world.height * (3 / 5)+10);
     checker.reset(progressBar.x, progressBar.y);
     gamemode = "ingame";
     checkerPic = this.add.sprite(0, game.world.height * (4 / 5) + 120, 'checkerPic');
@@ -1625,7 +1537,6 @@ gameEnd = function () {
     spacebarBlock.alpha = 0;
     checkerPic.alpha = 0;
     smoke.alpha = 0;
-    //game.time.events.add(Phaser.Timer.SECOND * 3, toResultPage = function(){game.state.start(createResult)}, this);
 }
 function toGameplay() {
     startBtnSound.play();
@@ -1638,44 +1549,3 @@ function toCredit() {
     game.state.start('credit');
 }
 
-
-/*function setScore() {
-    var highscore = 0;
-    var sals = dbSals.child(id);
-    sals.on('value', function(snapshot) {
-        highscore = snapshot.val().highscore;
-        if(highscore=== undefined){
-           highscore=0;
-        }
-    });
-
-    if(highscore < score){
-        dbSals.child(id).update(
-            {    "name" : name,
-                 "score" : score,
-                 "highscore" : score
-            }
-        );
-    }else{
-
-        dbSals.child(id).update(
-             {
-                 "name" : name,
-                 "score" : score,
-             }
-        );
-    }
-}
-function sendReportMessage(report) {
-    var rndText = "";
-    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    for (var i = 0; i < 5; i++) {
-        rndText += possible.charAt(Math.floor(Math.random() * possible.length));
-    }
-    var rnd = game.rnd.integerInRange(0, 1000000) + rndText + (new Date()).getTime();
-    var dbEtkReport = firebase.database().ref().child("report-sals");
-    var sals = dbEtkReport.child(rnd);
-    sals.update({
-        'message': report
-    });
-}*/
