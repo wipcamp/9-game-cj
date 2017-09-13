@@ -530,7 +530,7 @@ function createGameplay() {
     scoreDigit3 = game.add.sprite(scoreDigit4.x + scoreDigit4.width, 0, 'numberText');
     scoreDigit2 = game.add.sprite(scoreDigit3.x + scoreDigit3.width, 0, 'numberText');
     scoreDigit1 = game.add.sprite(scoreDigit2.x + scoreDigit2.width, 0, 'numberText');
-    scoreDigit1.frame = 0;
+    scoreDigit1.frame = 11;
     scoreDigit2.frame = 11;
     scoreDigit3.frame = 11;
     scoreDigit4.frame = 11;
@@ -539,24 +539,24 @@ function createGameplay() {
 
     ////result/////
     resultComponent = game.add.group();
-    resultBG = game.add.sprite(game.world.width/2,game.world.height/2.1,'resultBG');
+    resultBG = game.add.sprite(game.world.width/2,game.world.height/2,'resultBG');
     resultBG.anchor.set(0.5);
-    resultGrade = game.add.sprite(resultBG.x*0.8, resultBG.y,'grade');
+    resultGrade = game.add.sprite(resultBG.x*1.3, resultBG.y*0.8-40,'grade');
     resultGrade.anchor.set(0.5);
-    perfectText = game.add.text(resultBG.x*1.25, resultBG.y*0.7, "Perfect : ", { font: "18px Merriweather", fill: "#FFFFFF" });
-    greatText = game.add.text(resultBG.x*1.25, perfectText.y+perfectText.height*2, "Great   : ", { font: "18px Merriweather", fill: "#FFFFFF" });
-    coolText = game.add.text(resultBG.x*1.25, greatText.y+greatText.height*2, "Cool    : ", { font: "18px Merriweather", fill: "#FFFFFF" });
-    badText = game.add.text(resultBG.x*1.25, coolText.y+coolText.height*2, "Bad     : ", { font: "18px Merriweather", fill: "#FFFFFF" });
+    perfectText = game.add.text(resultBG.x*0.45, resultBG.y*0.6, "Perfect : ", { font: "24px Merriweather", fill: "#FFFFFF" });
+    greatText = game.add.text(resultBG.x*0.45, perfectText.y+perfectText.height*1.2, "Great   : ", { font: "24px Merriweather", fill: "#FFFFFF" });
+    coolText = game.add.text(resultBG.x*0.45, greatText.y+greatText.height*1.2, "Cool    : ", { font: "24px Merriweather", fill: "#FFFFFF" });
+    badText = game.add.text(resultBG.x*0.45, coolText.y+coolText.height*1.2, "Bad     : ", { font: "24px Merriweather", fill: "#FFFFFF" });
     tipText = game.add.text(resultBG.x, resultBG.y*1.8, "Tips : You died. eiei", { font: "32px super", fill: "#FF6633" });
     tipText.anchor.set(0.5);
     tipsMessage = ['Tips : เค้าเป็นอัลปาก้านะ ไม่ใช่แกะ :3','Tips : พยายามเข้านะ!','Tips : ระวังนะ! ปุ่มสีม่วงอาจเปลี่ยนปุ่มด้านหลังได้'
     ,'Tips : อย่าลืมนะ ถ้าเจอปุ่มสีแดงให้กดด้านตรงข้าม','Tips : อย่ากระพริบตาหล่ะ อัลปาก้าจะมาแทนปุ่มสีน้ำเงิน','Tips : อย่ายอมแพ้นะ ปุ่ม Enter ช่วยหยุดเวลาได้'
-    ,'ระวังปุ่มพังซะก่อนนะ :)','มีความพยายาม... แต่ก็ยังอ่อนหัด','แ บ ะ ะ ะ ะ ~','แ ม๊ ะ ะ ะ ~'];
+    ,'Tips : ระวังปุ่มพังซะก่อนนะ :)','Tips : มีความพยายาม... แต่ก็ยังอ่อนหัด','Tips : แ บ ะ ะ ะ ะ ~','Tips : แ ม๊ ะ ะ ะ ~'];
     countPerfect = 0;
     countGreat = 0;
     countCool = 0;
     countBad = 0;
-    
+
     resultComponent.add(resultBG);
     resultComponent.add(resultGrade);
     resultComponent.add(perfectText);
@@ -800,16 +800,16 @@ function updateGameplay() {
             }
             switch (digitLength) {
                 case 6:
-                scoreDigit3.reset(resultBG.x,resultBG.y/2.8);
-                scoreDigit4.reset(resultBG.x - scoreDigit3.width,scoreDigit3.y);
+                scoreDigit3.reset(resultBG.x - resultBG.width/6-9,resultBG.y/2.8);
+                scoreDigit4.reset(resultBG.x - scoreDigit3.width-resultBG.width/6-9,scoreDigit3.y);
                 scoreDigit5.reset(scoreDigit4.x - scoreDigit4.width,scoreDigit4.y);
                 scoreDigit6.reset(scoreDigit5.x - scoreDigit5.width,scoreDigit4.y);
                 scoreDigit2.reset(scoreDigit3.x + scoreDigit3.width,scoreDigit4.y);
                 scoreDigit1.reset(scoreDigit2.x + scoreDigit2.width,scoreDigit4.y);
-                
+
                 break;
                 case 5:
-                scoreDigit3.reset(resultBG.x - scoreDigit3.width/2,resultBG.y/2.8);
+                scoreDigit3.reset(resultBG.x - scoreDigit3.width/2 - resultBG.width/6-9,resultBG.y/2.8);
                 scoreDigit4.reset(scoreDigit3.x - scoreDigit3.width,scoreDigit3.y);
                 scoreDigit5.reset(scoreDigit4.x - scoreDigit4.width,scoreDigit4.y);
                 scoreDigit6.kill();
@@ -817,7 +817,7 @@ function updateGameplay() {
                 scoreDigit1.reset(scoreDigit2.x + scoreDigit2.width,scoreDigit4.y);
                 break;
                 case 4:
-                scoreDigit3.reset(resultBG.x - scoreDigit3.width,resultBG.y/2.8);
+                scoreDigit3.reset(resultBG.x - scoreDigit3.width - resultBG.width/6-9,resultBG.y/2.8);
                 scoreDigit4.reset(scoreDigit3.x - scoreDigit3.width,scoreDigit3.y);
                 scoreDigit5.kill();
                 scoreDigit6.kill();
@@ -825,7 +825,7 @@ function updateGameplay() {
                 scoreDigit1.reset(scoreDigit2.x + scoreDigit2.width,scoreDigit4.y);
                 break;
                 case 3:
-                scoreDigit2.reset(resultBG.x - scoreDigit2.width/2,resultBG.y/2.8);
+                scoreDigit2.reset(resultBG.x - scoreDigit2.width/2 - resultBG.width/6-9,resultBG.y/2.8);
                 scoreDigit4.kill();
                 scoreDigit5.kill();
                 scoreDigit6.kill();
@@ -837,7 +837,7 @@ function updateGameplay() {
                 scoreDigit4.kill();
                 scoreDigit5.kill();
                 scoreDigit6.kill();
-                scoreDigit2.reset(resultBG.x - scoreDigit2.width,resultBG.y/2.8);
+                scoreDigit2.reset(resultBG.x - scoreDigit2.width - resultBG.width/6-9,resultBG.y/2.8);
                 scoreDigit1.reset(scoreDigit2.x + scoreDigit2.width,scoreDigit2.y);
                 break;
                 case 1:
@@ -847,9 +847,12 @@ function updateGameplay() {
                 scoreDigit4.kill();
                 scoreDigit3.kill();
                 scoreDigit2.kill();
-                scoreDigit1.reset(resultBG.x - scoreDigit1.width/2,resultBG.y/2.8);
+                scoreDigit1.reset(resultBG.x - scoreDigit1.width/2 - resultBG.width/6-9,resultBG.y/2.8);
+                if(score==0){
+                  scoreDigit1.frame = 0;
+                }
                 break;
-            
+
             }
             buttonRestart = game.add.button(resultBG.x, resultBG.y*1.55, 'restartBtn', function(){
                 game.state.restart(true,false);
@@ -859,10 +862,11 @@ function updateGameplay() {
                 BGMStage3.stop();
             }, this, 0, 1, 0);
             buttonRestart.scale.setTo(0.5);
-            perfectText.setText('Perfect\t: '+countPerfect);
-            greatText.setText('Great   \t: '+countGreat);
-            coolText.setText('Cool    \t: '+countCool);
-            badText.setText('Bad     \t: '+countBad);
+
+            perfectText.setText('Perfect   \u2006:     '+countPerfect);
+            greatText.setText('Great      :     '+countGreat);
+            coolText.setText('Cool        :     '+countCool);
+            badText.setText('Bad         :     '+countBad);
             tipText.setText(tipsMessage[game.rnd.integerInRange(0, 9)]);
             buttonRestart.scale.setTo(0.5, 0.5);
             buttonRestart.anchor.set(0.5);
