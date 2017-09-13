@@ -917,7 +917,7 @@ function updateGameplay() {
                 BGMStage3.stop();
             }, this, 0, 1, 0);
 
-            shareBtn = game.add.button(resultBG.x-190, resultBG.y*1.55-75, 'shareBtn', function() {
+            shareBtn = game.add.button(resultBG.x-202, resultBG.y*1.55-77, 'shareBtn', function() {
                 FB.ui({
                     method: 'share',
                     display: 'popup',
