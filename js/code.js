@@ -958,6 +958,10 @@ function updateGameplay() {
         }
         if (spaceButton.isDown && game.time.now > spaceKeyDownTimer){
             game.state.restart(true,false);
+            BGMResult.stop();
+            BGMStage1.stop();
+            BGMStage2.stop();
+            BGMStage3.stop();
         }
         
 
