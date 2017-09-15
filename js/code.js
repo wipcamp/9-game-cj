@@ -72,7 +72,7 @@ function preloadGameplay() {
     game.load.spritesheet('restartBtn', 'images/restartBtn.png', 796/2, 92);
     game.load.spritesheet('smoke', 'images/smoke.png',200,450,5);
     game.load.spritesheet('grade', 'images/grade.png',2142/6,446,6);
-    game.load.spritesheet('AttentionSpacebar', 'images/spacebar.png',796/2, 92);
+    game.load.spritesheet('AttentionSpacebar', 'images/attentionSpacebar.png',796/2, 92);
 
     /////metarial/////
     game.load.spritesheet('shark', 'images/shark2.png', 50, 50);
